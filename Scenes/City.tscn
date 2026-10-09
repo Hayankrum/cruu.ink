@@ -168,11 +168,11 @@ script = ExtResource("5_ped")
 copy_mode = 2
 
 [node name="btn_menu" type="Button" parent="CanvasLayer" unique_id=590406048]
-custom_minimum_size = Vector2(28, 30)
+custom_minimum_size = Vector2(56, 56)
 offset_left = 12.0
 offset_top = 13.0
 offset_right = 42.0
-offset_bottom = 43.0
+offset_bottom = 69.0
 theme = ExtResource("9_theme")
 theme_override_font_sizes/font_size = 10
 text = "≡"
@@ -336,7 +336,7 @@ text = " "
 scroll_following = true
 
 [node name="avançar_dialogo" type="Button" parent="CanvasLayer/Panel_dialgo/MarginContainer/VBoxContainer/dialogo" unique_id=1322218301]
-custom_minimum_size = Vector2(32, 26)
+custom_minimum_size = Vector2(64, 52)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -366,14 +366,14 @@ grow_vertical = 0
 theme_override_constants/separation = 6
 
 [node name="btn1" type="Button" parent="CanvasLayer/Panel_dialgo/vbox_btn" unique_id=1790426052]
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("9_theme")
 
 [node name="btn2" type="Button" parent="CanvasLayer/Panel_dialgo/vbox_btn" unique_id=25051883]
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4

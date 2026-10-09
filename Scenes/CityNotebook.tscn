@@ -233,27 +233,27 @@ layout_mode = 2
 size_flags_vertical = 4
 
 [node name="btn1" type="Button" parent="Interface/ui_notbook/VBoxContainer/box_btn" unique_id=1948751923]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
 [node name="btn2" type="Button" parent="Interface/ui_notbook/VBoxContainer/box_btn" unique_id=624574172]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
 [node name="btn3" type="Button" parent="Interface/ui_notbook/VBoxContainer/box_btn" unique_id=231852432]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
 [node name="btn4" type="Button" parent="Interface/ui_notbook/VBoxContainer/box_btn" unique_id=637286286]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
 [node name="btn_menu" type="Button" parent="Interface" unique_id=797933578]
-custom_minimum_size = Vector2(28, 30)
+custom_minimum_size = Vector2(56, 56)
 offset_left = 12.0
 offset_top = 13.0
 offset_right = 42.0
-offset_bottom = 43.0
+offset_bottom = 69.0
 theme = ExtResource("9_theme")
 theme_override_font_sizes/font_size = 10
 text = "≡"
