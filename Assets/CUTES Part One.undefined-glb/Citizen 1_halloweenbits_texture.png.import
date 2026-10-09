@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7pucfak1tqnv"
 path.s3tc="res://.godot/imported/Citizen 1_halloweenbits_texture.png-2b04aa9b24ee768cc5640917cb4ce275.s3tc.ctex"
+path.etc2="res://.godot/imported/Citizen 1_halloweenbits_texture.png-2b04aa9b24ee768cc5640917cb4ce275.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Assets/CUTES Part One.undefined-glb/Citizen 1_halloweenbits_texture.png"
-dest_files=["res://.godot/imported/Citizen 1_halloweenbits_texture.png-2b04aa9b24ee768cc5640917cb4ce275.s3tc.ctex"]
+dest_files=["res://.godot/imported/Citizen 1_halloweenbits_texture.png-2b04aa9b24ee768cc5640917cb4ce275.s3tc.ctex", "res://.godot/imported/Citizen 1_halloweenbits_texture.png-2b04aa9b24ee768cc5640917cb4ce275.etc2.ctex"]
 
 [params]
 

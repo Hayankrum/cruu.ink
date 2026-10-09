@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cth32tdykg4us"
 path.s3tc="res://.godot/imported/Crypto Bro_halloweenbits_texture.png-5c7070227f80bbf58785383d1c67493e.s3tc.ctex"
+path.etc2="res://.godot/imported/Crypto Bro_halloweenbits_texture.png-5c7070227f80bbf58785383d1c67493e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Assets/CUTES Part One.undefined-glb/Crypto Bro_halloweenbits_texture.png"
-dest_files=["res://.godot/imported/Crypto Bro_halloweenbits_texture.png-5c7070227f80bbf58785383d1c67493e.s3tc.ctex"]
+dest_files=["res://.godot/imported/Crypto Bro_halloweenbits_texture.png-5c7070227f80bbf58785383d1c67493e.s3tc.ctex", "res://.godot/imported/Crypto Bro_halloweenbits_texture.png-5c7070227f80bbf58785383d1c67493e.etc2.ctex"]
 
 [params]
 

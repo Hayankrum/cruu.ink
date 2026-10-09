@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bnelake36rlbc"
 path.s3tc="res://.godot/imported/Orange Vehicle_gradient_albedo.png-9122e1cb5231e68b7cf9418f8d569e67.s3tc.ctex"
+path.etc2="res://.godot/imported/Orange Vehicle_gradient_albedo.png-9122e1cb5231e68b7cf9418f8d569e67.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Assets/CUTES Part One.undefined-glb/Orange Vehicle_gradient_albedo.png"
-dest_files=["res://.godot/imported/Orange Vehicle_gradient_albedo.png-9122e1cb5231e68b7cf9418f8d569e67.s3tc.ctex"]
+dest_files=["res://.godot/imported/Orange Vehicle_gradient_albedo.png-9122e1cb5231e68b7cf9418f8d569e67.s3tc.ctex", "res://.godot/imported/Orange Vehicle_gradient_albedo.png-9122e1cb5231e68b7cf9418f8d569e67.etc2.ctex"]
 
 [params]
 

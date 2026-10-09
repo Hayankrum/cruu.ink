@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://nsr5vk4goncs"
 path.s3tc="res://.godot/imported/Food Worker_halloweenbits_texture.png-b51d897026133e395d33868311b8baea.s3tc.ctex"
+path.etc2="res://.godot/imported/Food Worker_halloweenbits_texture.png-b51d897026133e395d33868311b8baea.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Assets/CUTES Part One.undefined-glb/Food Worker_halloweenbits_texture.png"
-dest_files=["res://.godot/imported/Food Worker_halloweenbits_texture.png-b51d897026133e395d33868311b8baea.s3tc.ctex"]
+dest_files=["res://.godot/imported/Food Worker_halloweenbits_texture.png-b51d897026133e395d33868311b8baea.s3tc.ctex", "res://.godot/imported/Food Worker_halloweenbits_texture.png-b51d897026133e395d33868311b8baea.etc2.ctex"]
 
 [params]
 

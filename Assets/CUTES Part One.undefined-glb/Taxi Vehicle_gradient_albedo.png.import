@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dwdyf4at7hfu8"
 path.s3tc="res://.godot/imported/Taxi Vehicle_gradient_albedo.png-e14e7620b91ec4d99a11ce5574301354.s3tc.ctex"
+path.etc2="res://.godot/imported/Taxi Vehicle_gradient_albedo.png-e14e7620b91ec4d99a11ce5574301354.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Assets/CUTES Part One.undefined-glb/Taxi Vehicle_gradient_albedo.png"
-dest_files=["res://.godot/imported/Taxi Vehicle_gradient_albedo.png-e14e7620b91ec4d99a11ce5574301354.s3tc.ctex"]
+dest_files=["res://.godot/imported/Taxi Vehicle_gradient_albedo.png-e14e7620b91ec4d99a11ce5574301354.s3tc.ctex", "res://.godot/imported/Taxi Vehicle_gradient_albedo.png-e14e7620b91ec4d99a11ce5574301354.etc2.ctex"]
 
 [params]
 

@@ -283,16 +283,16 @@ text = "NOTEBOOK"
 
 [node name="Panel_dialgo" type="Panel" parent="CanvasLayer" unique_id=1174099850]
 material = SubResource("ShaderMaterial_dialog")
-custom_minimum_size = Vector2(440, 150)
+custom_minimum_size = Vector2(450, 130)
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -487.0
-offset_top = -443.0
+offset_left = -427.0
+offset_top = -411.0
 offset_right = -27.0
-offset_bottom = -39.0
+offset_bottom = -61.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("9_theme")
@@ -355,20 +355,21 @@ text = "▼"
 [node name="vbox_btn" type="VBoxContainer" parent="CanvasLayer/Panel_dialgo" unique_id=123122796]
 clip_contents = true
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 14.0
-offset_top = -44.0
-offset_right = -14.0
-offset_bottom = -10.0
+offset_left = -200.0
+offset_top = -141.0
+offset_right = 200.0
+offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = 6
 
 [node name="btn1" type="Button" parent="CanvasLayer/Panel_dialgo/vbox_btn" unique_id=1790426052]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(400, 64)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -376,7 +377,7 @@ theme = ExtResource("9_theme")
 theme_override_font_sizes/font_size = 17
 
 [node name="btn2" type="Button" parent="CanvasLayer/Panel_dialgo/vbox_btn" unique_id=25051883]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(400, 64)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4

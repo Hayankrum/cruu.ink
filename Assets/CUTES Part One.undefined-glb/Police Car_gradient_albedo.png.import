@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://4js7uebevqn0"
 path.s3tc="res://.godot/imported/Police Car_gradient_albedo.png-944e37156ed83149435b9fc77488e809.s3tc.ctex"
+path.etc2="res://.godot/imported/Police Car_gradient_albedo.png-944e37156ed83149435b9fc77488e809.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://Assets/CUTES Part One.undefined-glb/Police Car_gradient_albedo.png"
-dest_files=["res://.godot/imported/Police Car_gradient_albedo.png-944e37156ed83149435b9fc77488e809.s3tc.ctex"]
+dest_files=["res://.godot/imported/Police Car_gradient_albedo.png-944e37156ed83149435b9fc77488e809.s3tc.ctex", "res://.godot/imported/Police Car_gradient_albedo.png-944e37156ed83149435b9fc77488e809.etc2.ctex"]
 
 [params]
 
