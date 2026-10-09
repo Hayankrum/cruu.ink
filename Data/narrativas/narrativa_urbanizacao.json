@@ -1,0 +1,239 @@
+{
+  "id": "uma_cidade_para_quem",
+  "titulo": "Uma cidade para quem?",
+  "imagem": "res://Assets/img/capa1.png",
+
+  "intro": {
+	"titulo": "CASO ABERTO",
+	"texto": "Um bairro da cidade está mudando rapidamente.\n\nNovos prédios, comércios e moradores chegaram. Mas essas mudanças afetam todos da mesma maneira?\n\nConverse com os moradores e descubra o que está acontecendo."
+  },
+
+  "outro": {
+	"titulo": "CASO CONCLUÍDO",
+	"texto": "As entrevistas mostraram diferentes lados da transformação urbana.\n\nAlgumas mudanças trouxeram oportunidades. Outras aumentaram custos e dificultaram a permanência de alguns moradores.\n\nPlanejar a cidade também significa pensar em quem consegue viver nela."
+  },
+
+  "objetivo": {
+	"npcs_necessarios": 5,
+	"precisa_falar_com_carro": true,
+
+	"texto_aberto": "[color=#ff8ef0][b]UMA CIDADE PARA QUEM?[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]{feitas}/{total}[/b][/color]",
+
+	"texto_aberto_completo": "[color=#ff8ef0][b]UMA CIDADE PARA QUEM?[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]completo[/b][/color]",
+
+	"texto_carro_pendente": "[color=#8b9bb8]Fale com[/color]  [color=#4cc2ff][b]o motorista[/b][/color]",
+
+	"texto_carro_ok": "[color=#8b9bb8]Motorista[/color]  [color=#8fe0a0][b]ouvido[/b][/color]",
+
+	"texto_concluido": "[color=#ff8ef0][b]Investigação concluída![/b][/color]\n[color=#9fb4d4]Abra o notebook.[/color]"
+  },
+
+  "quiz": {
+	"nota_aprovacao": 0.5,
+
+	"textos": {
+	  "enviar": "Enviar teste",
+	  "finalizar": "Concluir",
+
+	  "fim": "[center]Fim da investigação![/center]\n[center][color=#8fe0a0]Acertos: {score}/{total}[/color][/center]\n[center][color=#9fb4d4]Analise suas conclusões.[/color][/center]",
+
+	  "aprovado": "[center][color=#8fe0a0][font_size=42][b]✔[/b][/font_size][/color][/center]\n[center][color=#8fe0a0][b]INVESTIGAÇÃO CONCLUÍDA[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+
+	  "reprovado": "[center][color=#e06060][font_size=42][b]✘[/b][/font_size][/color][/center]\n[center][color=#e06060][b]REANALISAR AS EVIDÊNCIAS[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+
+	  "correta": "[center]{text}[/center]\n[center][color=#8fe0a0]Resposta correta: {opcao}[/color][/center]"
+	},
+
+	"perguntas": [
+	  {
+		"text": "Carla gostou de algumas mudanças no bairro, mas contou que os aluguéis aumentaram. O que isso mostra?",
+		"options": [
+		  "Uma transformação urbana pode produzir efeitos diferentes.",
+		  "Toda mudança urbana prejudica os moradores.",
+		  "O preço dos imóveis nunca muda com a valorização.",
+          "Todos os moradores se beneficiam igualmente."
+		],
+		"correct": 0
+	  },
+
+	  {
+		"text": "Pedro mora longe do trabalho porque os imóveis próximos ficaram caros. Que problema urbano aparece nessa situação?",
+		"options": [
+		  "Desigualdade no acesso à moradia e aos espaços da cidade.",
+		  "Redução da população urbana.",
+		  "Diminuição da mobilidade.",
+          "Fim da expansão urbana."
+		],
+		"correct": 0
+	  },
+
+	  {
+		"text": "Rafael disse que seu comércio ganhou mais clientes com as mudanças. Carla, porém, mencionou o aumento dos aluguéis. O que podemos concluir?",
+		"options": [
+		  "As duas pessoas estão necessariamente erradas.",
+		  "Uma mesma transformação urbana pode beneficiar alguns e dificultar a vida de outros.",
+		  "O comércio não possui relação com as mudanças urbanas.",
+          "O aumento dos aluguéis melhora automaticamente a vida de todos."
+		],
+		"correct": 1
+	  },
+
+	  {
+		"text": "O motorista percebeu aumento no trânsito e defendeu melhorias no transporte e no planejamento. Por que essas ações são importantes?",
+		"options": [
+		  "Porque o crescimento urbano pode aumentar a demanda por mobilidade e infraestrutura.",
+		  "Porque cidades maiores não precisam de planejamento.",
+		  "Porque o transporte existe apenas para os comerciantes.",
+          "Porque o trânsito desaparece quando surgem novos prédios."
+		],
+		"correct": 0
+	  },
+
+	  {
+		"text": "Quando uma área se valoriza e alguns moradores não conseguem mais permanecer devido ao aumento dos custos, qual processo estudado no conteúdo ajuda a interpretar essa situação?",
+		"options": [
+		  "Gentrificação.",
+		  "Migração pendular.",
+		  "Êxodo rural.",
+          "Crescimento vegetativo."
+		],
+		"correct": 0
+	  },
+
+	  {
+		"text": "Considerando todas as entrevistas, qual questão é mais importante para o planejamento urbano?",
+		"options": [
+		  "Construir o maior número possível de prédios.",
+		  "Pensar apenas no crescimento econômico.",
+		  "Considerar diferentes grupos e suas condições de acesso à cidade.",
+          "Evitar qualquer transformação nos bairros."
+		],
+		"correct": 2
+	  }
+	]
+  },
+
+  "dialogos": {
+	"aberturas": [
+	  "Esse bairro mudou muito nos últimos anos.",
+	  "Nem todo mundo vê essas mudanças da mesma forma.",
+      "Vamos descobrir o que está acontecendo por aqui."
+	],
+
+	"encerramento": "Você ouviu diferentes pontos de vista. Agora precisa descobrir como eles se relacionam.",
+
+	"perguntas_padrao": [
+	  {
+		"pergunta": "Você gosta de morar aqui?",
+		"resposta": "Gosto, mas a cidade está mudando bastante."
+	  },
+	  {
+		"pergunta": "O que você mudaria no bairro?",
+		"resposta": "Tentaria melhorar os serviços e facilitar os deslocamentos."
+	  }
+	],
+
+	"personagens": {
+
+	  "Generic Male": {
+		"nome": "Rafael",
+		"abertura": "Meu comércio mudou bastante com o crescimento do bairro.",
+		"encerramento": "Para o meu negócio, algumas mudanças foram positivas.",
+		"perguntas": [
+		  {
+			"pergunta": "As mudanças foram positivas para você?",
+			"resposta": "Sim. Meu comércio ganhou mais clientes."
+		  },
+		  {
+			"pergunta": "Então todos se beneficiaram?",
+			"resposta": "Não sei. Algumas pessoas tiveram dificuldades com os novos preços."
+		  }
+		]
+	  },
+
+	  "Generic Female": {
+		"nome": "Carla",
+		"abertura": "O bairro está bem diferente de alguns anos atrás.",
+		"encerramento": "A mudança trouxe coisas boas, mas também preocupações.",
+		"perguntas": [
+		  {
+			"pergunta": "Como o bairro mudou?",
+			"resposta": "Vieram novos prédios e comércios. A região ficou mais movimentada."
+		  },
+		  {
+			"pergunta": "Você gostou das mudanças?",
+			"resposta": "Algumas foram boas, mas os aluguéis também aumentaram."
+		  }
+		]
+	  },
+
+	  "Citizen 1": {
+		"nome": "Pedro",
+		"abertura": "Eu moro longe do meu trabalho.",
+		"encerramento": "O preço da moradia influencia muito onde consigo morar.",
+		"perguntas": [
+		  {
+			"pergunta": "Por que você mora tão longe?",
+			"resposta": "Os imóveis perto do trabalho ficaram caros demais."
+		  },
+		  {
+			"pergunta": "Isso afeta sua rotina?",
+			"resposta": "Sim. Preciso gastar mais tempo no deslocamento."
+		  }
+		]
+	  },
+
+	  "Citizen 2": {
+		"nome": "Juliana",
+		"abertura": "Meu dia começa pensando em como vou chegar ao trabalho.",
+		"encerramento": "Transporte faz muita diferença na vida de quem mora longe.",
+		"perguntas": [
+		  {
+			"pergunta": "Você usa transporte público?",
+			"resposta": "Sim. É a melhor opção para minha rotina."
+		  },
+		  {
+			"pergunta": "O que poderia melhorar?",
+			"resposta": "Mais horários e trajetos que atendam melhor os bairros."
+		  }
+		]
+	  },
+
+	  "Citizen 3": {
+		"nome": "Antônio",
+		"abertura": "Moro aqui há muitos anos e vi o bairro mudar.",
+		"encerramento": "A cidade pode crescer sem deixar de pensar nos moradores.",
+		"perguntas": [
+		  {
+			"pergunta": "O que mudou?",
+			"resposta": "Vieram novos prédios, lojas e moradores."
+		  },
+		  {
+			"pergunta": "Todos conseguiram permanecer?",
+			"resposta": "Não. Algumas famílias tiveram dificuldade com os novos custos."
+		  }
+		]
+	  },
+
+	  "carro": {
+		"nome": "Motorista",
+		"abertura": "Eu vejo o trânsito mudar todos os dias.",
+		"encerramento": "Crescimento precisa vir acompanhado de planejamento.",
+		"perguntas": [
+		  {
+			"pergunta": "O trânsito mudou?",
+			"resposta": "Sim. A cidade está muito mais movimentada."
+		  },
+		  {
+			"pergunta": "É apenas por causa dos carros?",
+			"resposta": "Não. Tem mais pessoas, comércio e atividades acontecendo."
+		  },
+		  {
+			"pergunta": "O que poderia melhorar?",
+			"resposta": "Transporte e planejamento. A cidade precisa acompanhar o crescimento."
+		  }
+		]
+	  }
+	}
+  }
+}

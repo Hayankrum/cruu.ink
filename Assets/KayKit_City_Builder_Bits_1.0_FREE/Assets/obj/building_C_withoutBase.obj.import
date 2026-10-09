@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://f5bpkw3gs4fw"
+path="res://.godot/imported/building_C_withoutBase.obj-59c872bff5f49220287158788eb5408b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/building_C_withoutBase.obj-59c872bff5f49220287158788eb5408b.mesh"]
+
+source_file="res://Assets/KayKit_City_Builder_Bits_1.0_FREE/Assets/obj/building_C_withoutBase.obj"
+dest_files=["res://.godot/imported/building_C_withoutBase.obj-59c872bff5f49220287158788eb5408b.mesh", "res://.godot/imported/building_C_withoutBase.obj-59c872bff5f49220287158788eb5408b.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

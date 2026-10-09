@@ -1,0 +1,469 @@
+[gd_scene format=3 uid="uid://be5rca0ow6ebv"]
+
+[ext_resource type="Script" uid="uid://daf65lvb3sn4j" path="res://Scripts/menu_inicial.gd" id="2_menu"]
+[ext_resource type="Texture2D" uid="uid://catuv27uoe7q3" path="res://Assets/img/ChatGPT Image 24 de set. de 2026, 03_34_42.png" id="3_e8awb"]
+[ext_resource type="Shader" uid="uid://8tr6uia5wd8y" path="res://Scripts/frosted_glass.gdshader" id="3_glass"]
+[ext_resource type="Theme" uid="uid://mf8qxp068tai" path="res://Assets/glass_theme.tres" id="4_theme"]
+[ext_resource type="Script" uid="uid://lbx5tp0p112m" path="res://Scripts/glass_panel.gd" id="5_glass"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_login"]
+shader = ExtResource("3_glass")
+shader_parameter/blurRadius = 28.0
+shader_parameter/borderPx = 1.5
+shader_parameter/bgAlpha = 0.88
+shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
+shader_parameter/borderColor = Color(1, 1, 1, 0.14)
+shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
+shader_parameter/cornerRadius = 14.0
+shader_parameter/accentWidth = 3.0
+shader_parameter/topHighlight = 0.06
+shader_parameter/panelSize = Vector2(560, 320)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_save"]
+shader = ExtResource("3_glass")
+shader_parameter/blurRadius = 28.0
+shader_parameter/borderPx = 1.5
+shader_parameter/bgAlpha = 0.88
+shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
+shader_parameter/borderColor = Color(1, 1, 1, 0.14)
+shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
+shader_parameter/cornerRadius = 14.0
+shader_parameter/accentWidth = 3.0
+shader_parameter/topHighlight = 0.06
+shader_parameter/panelSize = Vector2(560, 360)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_narrativas"]
+shader = ExtResource("3_glass")
+shader_parameter/blurRadius = 28.0
+shader_parameter/borderPx = 1.5
+shader_parameter/bgAlpha = 0.88
+shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
+shader_parameter/borderColor = Color(1, 1, 1, 0.14)
+shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
+shader_parameter/cornerRadius = 14.0
+shader_parameter/accentWidth = 3.0
+shader_parameter/topHighlight = 0.06
+shader_parameter/panelSize = Vector2(560, 400)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_detalhe"]
+shader = ExtResource("3_glass")
+shader_parameter/blurRadius = 28.0
+shader_parameter/borderPx = 1.5
+shader_parameter/bgAlpha = 0.88
+shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
+shader_parameter/borderColor = Color(1, 1, 1, 0.14)
+shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
+shader_parameter/cornerRadius = 14.0
+shader_parameter/accentWidth = 3.0
+shader_parameter/topHighlight = 0.06
+shader_parameter/panelSize = Vector2(560, 300)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_placar"]
+shader = ExtResource("3_glass")
+shader_parameter/blurRadius = 28.0
+shader_parameter/borderPx = 1.5
+shader_parameter/bgAlpha = 0.88
+shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
+shader_parameter/borderColor = Color(1, 1, 1, 0.14)
+shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
+shader_parameter/cornerRadius = 14.0
+shader_parameter/accentWidth = 3.0
+shader_parameter/topHighlight = 0.06
+shader_parameter/panelSize = Vector2(560, 300)
+
+[node name="menu_inicial" type="Control" unique_id=752151834]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_theme")
+script = ExtResource("2_menu")
+
+[node name="fundo" type="TextureRect" parent="." unique_id=1215057034]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_e8awb")
+expand_mode = 3
+stretch_mode = 6
+
+[node name="barra_btn" type="HBoxContainer" parent="." unique_id=1395874967]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -70.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="btn_começar" type="Button" parent="barra_btn" unique_id=2051491987]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme = ExtResource("4_theme")
+text = "LOGAR"
+
+[node name="btn_detalhes" type="Button" parent="barra_btn" unique_id=1833485843]
+custom_minimum_size = Vector2(130, 40)
+layout_mode = 2
+theme = ExtResource("4_theme")
+text = "DETALHES"
+
+[node name="btn_placar" type="Button" parent="barra_btn" unique_id=436873842]
+custom_minimum_size = Vector2(110, 40)
+layout_mode = 2
+theme = ExtResource("4_theme")
+text = "PLACAR"
+
+[node name="btn_sair" type="Button" parent="barra_btn" unique_id=1853897728]
+custom_minimum_size = Vector2(90, 40)
+layout_mode = 2
+theme = ExtResource("4_theme")
+text = "SAIR"
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=1834871309]
+copy_mode = 2
+
+[node name="tela_login" type="Panel" parent="." unique_id=1571411130]
+visible = false
+material = SubResource("ShaderMaterial_vidro_login")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -160.0
+offset_right = 280.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_glass")
+accent_width = 3.0
+
+[node name="titulo_login" type="Label" parent="tela_login" unique_id=156386527]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = 42.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.37, 1)
+theme_override_font_sizes/font_size = 18
+text = "ENTRAR NA INVESTIGAÇÃO"
+horizontal_alignment = 1
+
+[node name="HBox_login_btn" type="HBoxContainer" parent="tela_login" unique_id=622322164]
+custom_minimum_size = Vector2(340, 40)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -170.0
+offset_top = -52.0
+offset_right = 170.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="btn_saves" type="Button" parent="tela_login/HBox_login_btn" unique_id=1996774865]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+theme = ExtResource("4_theme")
+text = "CONTINUAR"
+
+[node name="btn_entrar" type="Button" parent="tela_login/HBox_login_btn" unique_id=908187702]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+theme = ExtResource("4_theme")
+text = "ENTRAR"
+
+[node name="erro_label" type="Label" parent="tela_login" unique_id=810177663]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -72.0
+offset_right = 180.0
+offset_bottom = -54.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.45, 0.45, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+
+[node name="input_nome" type="LineEdit" parent="tela_login" unique_id=1558478273]
+custom_minimum_size = Vector2(360, 36)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -18.0
+offset_right = 180.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_theme")
+placeholder_text = "Informe seu nome"
+alignment = 1
+
+[node name="tela_save" type="Panel" parent="." unique_id=1444454184]
+visible = false
+material = SubResource("ShaderMaterial_vidro_save")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -180.0
+offset_right = 280.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_glass")
+accent_width = 3.0
+
+[node name="titulo_save" type="Label" parent="tela_save" unique_id=686024096]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.37, 1)
+theme_override_font_sizes/font_size = 16
+text = "PERFIS SALVOS"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="tela_save" unique_id=789588284]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 46.0
+offset_right = -16.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lista_save" type="VBoxContainer" parent="tela_save/ScrollContainer" unique_id=546759898]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="btn_volta" type="Button" parent="tela_save" unique_id=1410492951]
+custom_minimum_size = Vector2(280, 40)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -52.0
+offset_right = 140.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_theme")
+text = "VOLTAR"
+
+[node name="tela_narrativas" type="Panel" parent="." unique_id=384062684]
+visible = false
+material = SubResource("ShaderMaterial_vidro_narrativas")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -200.0
+offset_right = 280.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_glass")
+accent_width = 3.0
+
+[node name="titulo_narrativas" type="Label" parent="tela_narrativas" unique_id=327206548]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = 42.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.37, 1)
+theme_override_font_sizes/font_size = 16
+text = "ESCOLHA A NARRATIVA"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="tela_narrativas" unique_id=1405680931]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 48.0
+offset_right = -16.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lista_narrativas" type="VBoxContainer" parent="tela_narrativas/ScrollContainer" unique_id=678948489]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="btn_trocar" type="Button" parent="tela_narrativas" unique_id=2022684803]
+custom_minimum_size = Vector2(280, 40)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -52.0
+offset_right = 140.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_theme")
+text = "TROCAR DE USUÁRIO"
+
+[node name="tela_detalhe" type="Panel" parent="." unique_id=244246258]
+visible = false
+material = SubResource("ShaderMaterial_vidro_detalhe")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -230.0
+offset_right = 320.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_glass")
+accent_width = 3.0
+
+[node name="txt_detalhe" type="RichTextLabel" parent="tela_detalhe" unique_id=734059741]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_theme")
+theme_override_colors/default_color = Color(0.9, 0.93, 1, 1)
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+
+[node name="btn_fecha_detalhe" type="Button" parent="tela_detalhe" unique_id=1989044338]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -38.0
+offset_top = 8.0
+offset_right = -10.0
+offset_bottom = 36.0
+grow_horizontal = 0
+theme = ExtResource("4_theme")
+text = "✕"
+
+[node name="tela_placar" type="Panel" parent="." unique_id=355293564]
+visible = false
+material = SubResource("ShaderMaterial_vidro_placar")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -215.0
+offset_right = 300.0
+offset_bottom = 215.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_glass")
+accent_width = 3.0
+
+[node name="txt_placa" type="RichTextLabel" parent="tela_placar" unique_id=367225177]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_theme")
+theme_override_colors/default_color = Color(0.9, 0.93, 1, 1)
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+
+[node name="VScrollBar" type="VScrollBar" parent="tela_placar/txt_placa" unique_id=984682308]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="btn_fecha_placar" type="Button" parent="tela_placar" unique_id=917048695]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -38.0
+offset_top = 8.0
+offset_right = -10.0
+offset_bottom = 36.0
+grow_horizontal = 0
+theme = ExtResource("4_theme")
+text = "✕"

@@ -1,0 +1,228 @@
+{
+  "id": "por_que_eles_vieram",
+  "titulo": "Por que eles vieram?",
+  "imagem": "res://Assets/img/capa2.png",
+
+  "intro": {
+	"titulo": "CASO ABERTO",
+	"texto": "A cidade recebeu muitos novos moradores nos últimos anos.\n\nMas por que essas pessoas decidiram sair de onde viviam?\n\nConverse com os moradores, compare as histórias e descubra o que está por trás dessas mudanças."
+  },
+
+  "outro": {
+	"titulo": "CASO CONCLUÍDO",
+	"texto": "Você reuniu diferentes histórias de migração.\n\nAlgumas pessoas buscavam emprego. Outras procuravam melhores condições de vida ou novas oportunidades.\n\nUma mudança pode ter mais de um motivo."
+  },
+
+  "objetivo": {
+	"npcs_necessarios": 5,
+	"precisa_falar_com_carro": true,
+
+	"texto_aberto": "[color=#ff8ef0][b]POR QUE ELES VIERAM?[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]{feitas}/{total}[/b][/color]",
+
+	"texto_aberto_completo": "[color=#ff8ef0][b]POR QUE ELES VIERAM?[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]completo[/b][/color]",
+
+	"texto_carro_pendente": "[color=#8b9bb8]Fale com[/color]  [color=#4cc2ff][b]o motorista[/b][/color]",
+
+	"texto_carro_ok": "[color=#8b9bb8]Motorista[/color]  [color=#8fe0a0][b]ouvido[/b][/color]",
+
+	"texto_concluido": "[color=#ff8ef0][b]Investigação concluída![/b][/color]\n[color=#9fb4d4]Abra o notebook.[/color]"
+  },
+
+  "quiz": {
+	"nota_aprovacao": 0.5,
+
+	"textos": {
+	  "enviar": "Enviar teste",
+	  "finalizar": "Concluir",
+
+	  "fim": "[center]Fim da investigação![/center]\n[center][color=#8fe0a0]Acertos: {score}/{total}[/color][/center]\n[center][color=#9fb4d4]Analise suas conclusões.[/color][/center]",
+
+	  "aprovado": "[center][color=#8fe0a0][font_size=42][b]✔[/b][/font_size][/color][/center]\n[center][color=#8fe0a0][b]INVESTIGAÇÃO CONCLUÍDA[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+
+	  "reprovado": "[center][color=#e06060][font_size=42][b]✘[/b][/font_size][/color][/center]\n[center][color=#e06060][b]REANALISAR AS EVIDÊNCIAS[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+
+	  "correta": "[center]{text}[/center]\n[center][color=#8fe0a0]Resposta correta: {opcao}[/color][/center]"
+	},
+
+	"perguntas": [
+	  {
+		"text": "João contou que sua família veio após seu pai perder o emprego. Eles também buscavam melhores condições de educação e saúde. O que essa história mostra?",
+		"options": [
+		  "A migração sempre acontece por um único motivo.",
+		  "A migração pode estar relacionada a diferentes condições de vida.",
+		  "A migração acontece somente quando existe desemprego.",
+          "A educação não influencia nas decisões das famílias."
+		],
+		"correct": 1
+	  },
+
+	  {
+		"text": "Carlos já tinha emprego quando decidiu se mudar. Qual é a principal diferença entre sua história e a de João?",
+		"options": [
+		  "Carlos migrou buscando uma nova oportunidade de trabalho.",
+		  "Carlos não mudou de cidade.",
+		  "Carlos migrou porque não tinha acesso à educação.",
+          "Carlos foi obrigado a abandonar sua família."
+		],
+		"correct": 0
+	  },
+
+	  {
+		"text": "Maria afirmou que algumas famílias chegam por trabalho, outras por educação, saúde ou novas oportunidades. O que podemos concluir?",
+		"options": [
+		  "Todas as famílias migrantes possuem a mesma história.",
+		  "As causas da migração podem ser diferentes entre as pessoas.",
+		  "Apenas problemas econômicos causam migração.",
+          "Migração e condições de vida não possuem relação."
+		],
+		"correct": 1
+	  },
+
+	  {
+		"text": "O motorista percebeu que o aumento de moradores trouxe mais movimento para a cidade. O que pode acontecer quando uma cidade recebe muitos novos habitantes?",
+		"options": [
+		  "A cidade deixa de precisar de serviços públicos.",
+		  "A população diminui automaticamente.",
+		  "A demanda por infraestrutura e serviços pode aumentar.",
+          "O trânsito necessariamente desaparece."
+		],
+		"correct": 2
+	  },
+
+	  {
+		"text": "Considerando todas as entrevistas, qual interpretação é mais adequada?",
+		"options": [
+		  "Toda migração acontece por falta de emprego.",
+		  "As pessoas migram apenas para cidades maiores.",
+		  "A migração pode envolver trabalho, educação, saúde e busca por melhores oportunidades.",
+          "A migração acontece sem relação com as condições de vida."
+		],
+		"correct": 2
+	  }
+	]
+  },
+
+  "dialogos": {
+	"aberturas": [
+	  "Vamos entender por que tanta gente veio para esta cidade.",
+	  "Cada morador tem uma história diferente.",
+      "Talvez as respostas estejam nas experiências dessas pessoas."
+	],
+
+	"encerramento": "Você ouviu diferentes histórias. Agora é hora de juntar as evidências.",
+
+	"perguntas_padrao": [
+	  {
+		"pergunta": "Por que você decidiu ficar nesta cidade?",
+		"resposta": "Foi onde encontrei as condições que procurava."
+	  },
+	  {
+		"pergunta": "Você pensa em se mudar novamente?",
+		"resposta": "Não sei. Depende de como minha vida continuar."
+	  }
+	],
+
+	"personagens": {
+
+	  "Generic Male": {
+		"nome": "João",
+		"abertura": "Minha família veio de outra cidade há alguns anos.",
+		"encerramento": "Foi uma mudança grande para todos nós.",
+		"perguntas": [
+		  {
+			"pergunta": "Por que vocês decidiram vir?",
+			"resposta": "Meu pai perdeu o emprego. Também procurávamos melhores condições de educação e saúde."
+		  },
+		  {
+			"pergunta": "Então o desemprego foi o único motivo?",
+			"resposta": "Não. Foi importante, mas não foi o único."
+		  },
+		  {
+			"pergunta": "A mudança melhorou a vida de vocês?",
+			"resposta": "Em alguns aspectos, sim. Mas tivemos que nos adaptar."
+		  }
+		]
+	  },
+
+	  "Generic Female": {
+		"nome": "Maria",
+		"abertura": "Eu conheço várias famílias que chegaram recentemente.",
+		"encerramento": "Cada família acaba tendo seus próprios motivos.",
+		"perguntas": [
+		  {
+			"pergunta": "Todas vieram pelos mesmos motivos?",
+			"resposta": "Não. Algumas vieram por trabalho, outras por educação, saúde ou novas oportunidades."
+		  },
+		  {
+			"pergunta": "Então uma mudança pode ter vários motivos?",
+			"resposta": "Pode. Às vezes vários motivos acontecem ao mesmo tempo."
+		  }
+		]
+	  },
+
+	  "Citizen 1": {
+		"nome": "Carlos",
+		"abertura": "Minha história foi um pouco diferente.",
+		"encerramento": "Para mim, foi uma escolha por uma oportunidade melhor.",
+		"perguntas": [
+		  {
+			"pergunta": "Você estava desempregado?",
+			"resposta": "Não. Eu já trabalhava, mas recebi uma proposta melhor aqui."
+		  },
+		  {
+			"pergunta": "Então você migrou mesmo estando empregado?",
+			"resposta": "Sim. Eu estava procurando uma oportunidade melhor."
+		  }
+		]
+	  },
+
+	  "Citizen 2": {
+		"nome": "Ana",
+		"abertura": "Minha família não veio toda de uma vez.",
+		"encerramento": "A mudança aconteceu aos poucos.",
+		"perguntas": [
+		  {
+			"pergunta": "Como foi essa mudança?",
+			"resposta": "Primeiro meu pai veio procurar trabalho. Depois o restante da família veio."
+		  },
+		  {
+			"pergunta": "Foi fácil para vocês?",
+			"resposta": "Não. Tivemos que nos adaptar à nova cidade."
+		  }
+		]
+	  },
+
+	  "Citizen 3": {
+		"nome": "Antônio",
+		"abertura": "A cidade mudou bastante nos últimos anos.",
+		"encerramento": "Quando a população cresce, a cidade também precisa mudar.",
+		"perguntas": [
+		  {
+			"pergunta": "O que você percebeu com a chegada de novos moradores?",
+			"resposta": "A cidade ficou mais movimentada e alguns serviços passaram a ter mais procura."
+		  },
+		  {
+			"pergunta": "Isso é necessariamente ruim?",
+			"resposta": "Não. O crescimento pode trazer oportunidades, mas também exige planejamento."
+		  }
+		]
+	  },
+
+	  "carro": {
+		"nome": "Motorista",
+		"abertura": "Eu circulo pela cidade todos os dias.",
+		"encerramento": "A cidade precisa acompanhar as mudanças da população.",
+		"perguntas": [
+		  {
+			"pergunta": "Você percebeu alguma mudança no trânsito?",
+			"resposta": "Sim. Tem mais pessoas circulando e alguns horários ficaram mais movimentados."
+		  },
+		  {
+			"pergunta": "O problema são apenas os carros?",
+			"resposta": "Não. Mais moradores também significam mais deslocamentos e atividades."
+		  }
+		]
+	  }
+	}
+  }
+}
