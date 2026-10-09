@@ -34,6 +34,14 @@ var _perfil_atual: Dictionary = {}
 @onready var tela_placar: Panel = $tela_placar
 @onready var txt_placa: RichTextLabel = $tela_placar/txt_placa
 
+## Toque: arrastar o dedo sobre a lista rola o ScrollContainer.
+## Sem isso o arrasto é engolido pelos botões da lista e nada anda no celular.
+const SCROLL_INICIO := 18.0
+const SCROLL_DIAGONAL := 1.35
+var _scroll_gesto := false
+var _scroll_pos := Vector2.ZERO
+var _scroll_alvo: ScrollContainer = null
+
 func _ready() -> void:
 	_carregar_perfis()
 	_restaurar_sessao()
@@ -72,6 +80,53 @@ func _ready() -> void:
 	_estilizar_login()
 	_atualizar_botao_barra()
 	btn_comecar.grab_focus()
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		var st := event as InputEventScreenTouch
+		if st.pressed:
+			_scroll_gesto = false
+			_scroll_pos = st.position
+			_scroll_alvo = _scroll_por_posicao(st.position)
+		else:
+			_scroll_alvo = null
+	elif event is InputEventScreenDrag:
+		if _scroll_alvo == null:
+			return
+		var sd := event as InputEventScreenDrag
+		if not _scroll_gesto:
+			if sd.position.distance_to(_scroll_pos) < SCROLL_INICIO:
+				return
+			if absf(sd.relative.y) * SCROLL_DIAGONAL <= absf(sd.relative.x):
+				_scroll_alvo = null
+				return
+			_scroll_gesto = true
+		_rolar(_scroll_alvo, -sd.relative.y)
+	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed:
+		_scroll_gesto = false
+
+## Lista rolável sob o ponto tocado (seletor de narrativas e lista de perfis).
+func _scroll_por_posicao(pos: Vector2) -> ScrollContainer:
+	for painel: Control in [tela_narrativas, tela_save]:
+		if painel == null or not painel.is_visible_in_tree():
+			continue
+		var sc := painel.get_node_or_null("ScrollContainer") as ScrollContainer
+		if sc != null and sc.get_global_rect().has_point(pos):
+			return sc
+	return null
+
+func _rolar(sc: ScrollContainer, delta: float) -> void:
+	var barra := sc.get_v_scroll_bar()
+	if barra == null:
+		return
+	var maximo := int(barra.max_value - barra.page)
+	if maximo <= 0:
+		return
+	sc.scroll_vertical = clampi(sc.scroll_vertical + int(delta), 0, maximo)
+
+## true quando o gesto atual foi um arrasto de rolagem (não um toque para abrir).
+func _foi_rolagem() -> bool:
+	return _scroll_gesto
 
 func _estilizar_login() -> void:
 	btn_entrar.add_theme_stylebox_override("normal", _accent_box(Color(1.0, 0.72, 0.2, 0.95)))
@@ -174,6 +229,8 @@ func _reconstruir_lista_saves() -> void:
 		lista_save.add_child(vazio)
 
 func _continuar_perfil(p: Dictionary) -> void:
+	if _foi_rolagem():
+		return
 	_perfil_atual = p
 	input_nome.text = str(p.get("nome", ""))
 	_salvar_sessao(str(p.get("nome", "")))
@@ -223,7 +280,6 @@ func _criar_botao_narrativa(n: Dictionary) -> Button:
 	btn.flat = false
 	btn.focus_mode = Control.FOCUS_ALL
 	btn.pressed.connect(_escolher_narrativa.bind(str(n.get("id", ""))))
-	btn.pressed.connect(func() -> void: AudioManager.play("click"))
 
 	var margem := MarginContainer.new()
 	margem.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -301,6 +357,9 @@ func _criar_botao_narrativa(n: Dictionary) -> Button:
 	return btn
 
 func _escolher_narrativa(id: String) -> void:
+	if _foi_rolagem():
+		return
+	AudioManager.play("click")
 	if PontosStore.concluida(_perfil_atual, id):
 		AudioManager.play("error")
 		return
