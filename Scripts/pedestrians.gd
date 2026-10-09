@@ -85,6 +85,11 @@ var _dialog_car := false
 var _dialog_ccps := 45.0
 var _btn_avancar: Button
 
+## Tolerância (px de viewport) entre "toque para falar" e "arrastar a câmera".
+const TAP_TOLERANCE := 28.0
+var _press_pos := Vector2.ZERO
+var _press_dragged := false
+
 func _ready() -> void:
 	var node: Node = get_node_or_null(target_path)
 	if node is GridMap:
@@ -752,34 +757,34 @@ func _update_icon() -> void:
 	_icon.global_position = sp - _icon.size * 0.5
 	_icon.pivot_offset = _icon.size * 0.5
 
+func _input(event: InputEvent) -> void:
+	if not enable_interaction:
+		return
+	if event is InputEventScreenTouch:
+		var st := event as InputEventScreenTouch
+		if st.pressed:
+			_press_dragged = false
+	elif event is InputEventScreenDrag:
+		if (event as InputEventScreenDrag).position.distance_to(_press_pos) > TAP_TOLERANCE:
+			_press_dragged = true
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not enable_interaction:
 		return
-	if event is InputEventMouseButton and event.pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		if mb.button_index != MOUSE_BUTTON_LEFT:
+			return
 		if not _dialog_ped.is_empty():
-			if _dialog_phase != "perguntas":
+			if mb.pressed and _dialog_phase != "perguntas":
 				_avancar_dialogo()
 			return
-		if _camera_rig == null:
+		if mb.pressed:
+			_press_pos = mb.position
 			return
-		var cam := _camera_rig.camera
-		if cam == null:
+		if _press_dragged or mb.position.distance_to(_press_pos) > TAP_TOLERANCE:
 			return
-		var best: Dictionary = {}
-		var best_d := 48.0
-		for ped: Dictionary in _peds:
-			var model: Node3D = ped["model"] as Node3D
-			if model == null:
-				continue
-			var head: Vector3 = _head_world(model)
-			if cam.is_position_behind(head):
-				continue
-			var d: float = cam.unproject_position(head).distance_to((event as InputEventMouseButton).position)
-			if d < best_d:
-				best_d = d
-				best = ped
-		if not best.is_empty():
-			open_dialog(best)
+		_tentar_entrevistar(mb.position)
 	elif event is InputEventKey and (event as InputEventKey).pressed:
 		if _dialog_ped.is_empty():
 			return
@@ -794,6 +799,29 @@ func _unhandled_input(event: InputEvent) -> void:
 						break
 			else:
 				_avancar_dialogo()
+
+## Abre a entrevista se o ponto do clique/toque estiver perto de um cidadão.
+func _tentar_entrevistar(pos: Vector2) -> void:
+	if _camera_rig == null:
+		return
+	var cam := _camera_rig.camera
+	if cam == null:
+		return
+	var best: Dictionary = {}
+	var best_d := 56.0
+	for ped: Dictionary in _peds:
+		var model: Node3D = ped["model"] as Node3D
+		if model == null:
+			continue
+		var head: Vector3 = _head_world(model)
+		if cam.is_position_behind(head):
+			continue
+		var d: float = cam.unproject_position(head).distance_to(pos)
+		if d < best_d:
+			best_d = d
+			best = ped
+	if not best.is_empty():
+		open_dialog(best)
 
 func _head_world(model: Node3D) -> Vector3:
 	var box := AABB()

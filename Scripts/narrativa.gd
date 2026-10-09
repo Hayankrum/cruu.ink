@@ -60,11 +60,23 @@ func _completar() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if _completo:
 		return
-	if event.is_action_pressed("ui_accept") or (event is InputEventMouseButton and event.pressed):
-		if _tw != null and _tw.is_valid():
-			_tw.kill()
-		_completar()
-		get_viewport().set_input_as_handled()
+	if not _quer_pular(event):
+		return
+	if _tw != null and _tw.is_valid():
+		_tw.kill()
+	_completar()
+	get_viewport().set_input_as_handled()
+
+## Aceita espaço/enter, clique do mouse e toque na tela.
+func _quer_pular(event: InputEvent) -> bool:
+	if event.is_action_pressed("ui_accept"):
+		return true
+	if event is InputEventScreenTouch:
+		return (event as InputEventScreenTouch).pressed
+	if event is InputEventMouseButton:
+		var mb := event as InputEventMouseButton
+		return mb.pressed and (mb.button_index == MOUSE_BUTTON_LEFT or mb.button_index == MOUSE_BUTTON_RIGHT)
+	return false
 
 func _estilizar_btn() -> void:
 	_btn.add_theme_font_size_override("font_size", 16)
