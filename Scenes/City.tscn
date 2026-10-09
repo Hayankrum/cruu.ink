@@ -180,10 +180,10 @@ script = ExtResource("6_pause")
 
 [node name="Panel_status" type="Panel" parent="CanvasLayer" unique_id=860856990]
 material = SubResource("ShaderMaterial_status")
-offset_left = 54.0
-offset_top = 10.0
-offset_right = 204.0
-offset_bottom = 46.0
+offset_left = 74.0
+offset_top = 20.0
+offset_right = 224.0
+offset_bottom = 56.0
 theme = ExtResource("9_theme")
 script = ExtResource("10_glass_panel")
 blur_radius = 18.0
@@ -284,16 +284,16 @@ text = "NOTEBOOK"
 [node name="Panel_dialgo" type="Panel" parent="CanvasLayer" unique_id=1174099850]
 material = SubResource("ShaderMaterial_dialog")
 custom_minimum_size = Vector2(440, 150)
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -230.0
-offset_top = -168.0
-offset_right = 230.0
-offset_bottom = -12.0
-grow_horizontal = 2
+offset_left = -487.0
+offset_top = -443.0
+offset_right = -27.0
+offset_bottom = -39.0
+grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("9_theme")
 script = ExtResource("10_glass_panel")
@@ -318,19 +318,19 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="autor" type="Label" parent="CanvasLayer/Panel_dialgo/MarginContainer/VBoxContainer" unique_id=1670632962]
-custom_minimum_size = Vector2(0, 18)
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.84, 0.37, 1)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 17
 text = "…"
 
 [node name="dialogo" type="RichTextLabel" parent="CanvasLayer/Panel_dialgo/MarginContainer/VBoxContainer" unique_id=2076479404]
-custom_minimum_size = Vector2(0, 56)
+custom_minimum_size = Vector2(0, 66)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("9_theme")
 theme_override_colors/default_color = Color(0.9, 0.93, 1, 1)
-theme_override_font_sizes/normal_font_size = 13
+theme_override_font_sizes/normal_font_size = 17
 bbcode_enabled = true
 text = " "
 scroll_following = true
@@ -343,8 +343,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -32.0
-offset_top = -26.0
+offset_left = -65.0
+offset_top = -146.0
+offset_right = -1.0
+offset_bottom = -94.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("9_theme")
@@ -371,6 +373,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("9_theme")
+theme_override_font_sizes/font_size = 17
 
 [node name="btn2" type="Button" parent="CanvasLayer/Panel_dialgo/vbox_btn" unique_id=25051883]
 custom_minimum_size = Vector2(0, 64)
@@ -378,3 +381,4 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("9_theme")
+theme_override_font_sizes/font_size = 17

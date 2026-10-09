@@ -114,6 +114,9 @@ func _take_control() -> void:
 	_animating = false
 	_apply()
 
+var _touches: Dictionary = {}
+var _pinch_last := 0.0
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
@@ -124,11 +127,39 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 				distance = clampf(distance * (1.0 + zoom_speed), min_distance, max_distance)
 				_take_control()
+	elif event is InputEventScreenTouch:
+		var st := event as InputEventScreenTouch
+		if st.pressed:
+			_touches[st.index] = st.position
+			if _touches.size() == 2:
+				_pinch_last = _pinch_distance()
+		else:
+			_touches.erase(st.index)
+			_pinch_last = 0.0
+	elif event is InputEventScreenDrag:
+		var sd := event as InputEventScreenDrag
+		if _touches.size() >= 2:
+			_touches[sd.index] = sd.position
+			var d := _pinch_distance()
+			if _pinch_last > 1.0 and d > 1.0:
+				distance = clampf(distance * (_pinch_last / d), min_distance, max_distance)
+				_take_control()
+				_pinch_last = d
+		else:
+			yaw -= sd.relative.x * rotate_speed
+			pitch = clampf(pitch + sd.relative.y * pitch_speed, -max_pitch, max_pitch)
+			_take_control()
 	elif event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		var mm := event as InputEventMouseMotion
 		yaw -= mm.relative.x * rotate_speed
 		pitch = clampf(pitch + mm.relative.y * pitch_speed, -max_pitch, max_pitch)
 		_take_control()
+
+func _pinch_distance() -> float:
+	var pts := _touches.values()
+	if pts.size() < 2:
+		return 0.0
+	return (pts[0] as Vector2).distance_to(pts[1] as Vector2)
 
 func _target_bounds() -> Dictionary:
 	var cells: Array[Vector3i] = _grid.get_used_cells()

@@ -163,7 +163,7 @@ func _reconstruir_lista_saves() -> void:
 		var nome := str(p.get("nome", "Perfil"))
 		var data := Time.get_datetime_string_from_unix_time(int(p.get("ultima", 0)))
 		btn.text = "■   %s   pontos: %d   último acesso: %s" % [nome, int(p.get("pontos", 0)), data]
-		btn.custom_minimum_size = Vector2(0, 40)
+		btn.custom_minimum_size = Vector2(0, 64)
 		btn.pressed.connect(_continuar_perfil.bind(p))
 		lista_save.add_child(btn)
 	if _perfis.is_empty():

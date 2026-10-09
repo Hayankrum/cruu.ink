@@ -1,0 +1,194 @@
+{
+  "id": "cap18_espaco_urbano",
+  "titulo": "Metrópole de Contrastes",
+  "imagem": "res://Assets/img/capa1.png",
+  "intro": {
+    "titulo": "CASO ABERTO",
+    "texto": "O espaço urbano contemporâneo é feito de prédios luxuosos convivendo lado a lado com moradias precárias e trânsito caótico.\n\nComo processos de segregação e gentrificação afetam a vida das pessoas nas cidades globais?\n\nAnde pelo centro revitalizado e pelas periferias para ouvir o que os cidadãos têm a dizer sobre o direito à cidade."
+  },
+  "outro": {
+    "titulo": "CASO CONCLUÍDO",
+    "texto": "Sua análise crítica do processo de urbanização revelou dinâmicas excludentes.\n\nAs cidades tornaram-se megacidades ricas, porém repletas de desigualdade, onde a gentrificação afasta os mais pobres e a mobilidade urbana segue sendo um privilégio."
+  },
+  "objetivo": {
+    "npcs_necessarios": 5,
+    "precisa_falar_com_carro": true,
+    "texto_aberto": "[color=#ff8ef0][b]METRÓPOLE DE CONTRASTES[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]{feitas}/{total}[/b][/color]",
+    "texto_aberto_completo": "[color=#ff8ef0][b]METRÓPOLE DE CONTRASTES[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]completo[/b][/color]",
+    "texto_carro_pendente": "[color=#8b9bb8]Fale com[/color]  [color=#4cc2ff][b]o motorista[/b][/color]",
+    "texto_carro_ok": "[color=#8b9bb8]Motorista[/color]  [color=#8fe0a0][b]ouvido[/b][/color]",
+    "texto_concluido": "[color=#ff8ef0][b]Investigação concluída![/b][/color]\n[color=#9fb4d4]Abra o notebook.[/color]"
+  },
+  "quiz": {
+    "nota_aprovacao": 0.5,
+    "textos": {
+      "enviar": "Enviar teste",
+      "finalizar": "Concluir",
+      "fim": "[center]Fim da investigação![/center]\n[center][color=#8fe0a0]Acertos: {score}/{total}[/color][/center]\n[center][color=#9fb4d4]Envie suas respostas.[/color][/center]",
+      "aprovado": "[center][color=#8fe0a0][font_size=42][b]✔[/b][/font_size][/color][/center]\n[center][color=#8fe0a0][b]APROVADO[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+      "reprovado": "[center][color=#e06060][font_size=42][b]✘[/b][/font_size][/color][/center]\n[center][color=#e06060][b]REPROVADO[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+      "correta": "[center]{text}[/center]\n[center][color=#8fe0a0]Resposta correta: {opcao}[/color][/center]"
+    },
+    "perguntas": [
+      {
+        "text": "Fernando teve que mudar de bairro porque cafés caros e prédios de luxo aumentaram o custo de vida local. Que nome a geografia dá a esse fenômeno?",
+        "options": [
+          "Segregação socioespacial estática.",
+          "Crescimento vegetativo.",
+          "Gentrificação.",
+          "Êxodo Urbano."
+        ],
+        "correct": 2
+      },
+      {
+        "text": "Beatriz explicou a diferença entre megacidades e cidades globais. Qual alternativa apresenta a distinção correta?",
+        "options": [
+          "Megacidades têm população gigantesca (mais de 10 milhões); cidades globais destacam-se pela influência política e econômica no mundo, independente do tamanho.",
+          "Cidades globais são exclusivas de países em desenvolvimento, enquanto as megacidades ficam apenas na Europa.",
+          "As duas classificações representam exatamente a mesma coisa na rede urbana moderna.",
+          "Megacidade é a capital financeira, e cidade global é apenas uma conurbação com alta taxa de pobreza."
+        ],
+        "correct": 0
+      },
+      {
+        "text": "Lucas descreveu que mora em uma área sem esgoto tratado, distante dos hospitais e de parques. Esse é um exemplo clássico de:",
+        "options": [
+          "Organização de cidades inteligentes.",
+          "Desigualdade e segregação socioespacial.",
+          "Rede hierárquica igualitária.",
+          "Abolição das moradias precárias."
+        ],
+        "correct": 1
+      },
+      {
+        "text": "O motorista criticou muito a falta de mobilidade urbana. De acordo com os estudos urbanos contemporâneos, como esse problema afeta as metrópoles?",
+        "options": [
+          "Inviabiliza a chegada das pessoas de moradias inadequadas periféricas ao seu local de trabalho, agravando desigualdades.",
+          "Cria gentrificação automática, pois todos compram carros elétricos.",
+          "Afeta unicamente os moradores do centro histórico.",
+          "Reduz o fluxo campo-cidade sem gerar atrasos de transporte interno."
+        ],
+        "correct": 0
+      },
+      {
+        "text": "Camila pesquisa Cidades Inteligentes. Qual é a principal característica proposta por esse modelo urbano?",
+        "options": [
+          "Desincentivar toda rede de tecnologia em prol do modo agrário.",
+          "Limitar rigidamente a hierarquia urbana para evitar a conurbação de megacidades.",
+          "Usar tecnologias de informação e comunicação integradas para melhorar a infraestrutura, eficiência e qualidade dos serviços urbanos.",
+          "Acelerar o processo de gentrificação para expulsar pessoas em moradias precárias e colocar robôs."
+        ],
+        "correct": 2
+      }
+    ]
+  },
+  "dialogos": {
+    "aberturas": [
+      "A urbanização desordenada deixou marcas visíveis nos nossos bairros.",
+      "Há um abismo entre o centro financeiro e as franjas da nossa cidade."
+    ],
+    "encerramento": "Pensar a cidade exige olhar para quem sofre diariamente com as distâncias e as remoções.",
+    "perguntas_padrao": [
+      {
+        "pergunta": "Você considera a nossa cidade um bom lugar para viver?",
+        "resposta": "Isso depende inteiramente de quanto dinheiro você tem para acessar a infraestrutura."
+      },
+      {
+        "pergunta": "O que mais precisa ser mudado com urgência?",
+        "resposta": "Precisamos erradicar as moradias inadequadas e investir pesado em transporte coletivo."
+      }
+    ],
+    "personagens": {
+      "Generic Male": {
+        "nome": "Fernando",
+        "abertura": "O meu antigo bairro passou por uma 'revitalização' e eu não pude mais pagar o aluguel.",
+        "encerramento": "Valorizar a estética não deveria significar expulsar a história local.",
+        "perguntas": [
+          {
+            "pergunta": "Por que você teve que se mudar?",
+            "resposta": "Ocorreu a gentrificação. O bairro ficou elitizado, novos comércios de luxo abriram e o IPTU triplicou, forçando os moradores antigos a sair."
+          },
+          {
+            "pergunta": "Isso é um processo comum?",
+            "resposta": "Infelizmente sim. Grandes especuladores compram áreas degradadas, valorizam o espaço, mas a classe trabalhadora é varrida para as periferias."
+          }
+        ]
+      },
+      "Generic Female": {
+        "nome": "Beatriz",
+        "abertura": "Eu estudo a rede e hierarquia urbana das metrópoles globais.",
+        "encerramento": "O tamanho da população não é o único medidor da importância de uma metrópole.",
+        "perguntas": [
+          {
+            "pergunta": "Nós vivemos em uma megacidade?",
+            "resposta": "Sim, pois temos mais de 10 milhões de habitantes na região metropolitana. Mas os desafios infraestruturais são gigantescos."
+          },
+          {
+            "pergunta": "Isso também nos torna uma cidade global?",
+            "resposta": "Em partes. Cidades globais são nós vitais na economia mundial, influenciando finanças, cultura e política, como Nova Iorque ou Tóquio."
+          }
+        ]
+      },
+      "Citizen 1": {
+        "nome": "Lucas",
+        "abertura": "De onde eu venho, saneamento básico é luxo e há poucas escolas.",
+        "encerramento": "Crescer vendo o condomínio fechado de luxo ao lado de ruas sem asfalto é revoltante.",
+        "perguntas": [
+          {
+            "pergunta": "Isso é reflexo da segregação socioespacial?",
+            "resposta": "Exatamente. O mercado imobiliário e a ausência do Estado separam a cidade entre zonas ricas equipadas e as favelas e ocupações esquecidas."
+          },
+          {
+            "pergunta": "O que você acha das políticas de moradia?",
+            "resposta": "Muitas vezes ineficazes. Milhões continuam morando em moradias inadequadas ou áreas de risco geológico porque a terra urbanizada é inacessível."
+          }
+        ]
+      },
+      "Citizen 2": {
+        "nome": "Camila",
+        "abertura": "Pesquiso as chamadas 'cidades inteligentes' e seu impacto.",
+        "encerramento": "A tecnologia precisa servir ao lado social, senão de nada vale o Wi-Fi público.",
+        "perguntas": [
+          {
+            "pergunta": "O que faz uma cidade ser inteligente?",
+            "resposta": "O uso de tecnologia da informação para melhorar o fluxo de energia, segurança, mobilidade e dados do governo, otimizando recursos."
+          },
+          {
+            "pergunta": "Elas resolvem a desigualdade?",
+            "resposta": "Não sozinhas. Se a infraestrutura tecnológica ficar só no centro expandido, vai criar um 'apartheid' digital, piorando a segregação."
+          }
+        ]
+      },
+      "Citizen 3": {
+        "nome": "Paulo",
+        "abertura": "Eu perco quase quatro horas do meu dia dentro do ônibus lotado.",
+        "encerramento": "O tempo perdido no asfalto é tempo roubado da minha família.",
+        "perguntas": [
+          {
+            "pergunta": "A mobilidade urbana é o nosso maior gargalo?",
+            "resposta": "Sem dúvida. As pessoas foram jogadas para a periferia, mas os empregos continuam no centro, gerando fluxos caóticos e desumanos diários."
+          },
+          {
+            "pergunta": "Aumentar as avenidas para carros ajuda?",
+            "resposta": "Não. Priorizar o transporte individual agrava congestionamentos e poluição. A solução seria transporte coletivo sobre trilhos ou faixas exclusivas."
+          }
+        ]
+      },
+      "carro": {
+        "nome": "Motorista",
+        "abertura": "Estou travado neste congestionamento há quase meia hora.",
+        "encerramento": "As artérias da nossa megacidade estão sofrendo de infarto.",
+        "perguntas": [
+          {
+            "pergunta": "Por que o trânsito está sempre tão travado?",
+            "resposta": "A cidade foi planejada para carros, não para pessoas. O processo de urbanização ocorreu rápido demais e os investimentos viários ficaram para trás."
+          },
+          {
+            "pergunta": "Sente os efeitos da gentrificação enquanto dirige?",
+            "resposta": "Percebo claramente. Os trabalhadores que levo para os novos bairros gourmetizados vêm de cada vez mais longe, pagando caro nas passagens."
+          }
+        ]
+      }
+    }
+  }
+}

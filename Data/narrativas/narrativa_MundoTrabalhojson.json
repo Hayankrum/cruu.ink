@@ -1,0 +1,194 @@
+{
+  "id": "cap17_mundo_trabalho",
+  "titulo": "O Futuro do Labor",
+  "imagem": "res://Assets/img/capa1.png",
+  "intro": {
+    "titulo": "CASO ABERTO",
+    "texto": "Alguns postos de trabalho estão sumindo, enquanto outras atividades surgem vinculadas a inteligência artificial e mecanização.\n\nMas os avanços tecnológicos estão beneficiando a todos da mesma forma? Ou estão apenas reforçando velhas desigualdades salariais e de gênero?\n\nInvestigue as mudanças no mundo do trabalho contemporâneo e ouça a força de trabalho local."
+  },
+  "outro": {
+    "titulo": "CASO CONCLUÍDO",
+    "texto": "Você mapeou as dinâmicas da força de trabalho.\n\nNotou que os avanços tecnológicos, como a robotização, exigem alta qualificação, ao passo que as desigualdades salariais, de gênero e de raça persistem fortemente nas relações trabalhistas."
+  },
+  "objetivo": {
+    "npcs_necessarios": 5,
+    "precisa_falar_com_carro": true,
+    "texto_aberto": "[color=#ff8ef0][b]O FUTURO DO LABOR[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]{feitas}/{total}[/b][/color]",
+    "texto_aberto_completo": "[color=#ff8ef0][b]O FUTURO DO LABOR[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]completo[/b][/color]",
+    "texto_carro_pendente": "[color=#8b9bb8]Fale com[/color]  [color=#4cc2ff][b]o motorista[/b][/color]",
+    "texto_carro_ok": "[color=#8b9bb8]Motorista[/color]  [color=#8fe0a0][b]ouvido[/b][/color]",
+    "texto_concluido": "[color=#ff8ef0][b]Investigação concluída![/b][/color]\n[color=#9fb4d4]Abra o notebook.[/color]"
+  },
+  "quiz": {
+    "nota_aprovacao": 0.5,
+    "textos": {
+      "enviar": "Enviar teste",
+      "finalizar": "Concluir",
+      "fim": "[center]Fim da investigação![/center]\n[center][color=#8fe0a0]Acertos: {score}/{total}[/color][/center]\n[center][color=#9fb4d4]Envie suas respostas.[/color][/center]",
+      "aprovado": "[center][color=#8fe0a0][font_size=42][b]✔[/b][/font_size][/color][/center]\n[center][color=#8fe0a0][b]APROVADO[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+      "reprovado": "[center][color=#e06060][font_size=42][b]✘[/b][/font_size][/color][/center]\n[center][color=#e06060][b]REPROVADO[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+      "correta": "[center]{text}[/center]\n[center][color=#8fe0a0]Resposta correta: {opcao}[/color][/center]"
+    },
+    "perguntas": [
+      {
+        "text": "Rafael comentou sobre o impacto da Inteligência Artificial e da Robotização. Como esses avanços afetam o mundo do trabalho?",
+        "options": [
+          "Garantem pleno emprego em todos os setores industriais simultaneamente.",
+          "Causam profundas mudanças laborais, exigindo maior escolarização e substituindo funções rotineiras.",
+          "Diminuem o nível exigido de qualificação para os novos empregos criados.",
+          "São fenômenos restritos apenas ao trabalho agrícola extensivo."
+        ],
+        "correct": 1
+      },
+      {
+        "text": "Carla pesquisa a desigualdade no mercado. Como a discriminação se reflete nas estatísticas salariais brasileiras?",
+        "options": [
+          "Homens e mulheres recebem o mesmo salário, sem diferenças raciais em nenhuma área.",
+          "Há forte desigualdade salarial permeada por preconceitos, onde mulheres e a população negra frequentemente recebem menos pelas mesmas funções.",
+          "As diferenças salariais baseiam-se unicamente no nível de escolaridade formal e nunca em gênero.",
+          "A tecnologia eliminou completamente as desigualdades de gênero nas empresas modernas."
+        ],
+        "correct": 1
+      },
+      {
+        "text": "Marcos sentiu na pele as mudanças. O que aconteceu no setor primário com a força de trabalho devido aos avanços tecnológicos?",
+        "options": [
+          "A mecanização no campo reduziu drasticamente os postos de trabalho manuais, aumentando o êxodo rural.",
+          "A robotização proibiu as máquinas de colheita.",
+          "Houve uma migração massiva de programadores de IA para o plantio manual.",
+          "Os setores primário, secundário e terciário foram unidos em um só."
+        ],
+        "correct": 0
+      },
+      {
+        "text": "Juliana alertou sobre a exploração de crianças. Quais são as consequências do trabalho infantil na contemporaneidade?",
+        "options": [
+          "Desenvolvimento precoce de habilidades que ajudam no mercado futuro de alta tecnologia.",
+          "Uma forma válida e reconhecida por governos para complementar a renda per capita familiar.",
+          "O comprometimento do desenvolvimento físico, psicológico e escolar de crianças e adolescentes.",
+          "Geração do bônus demográfico no longo prazo."
+        ],
+        "correct": 2
+      },
+      {
+        "text": "O motorista abordou a precarização. Ao analisarmos com viés crítico o mercado contemporâneo, a relação entre escolarização e empregabilidade indica que:",
+        "options": [
+          "Ter diploma superior blinda o trabalhador de qualquer desigualdade.",
+          "Maior qualificação reduz a chance de substituição tecnológica, mas não imuniza o trabalhador contra a exploração e discriminação estrutural.",
+          "A escola se tornou inútil frente aos robôs industriais de ponta.",
+          "Somente quem sabe criar Inteligência Artificial consegue emprego hoje."
+        ],
+        "correct": 1
+      }
+    ]
+  },
+  "dialogos": {
+    "aberturas": [
+      "O conceito de trabalho está mudando numa velocidade sem precedentes.",
+      "Há muita insegurança no mercado laboral hoje."
+    ],
+    "encerramento": "O trabalho digno ainda é um desafio diante de tantas inovações e desigualdades.",
+    "perguntas_padrao": [
+      {
+        "pergunta": "Como você se prepara para o futuro do trabalho?",
+        "resposta": "A qualificação e a escolarização são as únicas formas de tentar acompanhar."
+      },
+      {
+        "pergunta": "Você acha o mercado justo?",
+        "resposta": "De forma alguma. As oportunidades são profundamente afetadas por quem você é e de onde você vem."
+      }
+    ],
+    "personagens": {
+      "Generic Male": {
+        "nome": "Rafael",
+        "abertura": "Eu programo algoritmos de Inteligência Artificial para otimizar indústrias.",
+        "encerramento": "A tecnologia não é neutra; quem tem qualificação sobrevive à robotização.",
+        "perguntas": [
+          {
+            "pergunta": "A robotização vai acabar com os empregos?",
+            "resposta": "Vai substituir funções operacionais repetitivas, criando mudanças profundas no mundo do trabalho e eliminando certos postos."
+          },
+          {
+            "pergunta": "E como as pessoas podem se adaptar?",
+            "resposta": "Através da alta qualificação e escolarização, focando em habilidades que a IA ainda não consegue replicar bem."
+          }
+        ]
+      },
+      "Generic Female": {
+        "nome": "Carla",
+        "abertura": "Eu estudo as desigualdades salariais em diferentes setores da atividade.",
+        "encerramento": "Exploração do trabalho não se resume só às fábricas do passado.",
+        "perguntas": [
+          {
+            "pergunta": "As mulheres ganham o mesmo que os homens hoje?",
+            "resposta": "Infelizmente, não. Há uma grave desigualdade de gênero, onde mulheres ainda ganham menos exercendo as mesmas funções."
+          },
+          {
+            "pergunta": "E quanto à questão racial?",
+            "resposta": "A desigualdade racial é ainda mais cruel. A força de trabalho preta e parda sofre grande discriminação e compõe as faixas salariais mais baixas."
+          }
+        ]
+      },
+      "Citizen 1": {
+        "nome": "Marcos",
+        "abertura": "Fui trabalhador rural por vinte anos, até as colheitadeiras modernas chegarem.",
+        "encerramento": "O trator e a máquina não precisam de carteira assinada ou de pausa.",
+        "perguntas": [
+          {
+            "pergunta": "Como os avanços tecnológicos chegaram ao campo?",
+            "resposta": "A intensa mecanização no campo fez o trabalho de dez homens ser feito por uma única máquina guiada por satélite."
+          },
+          {
+            "pergunta": "O que sobrou para os trabalhadores manuais?",
+            "resposta": "Tivemos que migrar para o setor de serviços nas cidades ou fomos submetidos à informalidade e exploração."
+          }
+        ]
+      },
+      "Citizen 2": {
+        "nome": "Juliana",
+        "abertura": "Atuo no combate à exploração e ao trabalho infantil.",
+        "encerramento": "Uma criança que trabalha hoje é um adulto sem oportunidades amanhã.",
+        "perguntas": [
+          {
+            "pergunta": "Ainda existe trabalho infantil no Brasil?",
+            "resposta": "Sim, é uma triste realidade. Em vez de estar na escola, crianças são forçadas a trabalhar para complementar a renda da família."
+          },
+          {
+            "pergunta": "Quais são as consequências disso?",
+            "resposta": "Isso rouba a infância, afeta gravemente o desenvolvimento e perpetua o ciclo de pobreza e desqualificação."
+          }
+        ]
+      },
+      "Citizen 3": {
+        "nome": "Roberto",
+        "abertura": "Analiso a distribuição da força de trabalho pelos setores da economia.",
+        "encerramento": "A economia migrou quase totalmente para o setor de serviços.",
+        "perguntas": [
+          {
+            "pergunta": "Onde está a maior parte dos empregos hoje?",
+            "resposta": "O setor terciário (comércio e serviços) concentra a imensa maioria da força de trabalho atual."
+          },
+          {
+            "pergunta": "Esse setor oferece bons empregos?",
+            "resposta": "É polarizado. Temos desde empregos com altíssima qualificação até vagas extremamente precárias e instáveis."
+          }
+        ]
+      },
+      "carro": {
+        "nome": "Motorista",
+        "abertura": "Eu trabalho por aplicativo para tentar complementar a renda no final do mês.",
+        "encerramento": "O motor do mundo contemporâneo roda à custa de muitas jornadas duplas.",
+        "perguntas": [
+          {
+            "pergunta": "Você se sente protegido por leis trabalhistas?",
+            "resposta": "Não. Essas novas mudanças no mercado de trabalho trouxeram muita flexibilidade, mas levaram embora as proteções legais."
+          },
+          {
+            "pergunta": "Como você vê a inteligência artificial?",
+            "resposta": "Com medo. Hoje o algoritmo já dita meu salário; amanhã, a robotização pode automatizar até o meu carro."
+          }
+        ]
+      }
+    }
+  }
+}

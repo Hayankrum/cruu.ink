@@ -1,0 +1,194 @@
+{
+  "id": "cap12_agropecuaria",
+  "titulo": "Raízes do Alimento",
+  "imagem": "res://Assets/img/capa1.png",
+  "intro": {
+    "titulo": "CASO ABERTO",
+    "texto": "Metade dos alimentos da nossa feira vem de pequenos produtores, mas as grandes fazendas ao redor produzem commodities para exportação.\n\nQuais são os impactos socioambientais dos diferentes sistemas de produção agrícola?\n\nFale com produtores e ativistas para entender quem alimenta o mundo e quem abastece os mercados."
+  },
+  "outro": {
+    "titulo": "CASO CONCLUÍDO",
+    "texto": "Você investigou as fronteiras agrícolas.\n\nFicou claro que, enquanto a Revolução Verde e o agronegócio impulsionam as exportações e o PIB, a agricultura familiar e a agroecologia são as verdadeiras guardiãs da soberania alimentar e do meio ambiente."
+  },
+  "objetivo": {
+    "npcs_necessarios": 5,
+    "precisa_falar_com_carro": true,
+    "texto_aberto": "[color=#ff8ef0][b]RAÍZES DO ALIMENTO[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]{feitas}/{total}[/b][/color]",
+    "texto_aberto_completo": "[color=#ff8ef0][b]RAÍZES DO ALIMENTO[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]completo[/b][/color]",
+    "texto_carro_pendente": "[color=#8b9bb8]Fale com[/color]  [color=#4cc2ff][b]o motorista[/b][/color]",
+    "texto_carro_ok": "[color=#8b9bb8]Motorista[/color]  [color=#8fe0a0][b]ouvido[/b][/color]",
+    "texto_concluido": "[color=#ff8ef0][b]Investigação concluída![/b][/color]\n[color=#9fb4d4]Abra o notebook.[/color]"
+  },
+  "quiz": {
+    "nota_aprovacao": 0.5,
+    "textos": {
+      "enviar": "Enviar teste",
+      "finalizar": "Concluir",
+      "fim": "[center]Fim da investigação![/center]\n[center][color=#8fe0a0]Acertos: {score}/{total}[/color][/center]\n[center][color=#9fb4d4]Envie suas respostas.[/color][/center]",
+      "aprovado": "[center][color=#8fe0a0][font_size=42][b]✔[/b][/font_size][/color][/center]\n[center][color=#8fe0a0][b]APROVADO[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+      "reprovado": "[center][color=#e06060][font_size=42][b]✘[/b][/font_size][/color][/center]\n[center][color=#e06060][b]REPROVADO[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+      "correta": "[center]{text}[/center]\n[center][color=#8fe0a0]Resposta correta: {opcao}[/color][/center]"
+    },
+    "perguntas": [
+      {
+        "text": "Marta explicou o conceito de agricultura intensiva. Qual característica define esse sistema de produção?",
+        "options": [
+          "O uso reduzido de capital e baixa tecnologia.",
+          "O emprego de alta tecnologia, biotecnologia e alto rendimento por hectare.",
+          "A rotação de culturas exclusivamente para subsistência local.",
+          "A ausência total de agrotóxicos ou máquinas."
+        ],
+        "correct": 1
+      },
+      {
+        "text": "Segundo Pedro, a Revolução Verde trouxe modernização, mas teve custos. Quais foram seus principais impactos socioambientais?",
+        "options": [
+          "Eliminou as pragas permanentemente sem gerar poluição.",
+          "Consolidou a agricultura orgânica globalmente.",
+          "Causou contaminação do solo e da água devido aos defensivos químicos e aumentou a concentração fundiária.",
+          "Protegeu os Sistemas Agrícolas Tradicionais."
+        ],
+        "correct": 2
+      },
+      {
+        "text": "Clara é representante do agronegócio. Qual a relação entre a agricultura empresarial e a economia do Brasil?",
+        "options": [
+          "O Brasil deixou de exportar e foca apenas em soberania alimentar.",
+          "A produção de commodities agrícolas é um pilar econômico fundamental para as exportações brasileiras.",
+          "A agricultura empresarial não tem participação no PIB do Brasil.",
+          "O agronegócio brasileiro planta exclusivamente orgânicos para o mercado interno."
+        ],
+        "correct": 1
+      },
+      {
+        "text": "João defende a soberania alimentar. O que esse conceito significa na prática?",
+        "options": [
+          "A proibição do consumo de carnes e produtos de origem animal.",
+          "O controle total da agricultura por corporações multinacionais.",
+          "O direito dos povos de definir suas próprias políticas agrícolas, priorizando a produção local e a segurança nutricional.",
+          "A importação de todos os alimentos básicos para baratear o custo."
+        ],
+        "correct": 2
+      },
+      {
+        "text": "O motorista relatou transportar muitos produtos de Sistemas Agrícolas Tradicionais. Como a agroecologia contribui para o futuro sustentável?",
+        "options": [
+          "Utilizando organismos geneticamente modificados de última geração.",
+          "Produzindo em grande escala com monoculturas extensivas.",
+          "Equilibrando a produção agrícola com a preservação ambiental e respeitando os saberes das comunidades.",
+          "Acabando com a necessidade de terras e produzindo alimentos em laboratório."
+        ],
+        "correct": 2
+      }
+    ]
+  },
+  "dialogos": {
+    "aberturas": [
+      "O campo brasileiro é palco de muitas contradições e sistemas diferentes.",
+      "Há quem plante para o mundo e quem plante para nossa mesa."
+    ],
+    "encerramento": "Cada modelo agrícola gera um impacto diferente na sociedade e na natureza.",
+    "perguntas_padrao": [
+      {
+        "pergunta": "Qual modelo agrícola você apoia?",
+        "resposta": "Devemos analisar as vantagens e as consequências socioambientais de cada um deles."
+      },
+      {
+        "pergunta": "A modernização foi boa para todos?",
+        "resposta": "Ela aumentou a produção, mas também trouxe profundos impactos ecológicos."
+      }
+    ],
+    "personagens": {
+      "Generic Male": {
+        "nome": "Pedro",
+        "abertura": "Eu estudei os efeitos da Revolução Verde na modernização do campo.",
+        "encerramento": "A promessa era acabar com a fome, mas a concentração de terras piorou.",
+        "perguntas": [
+          {
+            "pergunta": "O que foi a Revolução Verde?",
+            "resposta": "Foi um pacote tecnológico de maquinários, sementes selecionadas e insumos químicos para maximizar a produção agrícola no mundo."
+          },
+          {
+            "pergunta": "Quais foram os impactos socioambientais?",
+            "resposta": "Poluição de lençóis freáticos pelos agrotóxicos, desmatamento e o êxodo de pequenos agricultores que não puderam competir."
+          }
+        ]
+      },
+      "Generic Female": {
+        "nome": "Clara",
+        "abertura": "Trabalho na exportação de commodities para grandes países produtores.",
+        "encerramento": "O agronegócio movimenta uma enorme fatia da economia brasileira.",
+        "perguntas": [
+          {
+            "pergunta": "O que define a agricultura empresarial?",
+            "resposta": "É um sistema intensivo, com vasto uso de biotecnologia, organismos geneticamente modificados (OGM) e foco em lucros na exportação."
+          },
+          {
+            "pergunta": "Isso garante comida para a população?",
+            "resposta": "A agricultura empresarial foca muito em commodities como soja e milho. Quem realmente coloca comida na mesa do brasileiro é a agricultura familiar."
+          }
+        ]
+      },
+      "Citizen 1": {
+        "nome": "Marta",
+        "abertura": "Eu analiso a diferença entre sistemas intensivos e extensivos.",
+        "encerramento": "É fundamental diferenciar os modos de prestação e manejo da terra.",
+        "perguntas": [
+          {
+            "pergunta": "Qual a diferença entre a agropecuária intensiva e extensiva?",
+            "resposta": "A intensiva usa muita tecnologia em pequenos espaços para alto rendimento. A extensiva usa técnicas tradicionais em vastas áreas, com menor produtividade por hectare."
+          },
+          {
+            "pergunta": "E os impactos?",
+            "resposta": "Sistemas intensivos podem esgotar o solo quimicamente, enquanto os extensivos muitas vezes exigem enorme desmatamento."
+          }
+        ]
+      },
+      "Citizen 2": {
+        "nome": "João",
+        "abertura": "Nós defendemos a agricultura orgânica e a soberania alimentar.",
+        "encerramento": "As comunidades precisam ter controle sobre o que comem e como plantam.",
+        "perguntas": [
+          {
+            "pergunta": "O que é soberania alimentar?",
+            "resposta": "É o direito do povo de definir suas próprias políticas agrícolas, garantindo acesso a alimentos nutritivos e culturalmente adequados."
+          },
+          {
+            "pergunta": "Como a agroecologia entra nisso?",
+            "resposta": "A agroecologia promove uma agricultura sustentável que imita os processos naturais, sem usar fertilizantes químicos tóxicos."
+          }
+        ]
+      },
+      "Citizen 3": {
+        "nome": "Dona Cida",
+        "abertura": "Eu planto usando Sistemas Agrícolas Tradicionais passados pelos meus avós.",
+        "encerramento": "Cuidar da terra garante o sustento das próximas gerações.",
+        "perguntas": [
+          {
+            "pergunta": "A agricultura familiar é importante?",
+            "resposta": "Muito! Embora o agronegócio tenha mais terras, é a agricultura familiar que abastece o mercado interno brasileiro e gera empregos locais."
+          },
+          {
+            "pergunta": "Vocês se consideram sustentáveis?",
+            "resposta": "Sim, respeitamos os ciclos da natureza. Produzimos de forma mais orgânica e consciente, garantindo a biodiversidade."
+          }
+        ]
+      },
+      "carro": {
+        "nome": "Motorista",
+        "abertura": "Eu vejo o contraste da produção nas rodovias, desde caminhões de soja a feirantes.",
+        "encerramento": "As estradas escoam a riqueza da terra.",
+        "perguntas": [
+          {
+            "pergunta": "O que você mais transporta no agronegócio?",
+            "resposta": "Maioritariamente commodities voltadas para a exportação nos grandes portos."
+          },
+          {
+            "pergunta": "Você acha possível um modelo sustentável?",
+            "resposta": "A agroecologia tem crescido. Se conseguirmos escoar bem a agricultura sustentável, podemos equilibrar economia e meio ambiente."
+          }
+        ]
+      }
+    }
+  }
+}

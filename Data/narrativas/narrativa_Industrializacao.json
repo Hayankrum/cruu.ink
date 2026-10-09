@@ -1,0 +1,194 @@
+{
+  "id": "cap11_espaco_industrial",
+  "titulo": "A Engrenagem do Brasil",
+  "imagem": "res://Assets/img/capa1.png",
+  "intro": {
+    "titulo": "CASO ABERTO",
+    "texto": "Nossa cidade possui galpões industriais abandonados lado a lado com fábricas modernas.\n\nComo o Brasil passou de um modelo de substituição de importações para o cenário atual de desindustrialização precoce?\n\nConverse com os trabalhadores e pesquisadores locais para investigar o histórico da nossa estrutura setorial."
+  },
+  "outro": {
+    "titulo": "CASO CONCLUÍDO",
+    "texto": "Você mapeou a evolução industrial do país.\n\nDescobriu que, após as fases de Vargas e JK, passamos por um 'milagre econômico', mas hoje enfrentamos a desindustrialização precoce e a desconcentração espacial da indústria."
+  },
+  "objetivo": {
+    "npcs_necessarios": 5,
+    "precisa_falar_com_carro": true,
+    "texto_aberto": "[color=#ff8ef0][b]A ENGRENAGEM DO BRASIL[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]{feitas}/{total}[/b][/color]",
+    "texto_aberto_completo": "[color=#ff8ef0][b]A ENGRENAGEM DO BRASIL[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]completo[/b][/color]",
+    "texto_carro_pendente": "[color=#8b9bb8]Fale com[/color]  [color=#4cc2ff][b]o motorista[/b][/color]",
+    "texto_carro_ok": "[color=#8b9bb8]Motorista[/color]  [color=#8fe0a0][b]ouvido[/b][/color]",
+    "texto_concluido": "[color=#ff8ef0][b]Investigação concluída![/b][/color]\n[color=#9fb4d4]Abra o notebook.[/color]"
+  },
+  "quiz": {
+    "nota_aprovacao": 0.5,
+    "textos": {
+      "enviar": "Enviar teste",
+      "finalizar": "Concluir",
+      "fim": "[center]Fim da investigação![/center]\n[center][color=#8fe0a0]Acertos: {score}/{total}[/color][/center]\n[center][color=#9fb4d4]Envie suas respostas.[/color][/center]",
+      "aprovado": "[center][color=#8fe0a0][font_size=42][b]✔[/b][/font_size][/color][/center]\n[center][color=#8fe0a0][b]APROVADO[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+      "reprovado": "[center][color=#e06060][font_size=42][b]✘[/b][/font_size][/color][/center]\n[center][color=#e06060][b]REPROVADO[/b][/color][/center]\n[center][color=#9fb4d4]{score}/{total} acertos[/color][/center]",
+      "correta": "[center]{text}[/center]\n[center][color=#8fe0a0]Resposta correta: {opcao}[/color][/center]"
+    },
+    "perguntas": [
+      {
+        "text": "João explicou que a indústria brasileira tomou força a partir de 1930. Qual era a principal política econômica do Governo Vargas nesse período?",
+        "options": [
+          "O Plano de Metas.",
+          "A substituição de importações.",
+          "A desconcentração industrial acelerada.",
+          "A desindustrialização precoce."
+        ],
+        "correct": 1
+      },
+      {
+        "text": "Segundo Carlos, o Brasil passou por uma grande transformação focada em metas de infraestrutura. A qual governo ele se referia?",
+        "options": [
+          "Governo Juscelino Kubitschek (JK).",
+          "Governos Militares.",
+          "Governos Democráticos da década de 1990.",
+          "Governo Getúlio Vargas."
+        ],
+        "correct": 0
+      },
+      {
+        "text": "Maria citou o 'milagre econômico'. Esse período, caracterizado por alto crescimento, ocorreu sob qual regime?",
+        "options": [
+          "Governo Vargas.",
+          "Governos Democráticos atuais.",
+          "Governos militares.",
+          "Período colonial."
+        ],
+        "correct": 2
+      },
+      {
+        "text": "Ana mencionou que a economia brasileira atual vive um processo de desindustrialização precoce. O que isso significa para a estrutura setorial?",
+        "options": [
+          "A indústria está perdendo participação no PIB antes do país atingir altos níveis de renda.",
+          "O país atingiu o pico industrial e fechou suas fronteiras.",
+          "Todas as indústrias estão migrando para o setor primário obrigatoriamente.",
+          "É o processo de retorno ao Plano de Metas de JK."
+        ],
+        "correct": 0
+      },
+      {
+        "text": "O motorista notou que as fábricas não estão mais apenas em um único grande centro. Esse fenômeno é conhecido como:",
+        "options": [
+          "Concentração demográfica.",
+          "Revolução Verde.",
+          "Desconcentração geográfica da indústria.",
+          "Etnocídio industrial."
+        ],
+        "correct": 2
+      }
+    ]
+  },
+  "dialogos": {
+    "aberturas": [
+      "A estrutura industrial do país mudou bastante desde a década de 30.",
+      "Há muita história nas chaminés e galpões da nossa cidade."
+    ],
+    "encerramento": "O espaço industrial é um reflexo das políticas econômicas de cada época.",
+    "perguntas_padrao": [
+      {
+        "pergunta": "Como você vê a indústria hoje?",
+        "resposta": "Estamos passando por um momento de desindustrialização precoce."
+      },
+      {
+        "pergunta": "As indústrias continuam no mesmo lugar?",
+        "resposta": "Não, houve um claro processo de desconcentração industrial no território brasileiro."
+      }
+    ],
+    "personagens": {
+      "Generic Male": {
+        "nome": "João",
+        "abertura": "Meu avô trabalhava nas primeiras fábricas da Era Vargas.",
+        "encerramento": "A indústria de base foi fundamental para começar tudo.",
+        "perguntas": [
+          {
+            "pergunta": "O que impulsionou a indústria na década de 1930?",
+            "resposta": "O Governo Vargas implementou a política de substituição de importações para passarmos a produzir internamente o que antes comprávamos de fora."
+          },
+          {
+            "pergunta": "Isso ajudou a criar indústrias fortes?",
+            "resposta": "Sim, focaram na criação de indústrias de base, como siderúrgicas e petroquímicas."
+          }
+        ]
+      },
+      "Generic Female": {
+        "nome": "Maria",
+        "abertura": "Eu estudo economia e analiso os governos militares.",
+        "encerramento": "Foi um crescimento expressivo, mas que gerou muitas contradições.",
+        "perguntas": [
+          {
+            "pergunta": "O que foi o 'milagre econômico'?",
+            "resposta": "Foi um período dos governos militares com altíssimas taxas de crescimento industrial, financiado por capital estrangeiro e empréstimos."
+          },
+          {
+            "pergunta": "Ele durou muito tempo?",
+            "resposta": "Não, acabou esbarrando em crises internacionais e resultou em um grande endividamento externo."
+          }
+        ]
+      },
+      "Citizen 1": {
+        "nome": "Carlos",
+        "abertura": "Sou engenheiro e estudei a época de Juscelino Kubitschek.",
+        "encerramento": "O Plano de Metas mudou completamente a distribuição geográfica das nossas rodovias e indústrias.",
+        "perguntas": [
+          {
+            "pergunta": "Qual foi a marca do Governo JK?",
+            "resposta": "O famoso Plano de Metas. Ele abriu o país para indústrias multinacionais, principalmente do setor automobilístico."
+          },
+          {
+            "pergunta": "Isso mudou muito o país?",
+            "resposta": "Sem dúvida. Promoveu uma rápida urbanização e industrialização focado no slogan '50 anos em 5'."
+          }
+        ]
+      },
+      "Citizen 2": {
+        "nome": "Ana",
+        "abertura": "Hoje o cenário é bem diferente do século XX.",
+        "encerramento": "Entender as transformações estruturais é essencial para prevermos o futuro.",
+        "perguntas": [
+          {
+            "pergunta": "A indústria brasileira ainda está crescendo?",
+            "resposta": "Infelizmente, estamos vivendo a desindustrialização precoce nos governos democráticos atuais, onde a indústria perde espaço no PIB."
+          },
+          {
+            "pergunta": "Por que 'precoce'?",
+            "resposta": "Porque está acontecendo antes que a população atinja padrões altos de desenvolvimento e renda, ao contrário do que houve na Europa."
+          }
+        ]
+      },
+      "Citizen 3": {
+        "nome": "Antônio",
+        "abertura": "A fábrica onde eu trabalhava fechou e se mudou para o interior.",
+        "encerramento": "As fábricas vão para onde os custos são menores.",
+        "perguntas": [
+          {
+            "pergunta": "Por que as indústrias estão saindo dos grandes centros?",
+            "resposta": "Devido ao processo de desconcentração industrial. Elas buscam isenções fiscais, terrenos mais baratos e fuga do trânsito."
+          },
+          {
+            "pergunta": "Isso prejudica a metrópole?",
+            "resposta": "Muda o perfil. Os grandes centros deixam de ser industriais e passam a focar no comércio e serviços."
+          }
+        ]
+      },
+      "carro": {
+        "nome": "Motorista",
+        "abertura": "Eu levo cargas para todo o país.",
+        "encerramento": "A rodovia ainda é a veia principal do espaço industrial brasileiro.",
+        "perguntas": [
+          {
+            "pergunta": "Você nota diferença nas rotas industriais?",
+            "resposta": "Com certeza. A distribuição espacial mudou. Antes eu só ia para São Paulo, hoje entrego maquinário em várias regiões do Brasil."
+          },
+          {
+            "pergunta": "O que você acha do modelo de JK?",
+            "resposta": "Bem, o Plano de Metas de JK priorizou as rodovias, então meu trabalho existe graças a essa base histórica."
+          }
+        ]
+      }
+    }
+  }
+}

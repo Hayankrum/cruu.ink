@@ -87,6 +87,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		_clamp_cam()
 		_apply()
 		get_viewport().set_input_as_handled()
+	elif event is InputEventScreenTouch:
+		var st := event as InputEventScreenTouch
+		_drag_active = st.pressed and not _over_panel(st.position)
+	elif event is InputEventScreenDrag and _drag_active:
+		var sd := event as InputEventScreenDrag
+		_yaw -= sd.relative.x * rotate_speed
+		_pitch -= sd.relative.y * pitch_speed
+		_clamp_cam()
+		_apply()
+		get_viewport().set_input_as_handled()
 
 func _over_panel(p: Vector2) -> bool:
 	return _panel != null and _panel.visible and _panel.get_global_rect().has_point(p)
