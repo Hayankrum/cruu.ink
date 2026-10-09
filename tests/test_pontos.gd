@@ -3,6 +3,7 @@ extends SceneTree
 ##   godot --headless --path . -s res://tests/test_pontos.gd
 ## Faz backup de user://perfis.json e sessao.json e restaura ao final.
 
+
 const PERFIS_PATH := "user://perfis.json"
 const SESSAO_PATH := "user://sessao.json"
 
