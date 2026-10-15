@@ -581,6 +581,10 @@ func _update_icon() -> void:
 		return
 	var holder: Node3D = _stopper["holder"]
 	var head: Vector3 = holder.global_position + Vector3(0.0, 1.2, 0.0)
+	# Mesmo ponto do balão de diálogo: topo do teto do carro (AABB real).
+	var box := _aabb_mundo(holder)
+	if box.size != Vector3.ZERO:
+		head = box.position + Vector3(0.0, box.size.y + 0.12, 0.0)
 	if cam.is_position_behind(head):
 		_icon.visible = false
 		return

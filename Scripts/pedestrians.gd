@@ -18,7 +18,7 @@ signal dialogo_concluido(nome_npc: String, e_carro: bool)
 @export_range(1.0, 30.0) var interact_refresh := 5.0
 @export_range(0.4, 10.0, 0.1) var dialog_zoom_dist := 0.7
 @export var dialog_zoom_pitch := 2.0
-@export_range(0.4, 10.0, 0.1) var car_dialog_zoom_dist := 2.4
+@export_range(0.4, 10.0, 0.1) var car_dialog_zoom_dist := 1.8
 @export_range(-20.0, 45.0, 1.0) var car_dialog_zoom_pitch := 0.0
 @export_file("*.json") var dialog_path := ""
 ## Desligado na cena CityNotebook: mantém NPCs andando, sem clique/diálogo/ícone.
@@ -89,6 +89,22 @@ var _btn_avancar: Button
 const TAP_TOLERANCE := 28.0
 var _press_pos := Vector2.ZERO
 var _press_dragged := false
+
+## Balão de diálogo ancorado acima da cabeça de quem fala.
+const BALAO_GAP := 14.0
+const BALAO_MARGEM := 12.0
+## Altura do balão quando ancorado (o da cena é 350 — não cabe acima da
+## cabeça numa janela de 720px de altura).
+const BALAO_ALTURA := 320.0
+## Câmera mira um pouco ACIMA da cabeça: sobra espaço pro balão.
+const BALAO_AIMOFS := 0.06
+const RABO_LARGURA := 22.0
+const RABO_ALTURA := 14.0
+var _balao_alvo := Vector3.ZERO
+var _balao_pos := Vector2.ZERO
+var _balao_tamanho := Vector2.ZERO
+var _balao_salvo := false
+var _balao_rabo: Polygon2D
 
 func _ready() -> void:
 	var node: Node = get_node_or_null(target_path)
@@ -481,6 +497,8 @@ func _process(delta: float) -> void:
 		if _dialog_text.visible_ratio >= 1.0:
 			_dialog_text.visible_ratio = 1.0
 			_dialog_typing = false
+	if not _dialog_ped.is_empty():
+		_atualizar_balao()
 	_update_icon()
 	for ped: Dictionary in _peds.duplicate():
 		if ped == _dialog_ped:
@@ -527,6 +545,19 @@ func _bind_hud() -> void:
 		push_warning("Pedestrians: Panel_dialgo nao encontrado na cena")
 		return
 	_dialog.visible = false
+	# Balão inteiro deixa o clique passar pro mundo (avança o diálogo);
+	# só os botões (▼ e perguntas) capturam o clique.
+	_dialog.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ignorar_clique(_dialog)
+	_balao_rabo = Polygon2D.new()
+	_balao_rabo.polygon = PackedVector2Array([
+		Vector2(0.0, 0.0),
+		Vector2(RABO_LARGURA, 0.0),
+		Vector2(RABO_LARGURA * 0.5, RABO_ALTURA),
+	])
+	_balao_rabo.color = Color(0.04, 0.05, 0.08, 0.92)
+	_balao_rabo.visible = false
+	_dialog.add_child(_balao_rabo)
 	_dialog_name = _dialog.get_node_or_null("MarginContainer/VBoxContainer/autor") as Label
 	_dialog_text = _dialog.get_node_or_null("MarginContainer/VBoxContainer/dialogo") as RichTextLabel
 	if _dialog_text != null:
@@ -552,6 +583,15 @@ func _bind_hud() -> void:
 
 func _escape_bbcode(s: String) -> String:
 	return s.replace("[", "[lb]").replace("]", "[rb]")
+
+## Varre o balão deixando tudo que não é botão sem capturar o mouse.
+func _ignorar_clique(no: Node) -> void:
+	for c: Node in no.get_children():
+		_ignorar_clique(c)
+		if c is Button:
+			continue
+		if c is Control:
+			(c as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _set_opcoes(opcoes: Array) -> void:
 	_dialog_opcoes = opcoes
@@ -672,13 +712,16 @@ func open_dialog(ped: Dictionary) -> void:
 	_dialog_entrevista = _entrevista_for(ped)
 	_dialog_perguntas = (_dialog_entrevista.get("perguntas", []) as Array).duplicate()
 	_dialog_perguntas.shuffle()
+	_balao_alvo = _head_world(ped["model"] as Node3D)
+	_preparar_balao()
 	_dialog.visible = true
 	AudioManager.play("open")
 	var abertura := str(_dialog_entrevista.get("abertura", ""))
 	_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Cidadao")), "texto": abertura}], "apresentacao")
 	_icon.visible = false
+	_atualizar_balao()
 	if _camera_rig != null:
-		var aim: Vector3 = (ped["model"] as Node3D).global_position + Vector3(0.0, 0.15, 0.0)
+		var aim: Vector3 = _balao_alvo + Vector3(0.0, BALAO_AIMOFS, 0.0)
 		var r := _drive(ped, float(ped["s"]))
 		_camera_rig.focus_at_front(aim, r["dir"], dialog_zoom_dist, dialog_zoom_pitch)
 
@@ -690,19 +733,67 @@ func open_car_dialog(holder: Node3D, car_name: String) -> void:
 	_dialog_entrevista = _entrevista_for({"name": car_name})
 	_dialog_perguntas = (_dialog_entrevista.get("perguntas", []) as Array).duplicate()
 	_dialog_perguntas.shuffle()
+	_balao_alvo = _head_world(holder)
+	_preparar_balao()
 	_dialog.visible = true
 	AudioManager.play("open")
 	var abertura := str(_dialog_entrevista.get("abertura", ""))
 	_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Motorista")), "texto": abertura}], "apresentacao")
 	_icon.visible = false
+	_atualizar_balao()
 	if _camera_rig != null:
-		var aim: Vector3 = holder.global_position + Vector3(0.0, 0.35, 0.0)
+		var aim: Vector3 = _balao_alvo + Vector3(0.0, BALAO_AIMOFS, 0.0)
 		var fwd := -(holder.global_basis.z)
 		fwd.y = 0.0
 		if fwd.length_squared() < 0.0001:
 			fwd = Vector3.FORWARD
 		fwd = fwd.normalized()
 		_camera_rig.focus_at_front(aim, fwd, car_dialog_zoom_dist, car_dialog_zoom_pitch)
+
+## Guarda posição/tamanho originais do balão (canto da tela) na primeira
+## abertura e encolhe ele pra caber acima da cabeça.
+func _preparar_balao() -> void:
+	if not _balao_salvo:
+		_balao_pos = _dialog.position
+		_balao_tamanho = _dialog.size
+		_balao_salvo = true
+	_dialog.size = Vector2(_dialog.size.x, BALAO_ALTURA)
+	if _balao_rabo != null:
+		_balao_rabo.visible = false
+
+## Projeta a cabeça de quem fala na tela e põe o balão acima dela,
+## preso às bordas do viewport (se não couber em cima, cai pra baixo).
+func _atualizar_balao() -> void:
+	if _dialog == null or _camera_rig == null or _dialog_ped.is_empty():
+		return
+	var cam := _camera_rig.camera
+	if cam == null:
+		return
+	if cam.is_position_behind(_balao_alvo):
+		_dialog.visible = false
+		if _balao_rabo != null:
+			_balao_rabo.visible = false
+		return
+	_dialog.visible = true
+	var sp := cam.unproject_position(_balao_alvo)
+	var vp := cam.get_viewport().get_visible_rect().size
+	var sz := _dialog.size
+	var x := clampf(sp.x - sz.x * 0.5, BALAO_MARGEM, maxf(vp.x - sz.x - BALAO_MARGEM, BALAO_MARGEM))
+	var acima := sp.y - sz.y - BALAO_GAP >= BALAO_MARGEM
+	var y: float = (sp.y - sz.y - BALAO_GAP) if acima else (sp.y + BALAO_GAP)
+	y = clampf(y, BALAO_MARGEM, maxf(vp.y - sz.y - BALAO_MARGEM, BALAO_MARGEM))
+	_dialog.position = Vector2(x, y)
+	_posicionar_rabo(sp, acima)
+
+## Ponta do balão apontando pra cabeça (some quando o balão fica embaixo).
+func _posicionar_rabo(sp: Vector2, acima: bool) -> void:
+	if _balao_rabo == null:
+		return
+	_balao_rabo.visible = acima
+	if not acima:
+		return
+	var cx := clampf(sp.x - _dialog.position.x, RABO_LARGURA * 0.5 + 8.0, _dialog.size.x - RABO_LARGURA * 0.5 - 8.0)
+	_balao_rabo.position = Vector2(cx - RABO_LARGURA * 0.5, _dialog.size.y - 1.0)
 
 func is_dialog_open() -> bool:
 	return not _dialog_ped.is_empty()
@@ -724,6 +815,11 @@ func close_dialog() -> void:
 	_dialog_typing = false
 	if _dialog != null:
 		_dialog.visible = false
+		if _balao_salvo:
+			_dialog.position = _balao_pos
+			_dialog.size = _balao_tamanho
+	if _balao_rabo != null:
+		_balao_rabo.visible = false
 	if _dialog_vbox != null:
 		_dialog_vbox.visible = false
 	if _btn_avancar != null:
