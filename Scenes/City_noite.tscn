@@ -1,0 +1,446 @@
+[gd_scene format=3 uid="uid://fc2o4v7l7iq"]
+
+[ext_resource type="MeshLibrary" uid="uid://4swo3gcg6c54" path="res://Scenes/kaykit_city_world.meshlib" id="1_pqkih"]
+[ext_resource type="Shader" uid="uid://6y83w1mfur6u" path="res://Scripts/clouds.gdshader" id="2_wdqvj"]
+[ext_resource type="Script" uid="uid://bru2wny85elx6" path="res://Scripts/camera_orbit.gd" id="3_4rb6s"]
+[ext_resource type="Script" uid="uid://c3acivl0afog8" path="res://Scripts/fov_overlay.gd" id="4_b6q6w"]
+[ext_resource type="Script" uid="uid://bmc8xo1dmv641" path="res://Scripts/traffic.gd" id="5_rr4bv"]
+[ext_resource type="Script" uid="uid://cnu0r8n1laejx" path="res://Scripts/pedestrians.gd" id="6_qjiqb"]
+[ext_resource type="Theme" uid="uid://mf8qxp068tai" path="res://Assets/glass_theme.tres" id="7_syypr"]
+[ext_resource type="Script" uid="uid://badyktharkmit" path="res://Scripts/pause_menu.gd" id="8_msp2c"]
+[ext_resource type="Shader" uid="uid://8tr6uia5wd8y" path="res://Scripts/frosted_glass.gdshader" id="9_7rc2a"]
+[ext_resource type="Script" uid="uid://lbx5tp0p112m" path="res://Scripts/glass_panel.gd" id="10_ww3uk"]
+[ext_resource type="Script" uid="uid://e4s283n0g85d" path="res://Scripts/hud_status.gd" id="11_kwahw"]
+[ext_resource type="Script" uid="uid://ctrlxwsun1xvs" path="res://Scripts/objetivo_panel.gd" id="12_n8ai8"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_skkws"]
+sky_top_color = Color(0.08, 0.1, 0.2, 1)
+sky_horizon_color = Color(0.16, 0.2, 0.32, 1)
+ground_bottom_color = Color(0.05, 0.06, 0.08, 1)
+ground_horizon_color = Color(0.12, 0.15, 0.22, 1)
+sun_angle_max = 5.0
+sun_curve = 0.06
+energy_multiplier = 0.6
+
+[sub_resource type="Sky" id="Sky_j88lv"]
+sky_material = SubResource("ProceduralSkyMaterial_skkws")
+
+[sub_resource type="Environment" id="Environment_lctyo"]
+background_mode = 2
+background_color = Color(0.08, 0.1, 0.16, 1)
+sky = SubResource("Sky_j88lv")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.3
+ambient_light_energy = 0.4
+tonemap_mode = 3
+tonemap_exposure = 0.9
+ssao_enabled = true
+ssao_radius = 1.5
+ssao_intensity = 1.8
+glow_enabled = true
+glow_intensity = 0.45
+glow_hdr_threshold = 0.9
+fog_enabled = true
+fog_light_color = Color(0.12, 0.16, 0.24, 1)
+fog_density = 0.0028
+fog_sky_affect = 0.4
+adjustment_enabled = true
+adjustment_brightness = 0.95
+adjustment_contrast = 1.08
+adjustment_saturation = 0.9
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_clouds"]
+render_priority = 0
+shader = ExtResource("2_wdqvj")
+shader_parameter/cloud_color = Color(1, 1, 1, 0.9)
+shader_parameter/shadow_color = Color(0.7, 0.77, 0.9, 0.85)
+shader_parameter/noise_scale = 0.0045
+shader_parameter/coverage = 0.4
+shader_parameter/softness = 0.2
+shader_parameter/scroll_speed = 0.01
+shader_parameter/altitude_fade = 30.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_clouds"]
+material = SubResource("ShaderMaterial_clouds")
+size = Vector2(240, 240)
+subdivide_width = 1
+subdivide_depth = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_status"]
+shader = ExtResource("9_7rc2a")
+shader_parameter/blurRadius = 18.0
+shader_parameter/borderPx = 1.5
+shader_parameter/bgAlpha = 0.78
+shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.9)
+shader_parameter/borderColor = Color(1, 1, 1, 0.14)
+shader_parameter/accentColor = Color(0.29, 0.76, 1, 1)
+shader_parameter/cornerRadius = 10.0
+shader_parameter/accentWidth = 3.0
+shader_parameter/topHighlight = 0.06
+shader_parameter/panelSize = Vector2(150, 34)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_objetivo"]
+shader = ExtResource("9_7rc2a")
+shader_parameter/blurRadius = 18.0
+shader_parameter/borderPx = 1.5
+shader_parameter/bgAlpha = 0.8
+shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
+shader_parameter/borderColor = Color(1, 1, 1, 0.14)
+shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
+shader_parameter/cornerRadius = 12.0
+shader_parameter/accentWidth = 3.0
+shader_parameter/topHighlight = 0.06
+shader_parameter/panelSize = Vector2(250, 120)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dialog"]
+shader = ExtResource("9_7rc2a")
+shader_parameter/blurRadius = 20.0
+shader_parameter/borderPx = 1.5
+shader_parameter/bgAlpha = 0.82
+shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.93)
+shader_parameter/borderColor = Color(1, 1, 1, 0.14)
+shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
+shader_parameter/cornerRadius = 12.0
+shader_parameter/accentWidth = 3.0
+shader_parameter/topHighlight = 0.05
+shader_parameter/panelSize = Vector2(440, 150)
+
+[node name="City" type="Node3D" unique_id=1817777769]
+
+[node name="GridMapWorld" type="GridMap" parent="." unique_id=2019546031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh_library = ExtResource("1_pqkih")
+data = {
+"cells": PackedInt32Array(0, 65535, 3, 0, 0, 1, 0, 1, 655361, 0, 2, 655365, 2, 65535, 1441795, 2, 0, 1048579, 0, 3, 655366, 2, 3, 1441794, 2, 1, 0, 2, 2, 0, 1, 65535, 1048577, 1, 3, 2, 3, 0, 1048581, 4, 0, 1441796, 65535, 3, 1441793, 65534, 3, 1048581, 65533, 3, 1048579, 65533, 2, 1, 65533, 1, 1, 65533, 0, 1, 65533, 65535, 1, 65533, 65534, 1, 4, 65535, 655361, 3, 65535, 9, 1, 0, 1441799, 1, 1, 1441803, 1, 2, 8, 65534, 2, 1441802, 65534, 1, 1441804, 65534, 0, 1441805, 65535, 2, 1048585, 65535, 0, 1048590, 65535, 1, 1048576, 3, 3, 1441792, 3, 2, 1048590, 3, 1, 0, 65535, 65535, 1441792, 65534, 65535, 1441792, 0, 65534, 10, 1, 65534, 7, 2, 65534, 13, 3, 65534, 0, 4, 65534, 655361, 65535, 65534, 0, 65534, 65534, 655368, 4, 3, 1, 4, 2, 1, 4, 1, 1, 65533, 65533, 3, 65534, 65533, 1441793, 65535, 65533, 1441793, 0, 65533, 1441793, 1, 65533, 1441793, 2, 65533, 1441793, 3, 65533, 1441793, 4, 65533, 1441795, 0, 4, 1048579, 1, 4, 1048582, 2, 4, 1441796, 3, 4, 1441793, 4, 4, 655363, 65533, 4, 0, 65534, 4, 655373, 65535, 4, 655367)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=352080382]
+transform = Transform3D(0.7071068, -0.61237246, 0.35355338, 0, 0.5, 0.8660254, -0.70710677, -0.6123724, 0.35355335, 0, 0, 0)
+light_color = Color(0.7, 0.76, 0.95, 1)
+light_energy = 0.18
+shadow_enabled = true
+shadow_bias = 0.04
+shadow_normal_bias = 1.0
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.12
+directional_shadow_split_2 = 0.3
+directional_shadow_split_3 = 0.65
+directional_shadow_fade_start = 0.85
+directional_shadow_max_distance = 90.0
+
+[node name="FillLight" type="DirectionalLight3D" parent="." unique_id=146388205]
+transform = Transform3D(-0.8660254, 0.3535534, -0.3535534, -0.12940952, 0.5, 0.85602516, 0.48397487, 0.7905694, -0.373612, 0, 0, 0)
+light_color = Color(0.56, 0.64, 0.92, 1)
+light_energy = 0.12
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1045255452]
+environment = SubResource("Environment_lctyo")
+
+[node name="Clouds" type="MeshInstance3D" parent="." unique_id=712940783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28, 0)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_clouds")
+visible = false
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=2040578810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8396053, 0, 2.197688)
+script = ExtResource("3_4rb6s")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=2040578809]
+transform = Transform3D(0.70710677, -0.48507127, 0.51449573, 0, 0.72760683, 0.6859944, -0.70710677, -0.48507127, 0.51449573, 6, 9, 10)
+fov = 55.0
+script = ExtResource("4_b6q6w")
+enabled = false
+
+[node name="Props" type="Node3D" parent="." unique_id=28346129]
+[node name="StreetLights" type="Node3D" parent="." unique_id=28346140]
+
+[node name="StreetLight_01" type="OmniLight3D" parent="StreetLights" unique_id=28346132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 2.8, 10.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.8
+light_specular = 0.6
+omni_range = 10.0
+omni_attenuation = 0.9
+shadow_enabled = true
+shadow_bias = 0.05
+
+[node name="StreetLight_02" type="OmniLight3D" parent="StreetLights" unique_id=28346133]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 2.8, -5.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.8
+light_specular = 0.6
+omni_range = 10.0
+omni_attenuation = 0.9
+shadow_enabled = true
+shadow_bias = 0.05
+
+[node name="StreetLight_03" type="OmniLight3D" parent="StreetLights" unique_id=28346134]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2.8, 10.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.8
+light_specular = 0.6
+omni_range = 10.0
+omni_attenuation = 0.9
+shadow_enabled = true
+shadow_bias = 0.05
+
+[node name="StreetLight_04" type="OmniLight3D" parent="StreetLights" unique_id=28346135]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2.8, -5.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.8
+light_specular = 0.6
+omni_range = 10.0
+omni_attenuation = 0.9
+shadow_enabled = true
+shadow_bias = 0.05
+
+[node name="StreetLight_05" type="OmniLight3D" parent="StreetLights" unique_id=28346136]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2.8, 2.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.6
+light_specular = 0.5
+omni_range = 9.0
+omni_attenuation = 0.9
+shadow_enabled = true
+shadow_bias = 0.05
+
+
+[node name="Traffic" type="Node3D" parent="." unique_id=28346130]
+script = ExtResource("5_rr4bv")
+count = 2
+vehicle_scale = 0.48
+yaw_offset_deg = -90.0
+
+[node name="Pedestrians" type="Node3D" parent="." unique_id=28346131]
+script = ExtResource("6_qjiqb")
+count = 6
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=929331203]
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="CanvasLayer" unique_id=1134092197]
+copy_mode = 2
+
+[node name="btn_menu" type="Button" parent="CanvasLayer" unique_id=590406048]
+custom_minimum_size = Vector2(56, 56)
+offset_left = 12.0
+offset_top = 13.0
+offset_right = 42.0
+offset_bottom = 69.0
+theme = ExtResource("7_syypr")
+theme_override_font_sizes/font_size = 10
+text = "≡"
+script = ExtResource("8_msp2c")
+
+[node name="Panel_status" type="Panel" parent="CanvasLayer" unique_id=860856990]
+material = SubResource("ShaderMaterial_status")
+offset_left = 74.0
+offset_top = 20.0
+offset_right = 224.0
+offset_bottom = 56.0
+mouse_filter = 2
+theme = ExtResource("7_syypr")
+script = ExtResource("10_ww3uk")
+blur_radius = 18.0
+corner_radius = 10.0
+accent_width = 3.0
+accent_color = Color(0.29, 0.76, 1, 1)
+
+[node name="txt_status" type="Label" parent="CanvasLayer/Panel_status" unique_id=1418584870]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.93, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 13
+mouse_filter = 2
+text = "Detetive"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+script = ExtResource("11_kwahw")
+
+[node name="Panel_objetivo" type="Panel" parent="CanvasLayer" unique_id=137292871]
+material = SubResource("ShaderMaterial_objetivo")
+custom_minimum_size = Vector2(250, 120)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 130.0
+grow_horizontal = 0
+mouse_filter = 2
+theme = ExtResource("7_syypr")
+script = ExtResource("12_n8ai8")
+blur_radius = 18.0
+corner_radius = 12.0
+accent_width = 3.0
+
+[node name="ProgressBg" type="Panel" parent="CanvasLayer/Panel_objetivo" unique_id=778911723]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = 16.0
+grow_horizontal = 2
+mouse_filter = 2
+theme = ExtResource("7_syypr")
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Panel_objetivo" unique_id=739898725]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = 16.0
+grow_horizontal = 2
+mouse_filter = 2
+theme = ExtResource("7_syypr")
+show_percentage = false
+
+[node name="objetivo" type="RichTextLabel" parent="CanvasLayer/Panel_objetivo" unique_id=946600444]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 22.0
+offset_right = -12.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("7_syypr")
+theme_override_colors/default_color = Color(0.9, 0.93, 1, 1)
+theme_override_font_sizes/normal_font_size = 12
+mouse_filter = 2
+bbcode_enabled = true
+text = " "
+fit_content = true
+scroll_active = false
+
+[node name="btn_im" type="Button" parent="CanvasLayer/Panel_objetivo" unique_id=137292872]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -30.0
+offset_right = -12.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("7_syypr")
+text = "NOTEBOOK"
+
+[node name="Panel_dialgo" type="Panel" parent="CanvasLayer" unique_id=1174099850]
+material = SubResource("ShaderMaterial_dialog")
+custom_minimum_size = Vector2(450, 130)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -427.0
+offset_top = -411.0
+offset_right = -27.0
+offset_bottom = -61.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("7_syypr")
+script = ExtResource("10_ww3uk")
+blur_radius = 20.0
+corner_radius = 12.0
+accent_width = 3.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Panel_dialgo" unique_id=150918669]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 10.0
+offset_right = -14.0
+offset_bottom = -52.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel_dialgo/MarginContainer" unique_id=1670603080]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="autor" type="Label" parent="CanvasLayer/Panel_dialgo/MarginContainer/VBoxContainer" unique_id=1670632962]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.37, 1)
+theme_override_font_sizes/font_size = 17
+text = "…"
+
+[node name="dialogo" type="RichTextLabel" parent="CanvasLayer/Panel_dialgo/MarginContainer/VBoxContainer" unique_id=2076479404]
+custom_minimum_size = Vector2(0, 66)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("7_syypr")
+theme_override_colors/default_color = Color(0.9, 0.93, 1, 1)
+theme_override_font_sizes/normal_font_size = 17
+bbcode_enabled = true
+text = " "
+scroll_following = true
+
+[node name="avançar_dialogo" type="Button" parent="CanvasLayer/Panel_dialgo/MarginContainer/VBoxContainer/dialogo" unique_id=1322218301]
+custom_minimum_size = Vector2(64, 52)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -65.0
+offset_top = -146.0
+offset_right = -1.0
+offset_bottom = -94.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("7_syypr")
+text = "▼"
+
+[node name="vbox_btn" type="VBoxContainer" parent="CanvasLayer/Panel_dialgo" unique_id=123122796]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -141.0
+offset_right = 200.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 6
+
+[node name="btn1" type="Button" parent="CanvasLayer/Panel_dialgo/vbox_btn" unique_id=1790426052]
+custom_minimum_size = Vector2(400, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("7_syypr")
+theme_override_font_sizes/font_size = 17
+
+[node name="btn2" type="Button" parent="CanvasLayer/Panel_dialgo/vbox_btn" unique_id=25051883]
+custom_minimum_size = Vector2(400, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("7_syypr")
+theme_override_font_sizes/font_size = 17

@@ -12,10 +12,14 @@ extends Node3D
 @export var lane_offset := 0.35
 @export var yaw_offset_deg := 0.0
 @export var max_lifetime := 180.0
+## Tempo entre um carro sair do mapa e outro surgir no lugar dele.
+@export_range(0.0, 15.0, 0.5) var respawn_delay := 2.5
 
 @export var parking_cell := Vector3i(2, 0, 3)
 @export_range(0.5, 4.0, 0.1) var park_pick_radius := 1.2
 @export_range(1.0, 60.0, 0.5) var park_cooldown := 10.0
+## Tempo máximo parado para interação; se ninguém interagir, o carro volta a andar.
+@export_range(1.0, 120.0, 0.5) var park_wait := 12.0
 @export var closed_edges: Array[Vector3i] = [
 	Vector3i(1, 0, 3), Vector3i(0, 0, 3),
 ]
@@ -25,6 +29,10 @@ extends Node3D
 @export var dialog_zoom_pitch := 8.0
 ## Desligado na cena CityNotebook: mantém carros andando, sem clique/diálogo/ícone.
 @export var enable_interaction := true
+## Distância a que um carro começa a reduzir para não bater no da frente.
+@export_range(0.2, 6.0, 0.1) var follow_dist := 1.8
+## Distância mínima (para o carro) ao veículo da frente.
+@export_range(0.1, 3.0, 0.1) var stop_gap := 0.6
 
 const DIRS := [
 	Vector3i(1, 0, 0),
@@ -46,8 +54,10 @@ const FALLBACK_PATHS := [
 var _roads: Dictionary = {}
 var _adj: Dictionary = {}
 var _corners: Array[Vector3i] = []
+var _exits: Array[Dictionary] = []
 var _pool: Array[PackedScene] = []
 var _cars: Array[Dictionary] = []
+var _pending: Array[Dictionary] = []
 var _grid: GridMap
 var _seg: float = 2.0
 var _parking_pos := Vector3.ZERO
@@ -122,10 +132,16 @@ func _build_road_graph() -> void:
 			if _roads.has(nb) and not _edge_blocked(cell, nb):
 				neigh.append(nb)
 		_adj[cell] = neigh
+	_exits.clear()
 	for cell: Vector3i in _roads:
 		var nm: String = ml.get_item_name(_grid.get_cell_item(cell)).to_lower()
 		if "cruzamento" in nm:
 			_corners.append(cell)
+			if "+" in nm:
+				for d: Vector3i in DIRS:
+					var nb := cell + d
+					if not _roads.has(nb):
+						_exits.append({"cell": cell, "dir": d})
 
 func _edge_blocked(a: Vector3i, b: Vector3i) -> bool:
 	for i in range(0, closed_edges.size(), 2):
@@ -149,6 +165,118 @@ func _pick_corner() -> Vector3i:
 			best_d = d
 			best = c
 	return best
+
+func _pick_exit() -> Dictionary:
+	if _exits.is_empty():
+		return {}
+	if _cars.is_empty():
+		return _exits[randi() % _exits.size()]
+	var best: Dictionary = _exits[0]
+	var best_d: float = -1.0
+	for e: Dictionary in _exits:
+		var pos: Vector3 = _world(e["cell"])
+		var d := INF
+		for car: Dictionary in _cars:
+			d = minf(d, pos.distance_to(car["holder"].global_position))
+		if d > best_d:
+			best_d = d
+			best = e
+	return best
+
+func _dir_world(d: Vector3i) -> Vector3:
+	var local := Vector3(d.x, d.y, d.z) * _grid.cell_size
+	var w: Vector3 = _grid.global_transform.basis * local
+	w.y = 0.0
+	if w.length_squared() < 0.0001:
+		return Vector3.FORWARD
+	return w.normalized()
+
+func _bfs_path(a: Vector3i, b: Vector3i) -> Array[Vector3i]:
+	if a == b:
+		return [a]
+	var came: Dictionary = {a: a}
+	var queue: Array[Vector3i] = [a]
+	var head := 0
+	while head < queue.size():
+		var cur := queue[head]
+		head += 1
+		var nbrs: Array = _adj.get(cur, [])
+		for nb: Vector3i in nbrs:
+			if came.has(nb):
+				continue
+			came[nb] = cur
+			if nb == b:
+				var path: Array[Vector3i] = [b]
+				var c := b
+				while c != a:
+					c = came[c]
+					path.append(c)
+				path.reverse()
+				return path
+			queue.append(nb)
+	return [a]
+
+func _make_exit_route(pass_parking: bool) -> Dictionary:
+	if _exits.is_empty():
+		return {}
+	var from: Dictionary = _pick_exit()
+	var to: Dictionary = from
+	for tries in 8:
+		to = _exits[randi() % _exits.size()]
+		if to["cell"] != from["cell"]:
+			break
+	# Mesmo passeio aleatório natural de antes (dá a volta e volta pra origem),
+	# só que agora começa e termina nas bordas do mapa.
+	var cells: Array[Vector3i] = []
+	cells.append(from["cell"])
+	var loop := _make_path(from["cell"])
+	for i in range(1, loop.size()):
+		cells.append(loop[i])
+	# Sai pela outra ponta: corta o passeio no ponto mais perto dela.
+	var best_i := -1
+	var best_d := INF
+	for i in range(2, cells.size()):
+		var d := _world(cells[i]).distance_to(_world(to["cell"]))
+		if d < best_d:
+			best_d = d
+			best_i = i
+	if best_i > 1:
+		cells.resize(best_i + 1)
+	# O carro "parceiro" passa pelo ponto de estacionamento antes de sair.
+	if pass_parking and _roads.has(parking_cell) and not cells.has(parking_cell):
+		_append_route(cells, _bfs_path(cells[cells.size() - 1], parking_cell))
+	_append_route(cells, _bfs_path(cells[cells.size() - 1], to["cell"]))
+	if cells.size() < 2:
+		return {}
+	var centers := _centers(cells)
+	var out0: Vector3 = _world(from["cell"]) + _dir_world(from["dir"]) * _seg
+	var out1: Vector3 = _world(to["cell"]) + _dir_world(to["dir"]) * _seg
+	centers.insert(0, out0)
+	centers.append(out1)
+	return _smooth_path(centers, CORNER_R)
+
+func _append_route(cells: Array[Vector3i], seg: Array[Vector3i]) -> void:
+	for i in range(1, seg.size()):
+		cells.append(seg[i])
+
+func _make_loop_route(pass_parking: bool) -> Dictionary:
+	var path: Array[Vector3i] = []
+	for tries in 80:
+		path = _make_path(_pick_corner())
+		if path.size() < 6:
+			continue
+		if _passes_parking(path) == pass_parking:
+			break
+	if path.size() < 6:
+		return {}
+	return _smooth_path(_centers(path), CORNER_R)
+
+func _build_route(pass_parking: bool) -> Dictionary:
+	if not _exits.is_empty():
+		var r := _make_exit_route(pass_parking)
+		if not r.is_empty():
+			return r
+	return _make_loop_route(pass_parking)
 
 func _make_path(start: Vector3i) -> Array[Vector3i]:
 	var path: Array[Vector3i] = [start]
@@ -248,16 +376,9 @@ func _drive(car: Dictionary, s: float) -> Dictionary:
 
 func _create_car(index: int) -> void:
 	var wants_park := index == _parker_idx
-	var path: Array[Vector3i] = []
-	for tries in 80:
-		path = _make_path(_pick_corner())
-		if path.size() < 6:
-			continue
-		if _passes_parking(path) == wants_park:
-			break
-	if path.size() < 6:
+	var smooth := _build_route(wants_park)
+	if smooth.is_empty():
 		return
-	var smooth := _smooth_path(_centers(path), CORNER_R)
 	var pts: PackedVector3Array = smooth["points"]
 	if pts.size() < 4:
 		return
@@ -273,7 +394,7 @@ func _create_car(index: int) -> void:
 	holder.add_child(model)
 	var base := speed * maxf(1.0 + randf_range(-speed_variation, speed_variation), 0.2)
 	var park_s := -1.0
-	if _passes_parking(path):
+	if wants_park:
 		park_s = _nearest_s({"points": pts, "cum": smooth["cum"]}, _parking_pos)
 	_cars.append({
 		"holder": holder,
@@ -297,7 +418,7 @@ func _respawn(dict: Dictionary) -> void:
 	if is_instance_valid(holder):
 		holder.queue_free()
 	_cars.erase(dict)
-	_create_car(dict["index"])
+	_pending.append({"index": dict["index"], "t": respawn_delay})
 
 func _passes_parking(path: Array) -> bool:
 	for cell: Vector3i in path:
@@ -306,16 +427,9 @@ func _passes_parking(path: Array) -> bool:
 	return false
 
 func _rebuild_car(car: Dictionary, wants_park: bool) -> void:
-	var path: Array[Vector3i] = []
-	for tries in 80:
-		path = _make_path(_pick_corner())
-		if path.size() < 6:
-			continue
-		if _passes_parking(path) == wants_park:
-			break
-	if path.size() < 6:
+	var smooth := _build_route(wants_park)
+	if smooth.is_empty():
 		return
-	var smooth := _smooth_path(_centers(path), CORNER_R)
 	var pts: PackedVector3Array = smooth["points"]
 	if pts.size() < 4:
 		return
@@ -360,18 +474,50 @@ func _sync_dialog() -> void:
 		return
 	var open := _pedestrians != null and _pedestrians.is_dialog_open()
 	if _dialog_open and not open:
-		var car: Dictionary = _stopper
-		car["parked"] = false
-		_stopper = {}
-		_releasing = car
-		_release_t = 0.0
+		_release(_stopper)
 	_dialog_open = open
+
+## Libera o carro parado para interação (o jogador fechou o diálogo ou
+## ninguém interagiu a tempo) e volta ele a andar.
+func _release(car: Dictionary) -> void:
+	car["parked"] = false
+	car["lifetime"] = 0.0
+	_stopper = {}
+	_releasing = car
+	_release_t = 0.0
+
+func _speed_scale(car: Dictionary, others: Array) -> float:
+	var r := _drive(car, float(car["s"]))
+	var fwd: Vector3 = r["dir"]
+	var pos: Vector3 = car["holder"].global_position
+	var scale := 1.0
+	for other: Dictionary in others:
+		if other == car:
+			continue
+		var opos: Vector3 = other["holder"].global_position
+		var v := opos - pos
+		var dist := v.length()
+		if dist >= follow_dist or dist < 0.0001:
+			continue
+		# Só freia se o da frente estiver indo na mesma direção.
+		if _drive(other, float(other["s"]))["dir"].dot(fwd) < 0.7:
+			continue
+		if v.normalized().dot(fwd) < 0.15:
+			continue
+		scale = minf(scale, clampf((dist - stop_gap) / maxf(follow_dist - stop_gap, 0.001), 0.0, 1.0))
+	return scale
 
 func _process(delta: float) -> void:
 	_sync_dialog()
-	for car: Dictionary in _cars.duplicate():
+	var others: Array = _cars.duplicate()
+	for car: Dictionary in others:
 		var parked := bool(car["parked"])
 		if parked:
+			# Ninguém veio interagir a tempo: libera o carro pra não formar fila.
+			if car.get("holder") == _stopper.get("holder", null) and not _dialog_open:
+				car["lifetime"] = float(car["lifetime"]) + delta
+				if float(car["lifetime"]) > park_wait:
+					_release(car)
 			continue
 		var total: float = float(car["total"])
 		car["park_cd"] = maxf(0.0, float(car.get("park_cd", 0.0)) - delta)
@@ -379,19 +525,25 @@ func _process(delta: float) -> void:
 		if float(car["lifetime"]) > max_lifetime:
 			_respawn(car)
 			continue
-		var r := _drive(car, float(car["s"]))
-		var next_s := float(car["s"]) + float(car["speed"]) * delta
+		var braking := _speed_scale(car, others)
+		var next_s := float(car["s"]) + float(car["speed"]) * braking * delta
 		if next_s >= total:
-			next_s = fmod(next_s, total)
+			_respawn(car)
+			continue
 		if not _cars.has(car):
 			continue
-		r = _drive(car, next_s)
+		var r := _drive(car, next_s)
 		car["s"] = next_s
 		var r_dir: Vector3 = r["dir"]
 		car["holder"].position = r["pos"]
 		car["holder"].rotation = Vector3(0.0, atan2(-r_dir.x, -r_dir.z), 0.0)
-		if _stopper.is_empty() and float(car.get("park_cd", 0.0)) <= 0.0 and car["holder"].global_position.distance_to(_parking_pos) < park_pick_radius:
+		if int(car["index"]) == _parker_idx and _stopper.is_empty() and float(car.get("park_cd", 0.0)) <= 0.0 and car["holder"].global_position.distance_to(_parking_pos) < park_pick_radius:
 			_park(car)
+	for p: Dictionary in _pending.duplicate():
+		p["t"] = float(p["t"]) - delta
+		if float(p["t"]) <= 0.0:
+			_pending.erase(p)
+			_create_car(int(p["index"]))
 	if not _releasing.is_empty() and _stopper.is_empty():
 		_release_t += delta
 		if _release_t > 1.5:
