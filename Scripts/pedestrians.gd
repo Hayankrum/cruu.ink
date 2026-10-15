@@ -84,6 +84,8 @@ var _dialog_typing := false
 var _dialog_car := false
 var _dialog_ccps := 45.0
 var _btn_avancar: Button
+## O btn1 do bloco de perguntas vira este rótulo quando só há fala pra ler.
+const AVANCAR_TEXTO := "Avançar ▶"
 
 ## Tolerância (px de viewport) entre "toque para falar" e "arrastar a câmera".
 const TAP_TOLERANCE := 28.0
@@ -603,6 +605,7 @@ func _set_opcoes(opcoes: Array) -> void:
 			btn.visible = true
 		else:
 			btn.visible = false
+	_dialog_vbox.alignment = VBoxContainer.ALIGNMENT_BEGIN
 	_dialog_vbox.visible = true
 	_dialog_phase = "perguntas"
 	if _btn_avancar != null:
@@ -610,8 +613,14 @@ func _set_opcoes(opcoes: Array) -> void:
 	if not _dialog_buttons.is_empty():
 		_dialog_buttons[0].grab_focus()
 
+## Clique nas falas: btn1 = "Avançar"; nas perguntas = responder.
 func _on_choice(idx: int) -> void:
-	if _dialog_ped.is_empty() or idx >= _dialog_opcoes.size():
+	if _dialog_ped.is_empty():
+		return
+	if _dialog_phase != "perguntas":
+		_avancar_dialogo()
+		return
+	if idx >= _dialog_opcoes.size():
 		return
 	var op: Dictionary = _dialog_opcoes[idx]
 	match str(op.get("tipo", "pergunta")):
@@ -663,13 +672,25 @@ func _dialog_mostrar_mensagens(fila: Array, phase: String = "") -> void:
 	_dialog_fila = fila.duplicate()
 	if not phase.is_empty():
 		_dialog_phase = phase
-	if _dialog_vbox != null:
-		_dialog_vbox.visible = false
-	if _btn_avancar != null:
-		_btn_avancar.visible = true
+	_mostrar_botao_avancar()
 	if _dialog_name != null:
 		_dialog_name.text = ""
 	_dialog_mostrar_proxima()
+
+## Enquanto há fala pra ler, o primeiro botão de escolha vira "Avançar"
+## (encostado no rodapé do balão); o ▼ solto fica escondido.
+func _mostrar_botao_avancar() -> void:
+	if _dialog_vbox == null:
+		return
+	for i in _dialog_buttons.size():
+		var btn := _dialog_buttons[i]
+		btn.visible = i == 0
+		if i == 0:
+			btn.text = AVANCAR_TEXTO
+	_dialog_vbox.alignment = VBoxContainer.ALIGNMENT_END
+	_dialog_vbox.visible = true
+	if _btn_avancar != null:
+		_btn_avancar.visible = false
 
 func _dialog_mostrar_proxima() -> void:
 	if _dialog_text == null:

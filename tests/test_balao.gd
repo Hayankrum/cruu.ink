@@ -79,6 +79,23 @@ func _process(delta: float) -> bool:
 			var y720 := _y_em_720(sp.y, vp.y * 0.5)
 			print("   cabeça em 1080x720 =", y720, " -> topo do balão =", y720 - 14.0 - sz.y)
 			_check(y720 - 14.0 - sz.y >= 12.0, "balão cabe acima da cabeça em 1080x720")
+			# botão de avançar mora no btn1 do bloco de escolhas
+			var b1: Button = _peds._dialog_buttons[0]
+			_check(_peds._dialog_vbox.visible, "bloco de botões visível durante a fala")
+			_check(b1.visible and b1.text == "Avançar ▶", "btn1 vira Avançar")
+			_check(not _peds._dialog_buttons[1].visible, "btn2 escondido durante a fala")
+			_check(_peds._btn_avancar == null or not _peds._btn_avancar.visible, "▼ solto escondido")
+			_check(_peds._dialog_vbox.alignment == VBoxContainer.ALIGNMENT_END, "Avançar encostado no rodapé")
+			if _peds._dialog_typing:
+				b1.pressed.emit()
+				_check(not _peds._dialog_typing and _peds._dialog_text.visible_ratio >= 1.0, "Avançar conclui a digitação")
+			var toques := 0
+			while _peds._dialog_phase != "perguntas" and toques < 8:
+				b1.pressed.emit()
+				toques += 1
+			_check(_peds._dialog_phase == "perguntas", "btn1 Avançar leva até as perguntas")
+			_check(b1.text != "Avançar ▶" and b1.visible, "btn1 virou pergunta de verdade")
+			_check(_peds._dialog_vbox.alignment == VBoxContainer.ALIGNMENT_BEGIN, "perguntas voltam pro topo")
 			_fase = 2
 			_t = 0.0
 		2:
@@ -113,6 +130,7 @@ func _process(delta: float) -> bool:
 				var szc: Vector2 = dlgc.size
 				print("   carro head=", spc, " balão=", dlgc.position, " size=", szc)
 				_check(absf(szc.y - 320.0) < 1.0, "balão do carro encolhido para 320")
+				_check(_peds._dialog_vbox.visible and _peds._dialog_buttons[0].text == "Avançar ▶", "btn1 Avançar no diálogo do carro")
 				_check(dlgc.position.y + szc.y <= spc.y + 1.0 or spc.y - szc.y - 14.0 < 12.0, "balão do carro não cobre o carro")
 				_check(dlgc.position.y >= 11.0 and dlgc.position.y + szc.y <= vpc.y - 11.0, "balão do carro dentro da tela")
 				var y720c := _y_em_720(spc.y, vpc.y * 0.5)
