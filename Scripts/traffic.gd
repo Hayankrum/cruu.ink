@@ -490,7 +490,7 @@ func _speed_scale(car: Dictionary, others: Array) -> float:
 	var r := _drive(car, float(car["s"]))
 	var fwd: Vector3 = r["dir"]
 	var pos: Vector3 = car["holder"].global_position
-	var scale := 1.0
+	var spd_scale := 1.0
 	for other: Dictionary in others:
 		if other == car:
 			continue
@@ -504,8 +504,8 @@ func _speed_scale(car: Dictionary, others: Array) -> float:
 			continue
 		if v.normalized().dot(fwd) < 0.15:
 			continue
-		scale = minf(scale, clampf((dist - stop_gap) / maxf(follow_dist - stop_gap, 0.001), 0.0, 1.0))
-	return scale
+		spd_scale = minf(spd_scale, clampf((dist - stop_gap) / maxf(follow_dist - stop_gap, 0.001), 0.0, 1.0))
+	return spd_scale
 
 func _process(delta: float) -> void:
 	_sync_dialog()

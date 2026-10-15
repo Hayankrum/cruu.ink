@@ -44,6 +44,7 @@ func _process(delta: float) -> bool:
 				_pos_original = _peds._dialog.position
 				_tam_original = _peds._dialog.size
 			if _peds._peds.size() > 0:
+				_peds._peds[0]["disponivel"] = true
 				_peds.open_dialog(_peds._peds[0])
 			_fase = 1
 			_t = 0.0

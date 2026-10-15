@@ -30,8 +30,8 @@ func _ready() -> void:
 	_face = _to_global(face_offset)
 	global_position = _home
 	var look := _face - _home
-	var len := look.length()
-	_home_pitch = clampf(rad_to_deg(asin(clampf(look.y / maxf(len, 1e-5), -1.0, 1.0))), pitch_min_deg, pitch_max_deg)
+	var look_len := look.length()
+	_home_pitch = clampf(rad_to_deg(asin(clampf(look.y / maxf(look_len, 1e-5), -1.0, 1.0))), pitch_min_deg, pitch_max_deg)
 	_home_yaw = atan2(look.x, look.z)
 	_pitch = _home_pitch
 	_yaw = _home_yaw

@@ -15,11 +15,22 @@ signal dialogo_concluido(nome_npc: String, e_carro: bool)
 @export var yaw_offset_deg := 180.0
 @export var max_lifetime := 180.0
 @export var camera_rig_path: NodePath = NodePath("../CameraRig")
-@export_range(1.0, 30.0) var interact_refresh := 5.0
 @export_range(0.4, 10.0, 0.1) var dialog_zoom_dist := 0.7
 @export var dialog_zoom_pitch := 2.0
 @export_range(0.4, 10.0, 0.1) var car_dialog_zoom_dist := 1.8
 @export_range(-20.0, 45.0, 1.0) var car_dialog_zoom_pitch := 0.0
+## Luz de preenchimento que ilumina quem está falando quando a cena é escura
+## (noturno): sem ela dá pra abrir o balão mas não dá pra ver quem fala.
+## Energia da luz a 0.34 de distância (decay 1.4) dá ~2.6 de irradiância na
+## cabeça — na faixa de um poste perto (1.8 a 1 unidade), sem estourar no ACES.
+@export_range(0.0, 8.0, 0.1) var key_light_energy := 0.6
+@export_range(0.5, 8.0, 0.1) var key_light_range := 2.4
+@export_range(0.1, 3.0, 0.05) var key_light_dist := 0.34
+## Fração de NPCs que já nascem ocupados (sem "!"). Os disponíveis perdem o
+## "!" assim que você entrevista — o mapa vai mostrando quem ainda falta.
+@export_range(0.0, 1.0, 0.05) var disponiveis_frac := 0.5
+## Ambiente com energia abaixo disso é considerado "escuro" e liga a luz.
+const ESCURO_MAX := 0.85
 @export_file("*.json") var dialog_path := ""
 ## Desligado na cena CityNotebook: mantém NPCs andando, sem clique/diálogo/ícone.
 @export var enable_interaction := true
@@ -62,14 +73,11 @@ var _grid: GridMap
 var _spawn_seq := 0
 var _region_center := Vector3.ZERO
 var _camera_rig: CameraOrbit
-var _icon: Label
 var _dialog: Panel
 var _dialog_name: Label
 var _dialog_text: RichTextLabel
 var _dialog_vbox: VBoxContainer
 var _dialog_buttons: Array[Button] = []
-var _interact_ped: Dictionary = {}
-var _interact_timer := 0.0
 var _dialog_ped: Dictionary = {}
 var _dialog_opcoes: Array = []
 var _dialog_perguntas: Array = []
@@ -84,6 +92,18 @@ var _dialog_typing := false
 var _dialog_car := false
 var _dialog_ccps := 45.0
 var _btn_avancar: Button
+var _luz_key: OmniLight3D
+var _luz_key_escuro := false
+## Falas de quem está ocupado/com pressa (recusa a entrevista).
+const REJEICOES_PADRAO := [
+	"Desculpa, tô com pressa!",
+	"Agora não, preciso correr!",
+	"Depois a gente conversa, tenho que sair!",
+	"Sem tempo agora, desculpe!",
+]
+var _rejeicoes: Array = REJEICOES_PADRAO.duplicate()
+var _dialog_ocupado := false
+var _ui_entrevistas: CanvasLayer
 ## O btn1 do bloco de perguntas vira este rótulo quando só há fala pra ler.
 const AVANCAR_TEXTO := "Avançar ▶"
 
@@ -126,7 +146,6 @@ func _ready() -> void:
 	_load_dialogs()
 	for i in count:
 		_create_pedestrian(i)
-	_build_ui()
 	if enable_interaction:
 		_bind_hud()
 	var rig: Node = get_node_or_null(camera_rig_path)
@@ -164,6 +183,8 @@ func _load_dialogs() -> void:
 		_dialog_perguntas_padrao = d["perguntas_padrao"]
 	if d.has("personagens") and d["personagens"] is Dictionary:
 		_dialog_by_name = d["personagens"]
+	if d.has("rejeicoes") and d["rejeicoes"] is Array:
+		_rejeicoes = d["rejeicoes"]
 
 func _entrevista_for(ped: Dictionary) -> Dictionary:
 	var ped_name := str(ped.get("name", ""))
@@ -389,9 +410,15 @@ func _create_pedestrian(index: int) -> void:
 		"s": 0.0,
 		"speed": base,
 		"lifetime": 0.0,
+		"disponivel": randf() < disponiveis_frac,
+		"icon": null,
 	})
 
 func _respawn(ped: Dictionary) -> void:
+	var lb: Label = ped.get("icon")
+	if lb != null and is_instance_valid(lb):
+		lb.queue_free()
+	ped["icon"] = null
 	var holder: Node3D = ped["holder"]
 	if is_instance_valid(holder):
 		holder.queue_free()
@@ -481,15 +508,6 @@ func _find_anim(node: Node) -> AnimationPlayer:
 	return null
 
 func _process(delta: float) -> void:
-	if not enable_interaction:
-		_interact_ped = {}
-		_interact_timer = 0.0
-	if _dialog_ped.is_empty():
-		_interact_timer += delta
-		if _interact_timer >= interact_refresh:
-			_interact_timer = 0.0
-			if enable_interaction and not _peds.is_empty():
-				_interact_ped = _peds[randi() % _peds.size()]
 	if _dialog_typing and _dialog_text != null:
 		var total := float(_dialog_text.get_total_character_count())
 		if total > 0.0:
@@ -501,7 +519,8 @@ func _process(delta: float) -> void:
 			_dialog_typing = false
 	if not _dialog_ped.is_empty():
 		_atualizar_balao()
-	_update_icon()
+	_atualizar_luz()
+	_update_icons()
 	for ped: Dictionary in _peds.duplicate():
 		if ped == _dialog_ped:
 			_play(ped["model"] as Node3D, ANIM_IDLE)
@@ -522,24 +541,6 @@ func _process(delta: float) -> void:
 		var r := _drive(ped, float(ped["s"]))
 		ped["holder"].position = r["pos"]
 		ped["holder"].rotation = Vector3(0.0, atan2(-(r["dir"] as Vector3).x, -(r["dir"] as Vector3).z), 0.0)
-
-func _build_ui() -> void:
-	var ui := CanvasLayer.new()
-	ui.layer = 10
-	add_child(ui)
-	_icon = Label.new()
-	_icon.text = "!"
-	_icon.size = Vector2(48, 48)
-	_icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_icon.add_theme_font_size_override("font_size", 30)
-	_icon.add_theme_color_override("font_color", Color(1.0, 0.9, 0.1))
-	_icon.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 1))
-	_icon.add_theme_constant_override("shadow_offset_x", 2)
-	_icon.add_theme_constant_override("shadow_offset_y", 2)
-	_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_icon.visible = false
-	ui.add_child(_icon)
 
 func _bind_hud() -> void:
 	_dialog = get_node_or_null("../CanvasLayer/Panel_dialgo") as Panel
@@ -582,6 +583,112 @@ func _bind_hud() -> void:
 			btn.pressed.connect(_on_choice.bind(idx))
 			_dialog_buttons.append(btn)
 			idx += 1
+	_criar_ui_entrevistas()
+	_criar_luz_key()
+
+## Camada onde ficam os "!" de quem está disponível pra entrevista.
+func _criar_ui_entrevistas() -> void:
+	_ui_entrevistas = CanvasLayer.new()
+	_ui_entrevistas.name = "UI_Entrevistas"
+	_ui_entrevistas.layer = 10
+	add_child(_ui_entrevistas)
+
+## Cria o "!" de um NPC sob demanda (o dict nasce de novo a cada respawn).
+func _icon_de(ped: Dictionary) -> Label:
+	var lb: Label = ped.get("icon")
+	if lb != null and is_instance_valid(lb):
+		return lb
+	lb = Label.new()
+	lb.text = "!"
+	lb.size = Vector2(48, 48)
+	lb.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lb.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lb.add_theme_font_size_override("font_size", 30)
+	lb.add_theme_color_override("font_color", Color(1.0, 0.9, 0.1))
+	lb.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 1))
+	lb.add_theme_constant_override("shadow_offset_x", 2)
+	lb.add_theme_constant_override("shadow_offset_y", 2)
+	lb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	lb.visible = false
+	_ui_entrevistas.add_child(lb)
+	ped["icon"] = lb
+	return lb
+
+## Só quem está disponível (sem entrevista feita) mostra o "!"; some tudo
+## enquanto o balão está aberto.
+func _update_icons() -> void:
+	if _ui_entrevistas == null:
+		return
+	var mostrar := enable_interaction and _camera_rig != null and _camera_rig.camera != null and _dialog_ped.is_empty()
+	for ped: Dictionary in _peds:
+		var lb := _icon_de(ped)
+		if not mostrar or not bool(ped.get("disponivel", false)):
+			lb.visible = false
+			continue
+		var model := ped["model"] as Node3D
+		if model == null:
+			lb.visible = false
+			continue
+		var cam := _camera_rig.camera
+		var head := _head_world(model) + Vector3(0.0, 0.15, 0.0)
+		if cam.is_position_behind(head):
+			lb.visible = false
+			continue
+		var sp := cam.unproject_position(head)
+		var view: Vector2 = cam.get_viewport().get_visible_rect().size
+		if sp.x < 0.0 or sp.y < 0.0 or sp.x > view.x or sp.y > view.y:
+			lb.visible = false
+			continue
+		lb.visible = true
+		lb.global_position = sp - lb.size * 0.5
+		lb.pivot_offset = lb.size * 0.5
+
+## Cria a luz só quando o ambiente é escuro (noite). No dia ela nem existe.
+func _criar_luz_key() -> void:
+	_luz_key_escuro = _ambiente_escuro()
+	if not _luz_key_escuro:
+		return
+	_luz_key = OmniLight3D.new()
+	_luz_key.light_color = Color(1.0, 0.96, 0.9)
+	_luz_key.light_energy = key_light_energy
+	_luz_key.omni_range = key_light_range
+	_luz_key.omni_attenuation = 1.4
+	_luz_key.shadow_enabled = false
+	_luz_key.visible = false
+	add_child(_luz_key)
+
+## Varre a árvore atrás do WorldEnvironment e vê se o ambiente está fraco.
+func _ambiente_escuro() -> bool:
+	var pilha: Array[Node] = [get_tree().root]
+	while not pilha.is_empty():
+		var n: Node = pilha.pop_back()
+		if n is WorldEnvironment:
+			var env := (n as WorldEnvironment).environment
+			if env != null:
+				return env.ambient_light_energy < ESCURO_MAX
+		for c: Node in n.get_children():
+			pilha.append(c)
+	return false
+
+## Mantém a luz na frente de quem está falando, puxada pra câmera e um pouco
+## acima da cabeça — o rosto fica iluminado. Apaga quando o balão fecha.
+func _atualizar_luz() -> void:
+	if _luz_key == null or _camera_rig == null or _camera_rig.camera == null:
+		return
+	if _dialog_ped.is_empty():
+		_luz_key.visible = false
+		return
+	var alvo := _balao_alvo
+	var cam := _camera_rig.camera
+	var dir := cam.global_position - alvo
+	dir.y = 0.0
+	if dir.length_squared() < 0.0001:
+		dir = -(cam.global_basis.z)
+		dir.y = 0.0
+	if dir.length_squared() < 0.0001:
+		dir = Vector3.FORWARD
+	_luz_key.global_position = alvo + dir.normalized() * key_light_dist + Vector3(0.0, 0.1, 0.0)
+	_luz_key.visible = true
 
 func _escape_bbcode(s: String) -> String:
 	return s.replace("[", "[lb]").replace("]", "[rb]")
@@ -699,7 +806,7 @@ func _dialog_mostrar_proxima() -> void:
 		match _dialog_phase:
 			"apresentacao", "resposta":
 				_mostrar_perguntas()
-			"encerramento":
+			"encerramento", "ocupado":
 				close_dialog()
 		return
 	var msg: Dictionary = _dialog_fila.pop_front()
@@ -730,6 +837,7 @@ func open_dialog(ped: Dictionary) -> void:
 	if not _dialog_ped.is_empty() or _dialog == null:
 		return
 	_dialog_ped = ped
+	_dialog_ocupado = not bool(ped.get("disponivel", false))
 	_dialog_entrevista = _entrevista_for(ped)
 	_dialog_perguntas = (_dialog_entrevista.get("perguntas", []) as Array).duplicate()
 	_dialog_perguntas.shuffle()
@@ -737,9 +845,13 @@ func open_dialog(ped: Dictionary) -> void:
 	_preparar_balao()
 	_dialog.visible = true
 	AudioManager.play("open")
-	var abertura := str(_dialog_entrevista.get("abertura", ""))
-	_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Cidadao")), "texto": abertura}], "apresentacao")
-	_icon.visible = false
+	if _dialog_ocupado:
+		# Ocupado/com pressa: só solta uma recusa e encerra (não vale entrevista).
+		var recusa := _pick_from(_rejeicoes, str(REJEICOES_PADRAO[0]))
+		_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Cidadao")), "texto": recusa}], "ocupado")
+	else:
+		var abertura := str(_dialog_entrevista.get("abertura", ""))
+		_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Cidadao")), "texto": abertura}], "apresentacao")
 	_atualizar_balao()
 	if _camera_rig != null:
 		var aim: Vector3 = _balao_alvo + Vector3(0.0, BALAO_AIMOFS, 0.0)
@@ -751,6 +863,7 @@ func open_car_dialog(holder: Node3D, car_name: String) -> void:
 		return
 	_dialog_ped = {"name": car_name, "holder": holder}
 	_dialog_car = true
+	_dialog_ocupado = false
 	_dialog_entrevista = _entrevista_for({"name": car_name})
 	_dialog_perguntas = (_dialog_entrevista.get("perguntas", []) as Array).duplicate()
 	_dialog_perguntas.shuffle()
@@ -760,7 +873,6 @@ func open_car_dialog(holder: Node3D, car_name: String) -> void:
 	AudioManager.play("open")
 	var abertura := str(_dialog_entrevista.get("abertura", ""))
 	_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Motorista")), "texto": abertura}], "apresentacao")
-	_icon.visible = false
 	_atualizar_balao()
 	if _camera_rig != null:
 		var aim: Vector3 = _balao_alvo + Vector3(0.0, BALAO_AIMOFS, 0.0)
@@ -823,11 +935,16 @@ func close_dialog() -> void:
 	if _dialog_ped.is_empty():
 		return
 	AudioManager.play("close")
-	var nome_npc := str(_dialog_ped.get("name", "cidadao"))
+	var ped := _dialog_ped
+	var nome_npc := str(ped.get("name", "cidadao"))
 	var e_carro := _dialog_car
-	dialogo_concluido.emit(nome_npc, e_carro)
+	if not _dialog_ocupado:
+		# Entrevista deixa o NPC ocupado (some o "!") e vale no objetivo.
+		ped["disponivel"] = false
+		dialogo_concluido.emit(nome_npc, e_carro)
 	_dialog_ped = {}
 	_dialog_car = false
+	_dialog_ocupado = false
 	_dialog_opcoes = []
 	_dialog_perguntas = []
 	_dialog_entrevista = {}
@@ -845,34 +962,8 @@ func close_dialog() -> void:
 		_dialog_vbox.visible = false
 	if _btn_avancar != null:
 		_btn_avancar.visible = false
-	_interact_ped = {}
-	_interact_timer = interact_refresh
 	if _camera_rig != null:
 		_camera_rig.unfocus()
-
-func _update_icon() -> void:
-	if not enable_interaction or not _dialog_ped.is_empty() or _interact_ped.is_empty() or not _peds.has(_interact_ped):
-		_icon.visible = false
-		return
-	if _camera_rig == null:
-		_icon.visible = false
-		return
-	var cam := _camera_rig.camera
-	var model: Node3D = _interact_ped["model"] as Node3D
-	if cam == null or model == null:
-		_icon.visible = false
-		return
-	var head: Vector3 = _head_world(model)
-	if cam.is_position_behind(head):
-		_icon.visible = false
-		return
-	var sp: Vector2 = cam.unproject_position(head + Vector3(0.0, 0.15, 0.0))
-	if sp.x < 0.0 or sp.y < 0.0 or sp.x > cam.get_viewport().get_visible_rect().size.x or sp.y > cam.get_viewport().get_visible_rect().size.y:
-		_icon.visible = false
-		return
-	_icon.visible = true
-	_icon.global_position = sp - _icon.size * 0.5
-	_icon.pivot_offset = _icon.size * 0.5
 
 func _input(event: InputEvent) -> void:
 	if not enable_interaction:

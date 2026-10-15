@@ -45,7 +45,7 @@ func _headers_extra(extra: PackedStringArray = PackedStringArray()) -> PackedStr
 ## retorna algo (lista vazia se offline/erro), nunca bloqueia a UI.
 func buscar_perfis(callback: Callable) -> void:
 	if not _pronto:
-		callback.call([])
+		_chamar(callback, [])
 		return
 	var req := HTTPRequest.new()
 	req.timeout = TIMEOUT
@@ -57,12 +57,17 @@ func buscar_perfis(callback: Callable) -> void:
 			if parsed is Array:
 				lista = parsed
 		req.queue_free()
-		callback.call(lista)
+		_chamar(callback, lista)
 	)
 	var err := req.request(_url + "/rest/v1/" + TABELA + "?select=*", _headers_extra())
 	if err != OK:
 		req.queue_free()
-		callback.call([])
+		_chamar(callback, [])
+
+## Chama o callback só se o dono (self capturado pelo lambda) ainda existir.
+func _chamar(callback: Callable, lista: Array) -> void:
+	if callback.is_valid():
+		callback.call(lista)
 
 ## Upsert de um perfil (merge por nome). Fire-and-forget.
 func subir_perfil(p: Dictionary) -> void:

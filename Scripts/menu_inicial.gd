@@ -484,12 +484,12 @@ func _mesclar_perfis(remotos: Array) -> bool:
 			mudou = true
 			continue
 		var pr := int(r.get("pontos", 0))
-		var tr := int(r.get("ultima", 0))
+		var ult := int(r.get("ultima", 0))
 		if pr > int(local.get("pontos", 0)):
 			local["pontos"] = pr
 			mudou = true
-		if tr > int(local.get("ultima", 0)):
-			local["ultima"] = tr
+		if ult > int(local.get("ultima", 0)):
+			local["ultima"] = ult
 			mudou = true
 	return mudou
 
