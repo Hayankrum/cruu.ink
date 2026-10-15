@@ -1,0 +1,323 @@
+[gd_scene format=3 uid="uid://bbd6ee60b821"]
+
+[ext_resource type="MeshLibrary" uid="uid://4swo3gcg6c54" path="res://Scenes/kaykit_city_world.meshlib" id="1_skkws"]
+[ext_resource type="Script" uid="uid://bmc8xo1dmv641" path="res://Scripts/traffic.gd" id="4_traffic"]
+[ext_resource type="Script" uid="uid://cgm0qjdlpkq3o" path="res://Scripts/ui_notbook.gd" id="4_ui00"]
+[ext_resource type="Script" uid="uid://cnu0r8n1laejx" path="res://Scripts/pedestrians.gd" id="5_ped"]
+[ext_resource type="Script" uid="uid://dkeucqah081my" path="res://Scripts/notebook_camera.gd" id="7_cam"]
+[ext_resource type="Script" uid="uid://badyktharkmit" path="res://Scripts/pause_menu.gd" id="10_um4qb"]
+[ext_resource type="Script" uid="uid://lbx5tp0p112m" path="res://Scripts/glass_panel.gd" id="11_epvub"]
+[ext_resource type="Shader" uid="uid://6y83w1mfur6u" path="res://Scripts/clouds.gdshader" id="12_clouds"]
+[ext_resource type="Script" uid="uid://e4s283n0g85d" path="res://Scripts/hud_status.gd" id="12_ip4w1"]
+[ext_resource type="Script" uid="uid://dfih7pgn04mls" path="res://Scripts/notebook_setup.gd" id="14_setup"]
+[ext_resource type="Theme" uid="uid://ciu8a25pxf2mt" path="res://Assets/hud_white_theme.tres" id="15_hud"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_skkws"]
+sky_top_color = Color(0.08, 0.1, 0.2, 1)
+sky_horizon_color = Color(0.16, 0.2, 0.32, 1)
+ground_bottom_color = Color(0.05, 0.06, 0.08, 1)
+ground_horizon_color = Color(0.12, 0.15, 0.22, 1)
+sun_angle_max = 5.0
+sun_curve = 0.06
+energy_multiplier = 0.6
+
+[sub_resource type="Sky" id="Sky_j88lv"]
+sky_material = SubResource("ProceduralSkyMaterial_skkws")
+
+[sub_resource type="Environment" id="Environment_lctyo"]
+background_mode = 2
+background_color = Color(0.08, 0.1, 0.16, 1)
+sky = SubResource("Sky_j88lv")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.3
+ambient_light_energy = 0.4
+tonemap_mode = 3
+tonemap_exposure = 0.9
+ssao_enabled = true
+ssao_radius = 1.5
+ssao_intensity = 1.8
+glow_enabled = true
+glow_intensity = 0.45
+glow_hdr_threshold = 0.9
+fog_enabled = true
+fog_light_color = Color(0.12, 0.16, 0.24, 1)
+fog_density = 0.0028
+fog_sky_affect = 0.4
+adjustment_enabled = true
+adjustment_brightness = 0.95
+adjustment_contrast = 1.08
+adjustment_saturation = 0.9
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_clouds"]
+render_priority = 0
+shader = ExtResource("12_clouds")
+shader_parameter/cloud_color = Color(1, 1, 1, 0.9)
+shader_parameter/shadow_color = Color(0.7, 0.77, 0.9, 0.85)
+shader_parameter/noise_scale = 0.0045
+shader_parameter/coverage = 0.4
+shader_parameter/softness = 0.2
+shader_parameter/scroll_speed = 0.01
+shader_parameter/altitude_fade = 30.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_clouds"]
+material = SubResource("ShaderMaterial_clouds")
+size = Vector2(240, 240)
+
+[sub_resource type="Environment" id="Environment_rakst"]
+background_mode = 1
+background_color = Color(0.024, 0.034, 0.052, 1)
+
+[node name="CityNotebookNoite" type="Node3D" unique_id=2195551995]
+
+[node name="GridMapWorld" type="GridMap" parent="." unique_id=1656459262]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh_library = ExtResource("1_skkws")
+data = {
+"cells": PackedInt32Array(0, 65535, 3, 0, 0, 1, 0, 1, 655361, 0, 2, 655365, 2, 65535, 1441795, 2, 0, 1048579, 0, 3, 655366, 2, 3, 1441794, 2, 1, 0, 2, 2, 0, 1, 65535, 1048577, 1, 3, 2, 3, 0, 1048581, 4, 0, 1441796, 65535, 3, 1441793, 65534, 3, 1048581, 65533, 3, 1048579, 65533, 2, 1, 65533, 1, 1, 65533, 0, 1, 65533, 65535, 1, 65533, 65534, 1, 4, 65535, 655361, 3, 65535, 9, 1, 0, 1441799, 1, 1, 1441803, 1, 2, 8, 65534, 2, 1441802, 65534, 1, 1441804, 65534, 0, 1441805, 65535, 2, 1048585, 65535, 0, 1048590, 65535, 1, 1048576, 3, 3, 1441792, 3, 2, 1048590, 3, 1, 0, 65535, 65535, 1441792, 65534, 65535, 1441792, 0, 65534, 10, 1, 65534, 7, 2, 65534, 13, 3, 65534, 0, 4, 65534, 655361, 65535, 65534, 0, 65534, 65534, 655368, 4, 3, 1, 4, 2, 1, 4, 1, 1, 65533, 65533, 3, 65534, 65533, 1441793, 65535, 65533, 1441793, 0, 65533, 1441793, 1, 65533, 1441793, 2, 65533, 1441793, 3, 65533, 1441793, 4, 65533, 1441795, 0, 4, 1048579, 1, 4, 1048582, 2, 4, 1441796, 3, 4, 1441793, 4, 4, 655363, 65533, 4, 0, 65534, 4, 655373, 65535, 4, 655367)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1325165871]
+transform = Transform3D(0.7071068, -0.61237246, 0.35355338, 0, 0.5, 0.8660254, -0.70710677, -0.6123724, 0.35355335, 0, 0, 0)
+light_color = Color(0.7, 0.76, 0.95, 1)
+light_energy = 0.18
+shadow_enabled = true
+shadow_bias = 0.04
+shadow_normal_bias = 1.0
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.12
+directional_shadow_split_2 = 0.3
+directional_shadow_split_3 = 0.65
+directional_shadow_fade_start = 0.85
+directional_shadow_max_distance = 90.0
+
+[node name="FillLight" type="DirectionalLight3D" parent="." unique_id=2766151516]
+transform = Transform3D(-0.8660254, 0.3535534, -0.3535534, -0.12940952, 0.5, 0.85602516, 0.48397487, 0.7905694, -0.373612, 0, 0, 0)
+light_color = Color(0.56, 0.64, 0.92, 1)
+light_energy = 0.12
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2314629037]
+environment = SubResource("Environment_lctyo")
+
+[node name="Clouds" type="MeshInstance3D" parent="." unique_id=2198183343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28, 0)
+visible = false
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_clouds")
+
+[node name="StreetLights" type="Node3D" parent="." unique_id=928346140]
+
+[node name="StreetLight_01" type="OmniLight3D" parent="StreetLights" unique_id=928346132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 2.8, 10.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.8
+light_specular = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+omni_range = 10.0
+omni_attenuation = 0.9
+
+[node name="StreetLight_02" type="OmniLight3D" parent="StreetLights" unique_id=928346133]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 2.8, -5.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.8
+light_specular = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+omni_range = 10.0
+omni_attenuation = 0.9
+
+[node name="StreetLight_03" type="OmniLight3D" parent="StreetLights" unique_id=928346134]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2.8, 10.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.8
+light_specular = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+omni_range = 10.0
+omni_attenuation = 0.9
+
+[node name="StreetLight_04" type="OmniLight3D" parent="StreetLights" unique_id=928346135]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2.8, -5.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.8
+light_specular = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+omni_range = 10.0
+omni_attenuation = 0.9
+
+[node name="StreetLight_05" type="OmniLight3D" parent="StreetLights" unique_id=928346136]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2.8, 2.5)
+light_color = Color(1, 0.88, 0.6, 1)
+light_energy = 1.6
+shadow_enabled = true
+shadow_bias = 0.05
+omni_range = 9.0
+omni_attenuation = 0.9
+
+[node name="Props" type="Node3D" parent="." unique_id=2334623764]
+
+[node name="Traffic" type="Node3D" parent="." unique_id=1708172636]
+script = ExtResource("4_traffic")
+vehicle_scale = 0.48
+yaw_offset_deg = -90.0
+enable_interaction = false
+
+[node name="Pedestrians" type="Node3D" parent="." unique_id=2467076221]
+script = ExtResource("5_ped")
+enable_interaction = false
+
+[node name="NotebookSetup" type="Node3D" parent="." unique_id=2960032401]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 1.4042053, 0.22703862, -1.9858398)
+script = ExtResource("14_setup")
+
+[node name="Tela" type="SubViewport" parent="NotebookSetup" unique_id=2273652107]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(960, 540)
+render_target_update_mode = 4
+
+[node name="VpAmbiente" type="WorldEnvironment" parent="NotebookSetup/Tela" unique_id=2397008524]
+environment = SubResource("Environment_rakst")
+
+[node name="Desktop" type="Control" parent="NotebookSetup/Tela" unique_id=1063395590]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="cquestion" type="RichTextLabel" parent="NotebookSetup/Tela/Desktop" unique_id=989203736]
+custom_minimum_size = Vector2(760, 380)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 80.0
+offset_top = 120.0
+offset_right = -80.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.92, 0.95, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+vertical_alignment = 1
+
+[node name="Contorno" type="OmniLight3D" parent="NotebookSetup" unique_id=2653537324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.3, 0.4)
+light_color = Color(0.4, 0.58, 0.95, 1)
+light_energy = 1.6
+omni_range = 2.4
+
+[node name="Camera" type="Camera3D" parent="NotebookSetup" unique_id=1565545726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.078, 0.26, -0.35)
+current = true
+fov = 40.0
+near = 0.02
+far = 80.0
+script = ExtResource("7_cam")
+
+[node name="Interface" type="CanvasLayer" parent="." unique_id=1491482034]
+layer = 5
+
+[node name="ui_notbook" type="Panel" parent="Interface" unique_id=1352209687]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -304.0
+offset_top = -280.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme = ExtResource("15_hud")
+script = ExtResource("4_ui00")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Interface/ui_notbook" unique_id=979781905]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="box_btn" type="VBoxContainer" parent="Interface/ui_notbook/VBoxContainer" unique_id=3020726153]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="btn1" type="Button" parent="Interface/ui_notbook/VBoxContainer/box_btn" unique_id=2848751923]
+custom_minimum_size = Vector2(240, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
+autowrap_mode = 3
+
+[node name="btn2" type="Button" parent="Interface/ui_notbook/VBoxContainer/box_btn" unique_id=1524574172]
+custom_minimum_size = Vector2(240, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
+autowrap_mode = 3
+
+[node name="btn3" type="Button" parent="Interface/ui_notbook/VBoxContainer/box_btn" unique_id=1131852432]
+custom_minimum_size = Vector2(240, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
+autowrap_mode = 3
+
+[node name="btn4" type="Button" parent="Interface/ui_notbook/VBoxContainer/box_btn" unique_id=1537286286]
+custom_minimum_size = Vector2(240, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
+autowrap_mode = 3
+
+[node name="btn_menu" type="Button" parent="Interface" unique_id=1697933578]
+custom_minimum_size = Vector2(40, 40)
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
+theme = ExtResource("15_hud")
+theme_override_font_sizes/font_size = 18
+text = "≡"
+script = ExtResource("10_um4qb")
+
+[node name="Panel_status" type="Panel" parent="Interface" unique_id=1813064452]
+custom_minimum_size = Vector2(0, 40)
+offset_left = 58.0
+offset_top = 10.0
+offset_right = 178.0
+offset_bottom = 50.0
+mouse_filter = 2
+theme = ExtResource("15_hud")
+script = ExtResource("11_epvub")
+
+[node name="txt_status" type="Label" parent="Interface/Panel_status" unique_id=1739869761]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.09, 0.1, 0.12, 1)
+theme_override_font_sizes/font_size = 12
+text = "Detetive"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+script = ExtResource("12_ip4w1")

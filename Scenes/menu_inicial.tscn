@@ -2,74 +2,7 @@
 
 [ext_resource type="Script" uid="uid://daf65lvb3sn4j" path="res://Scripts/menu_inicial.gd" id="2_menu"]
 [ext_resource type="Texture2D" uid="uid://catuv27uoe7q3" path="res://Assets/img/ChatGPT Image 24 de set. de 2026, 03_34_42.png" id="3_e8awb"]
-[ext_resource type="Shader" uid="uid://8tr6uia5wd8y" path="res://Scripts/frosted_glass.gdshader" id="3_glass"]
-[ext_resource type="Theme" uid="uid://mf8qxp068tai" path="res://Assets/glass_theme.tres" id="4_theme"]
-[ext_resource type="Script" uid="uid://lbx5tp0p112m" path="res://Scripts/glass_panel.gd" id="5_glass"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_login"]
-shader = ExtResource("3_glass")
-shader_parameter/blurRadius = 28.0
-shader_parameter/borderPx = 1.5
-shader_parameter/bgAlpha = 0.88
-shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
-shader_parameter/borderColor = Color(1, 1, 1, 0.14)
-shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
-shader_parameter/cornerRadius = 14.0
-shader_parameter/accentWidth = 3.0
-shader_parameter/topHighlight = 0.06
-shader_parameter/panelSize = Vector2(560, 320)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_save"]
-shader = ExtResource("3_glass")
-shader_parameter/blurRadius = 28.0
-shader_parameter/borderPx = 1.5
-shader_parameter/bgAlpha = 0.88
-shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
-shader_parameter/borderColor = Color(1, 1, 1, 0.14)
-shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
-shader_parameter/cornerRadius = 14.0
-shader_parameter/accentWidth = 3.0
-shader_parameter/topHighlight = 0.06
-shader_parameter/panelSize = Vector2(560, 360)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_narrativas"]
-shader = ExtResource("3_glass")
-shader_parameter/blurRadius = 28.0
-shader_parameter/borderPx = 1.5
-shader_parameter/bgAlpha = 0.88
-shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
-shader_parameter/borderColor = Color(1, 1, 1, 0.14)
-shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
-shader_parameter/cornerRadius = 14.0
-shader_parameter/accentWidth = 3.0
-shader_parameter/topHighlight = 0.06
-shader_parameter/panelSize = Vector2(560, 400)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_detalhe"]
-shader = ExtResource("3_glass")
-shader_parameter/blurRadius = 28.0
-shader_parameter/borderPx = 1.5
-shader_parameter/bgAlpha = 0.88
-shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
-shader_parameter/borderColor = Color(1, 1, 1, 0.14)
-shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
-shader_parameter/cornerRadius = 14.0
-shader_parameter/accentWidth = 3.0
-shader_parameter/topHighlight = 0.06
-shader_parameter/panelSize = Vector2(560, 300)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vidro_placar"]
-shader = ExtResource("3_glass")
-shader_parameter/blurRadius = 28.0
-shader_parameter/borderPx = 1.5
-shader_parameter/bgAlpha = 0.88
-shader_parameter/tint = Color(0.04, 0.05, 0.08, 0.92)
-shader_parameter/borderColor = Color(1, 1, 1, 0.14)
-shader_parameter/accentColor = Color(1, 0.78, 0.25, 1)
-shader_parameter/cornerRadius = 14.0
-shader_parameter/accentWidth = 3.0
-shader_parameter/topHighlight = 0.06
-shader_parameter/panelSize = Vector2(560, 300)
+[ext_resource type="Theme" uid="uid://ciu8a25pxf2mt" path="res://Assets/hud_white_theme.tres" id="4_theme"]
 
 [node name="menu_inicial" type="Control" unique_id=752151834]
 layout_mode = 3
@@ -132,12 +65,9 @@ layout_mode = 2
 theme = ExtResource("4_theme")
 text = "SAIR"
 
-[node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=1834871309]
-copy_mode = 2
-
 [node name="tela_login" type="Panel" parent="." unique_id=1571411130]
 visible = false
-material = SubResource("ShaderMaterial_vidro_login")
+custom_minimum_size = Vector2(800, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -150,8 +80,6 @@ offset_right = 280.0
 offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("5_glass")
-accent_width = 3.0
 
 [node name="titulo_login" type="Label" parent="tela_login" unique_id=156386527]
 layout_mode = 1
@@ -162,7 +90,7 @@ offset_top = 14.0
 offset_right = -16.0
 offset_bottom = 42.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 0.84, 0.37, 1)
+theme_override_colors/font_color = Color(0.09, 0.1, 0.12, 1)
 theme_override_font_sizes/font_size = 18
 text = "ENTRAR NA INVESTIGAÇÃO"
 horizontal_alignment = 1
@@ -208,7 +136,7 @@ offset_right = 180.0
 offset_bottom = -86.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(1, 0.45, 0.45, 1)
+theme_override_colors/font_color = Color(0.78, 0.18, 0.18, 1)
 theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 
@@ -233,7 +161,7 @@ alignment = 1
 
 [node name="tela_save" type="Panel" parent="." unique_id=1444454184]
 visible = false
-material = SubResource("ShaderMaterial_vidro_save")
+custom_minimum_size = Vector2(800, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -246,8 +174,6 @@ offset_right = 280.0
 offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("5_glass")
-accent_width = 3.0
 
 [node name="titulo_save" type="Label" parent="tela_save" unique_id=686024096]
 layout_mode = 1
@@ -258,7 +184,7 @@ offset_top = 14.0
 offset_right = -16.0
 offset_bottom = 40.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 0.84, 0.37, 1)
+theme_override_colors/font_color = Color(0.09, 0.1, 0.12, 1)
 theme_override_font_sizes/font_size = 16
 text = "PERFIS SALVOS"
 horizontal_alignment = 1
@@ -300,7 +226,7 @@ text = "VOLTAR"
 
 [node name="tela_narrativas" type="Panel" parent="." unique_id=384062684]
 visible = false
-material = SubResource("ShaderMaterial_vidro_narrativas")
+custom_minimum_size = Vector2(800, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -313,8 +239,6 @@ offset_right = 280.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("5_glass")
-accent_width = 3.0
 
 [node name="titulo_narrativas" type="Label" parent="tela_narrativas" unique_id=327206548]
 layout_mode = 1
@@ -325,7 +249,7 @@ offset_top = 14.0
 offset_right = -16.0
 offset_bottom = 42.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 0.84, 0.37, 1)
+theme_override_colors/font_color = Color(0.09, 0.1, 0.12, 1)
 theme_override_font_sizes/font_size = 16
 text = "ESCOLHA A NARRATIVA"
 horizontal_alignment = 1
@@ -367,7 +291,7 @@ text = "TROCAR DE USUÁRIO"
 
 [node name="tela_detalhe" type="Panel" parent="." unique_id=244246258]
 visible = false
-material = SubResource("ShaderMaterial_vidro_detalhe")
+custom_minimum_size = Vector2(800, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -380,8 +304,6 @@ offset_right = 320.0
 offset_bottom = 230.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("5_glass")
-accent_width = 3.0
 
 [node name="txt_detalhe" type="RichTextLabel" parent="tela_detalhe" unique_id=734059741]
 layout_mode = 1
@@ -395,7 +317,7 @@ offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_theme")
-theme_override_colors/default_color = Color(0.9, 0.93, 1, 1)
+theme_override_colors/default_color = Color(0.09, 0.1, 0.12, 1)
 theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
 
@@ -414,7 +336,7 @@ text = "✕"
 
 [node name="tela_placar" type="Panel" parent="." unique_id=355293564]
 visible = false
-material = SubResource("ShaderMaterial_vidro_placar")
+custom_minimum_size = Vector2(800, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -427,8 +349,6 @@ offset_right = 300.0
 offset_bottom = 215.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("5_glass")
-accent_width = 3.0
 
 [node name="txt_placa" type="RichTextLabel" parent="tela_placar" unique_id=367225177]
 layout_mode = 1
@@ -442,7 +362,7 @@ offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_theme")
-theme_override_colors/default_color = Color(0.9, 0.93, 1, 1)
+theme_override_colors/default_color = Color(0.09, 0.1, 0.12, 1)
 theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
 

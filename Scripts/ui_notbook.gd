@@ -2,26 +2,23 @@ extends Panel
 # Quiz em duas partes:
 #  - O CONTEUDO (enunciado da questao) e desenhado NA TELA do notebook, via o
 #    SubViewport Tela/Desktop/cquestion que vira a textura da tela.
-#  - Os BOTOES de escolha ficam aqui no painel lateral (box_btn/btn1..btn4).
+#  - Os BOTOES de escolha ficam no painel branco do canto inferior direito
+#    (mesmo estilo dos botoes de dialogo da cidade).
 
 const MENU_SCENE := "res://Scenes/menu_inicial.tscn"
 const NARRATIVA_SCENE := "res://Scenes/narrativa.tscn"
 
-const C_GREEN := Color(0.5, 0.85, 0.65)
-const C_RED := Color(0.95, 0.5, 0.5)
+## Cores de feedback sobre botão branco (mais escuras que no vidro escuro).
+const C_GREEN := Color(0.13, 0.55, 0.28)
+const C_RED := Color(0.78, 0.18, 0.18)
 
 const FONTE_TELA := 32
 const FONTE_TELA_MIN := 14
-const PAINEL_PADDING := 20.0
+## Distância das bordas do viewport (igual aos demais painéis da HUD).
+const PAINEL_MARGEM := 24.0
+## Folga interna em volta do conteúdo dos botões.
+const PAINEL_PADDING := 14.0
 const PAINEL_ALTURA_MIN := 120.0
-
-@export var border_px := 1.5
-@export var blur_radius := 24.0
-@export var bg_alpha := 0.82
-@export var corner_radius := 16.0
-@export var accent_width := 4.0
-@export var accent_color := Color(1.0, 0.78, 0.25, 1.0)
-@export var border_color := Color(1.0, 1.0, 1.0, 0.14)
 
 @onready var _box: VBoxContainer = $VBoxContainer/box_btn
 
@@ -44,8 +41,6 @@ func _ready() -> void:
 	_perguntas = _quiz.get("perguntas", []) if _quiz.get("perguntas") is Array else []
 	_nota_aprovacao = float(_quiz.get("nota_aprovacao", 0.7))
 	_textos = _quiz.get("textos", {}) if _quiz.get("textos") is Dictionary else {}
-	_fit()
-	resized.connect(_fit)
 	var idx := 0
 	for child in _box.get_children():
 		if child is Button:
@@ -73,36 +68,24 @@ func _ready() -> void:
 func _texto(chave: String, padrao: String) -> String:
 	return str(_textos.get(chave, padrao))
 
-## Redimensiona o painel para caber nos botões (texto longo => botão mais alto).
+## Ancora o painel no canto inferior direito e o redimensiona para caber
+## nos botões (texto longo => botão mais alto => painel mais alto).
 func _ajustar_painel() -> void:
 	var vb := _box.get_parent() as Container
 	if vb == null:
 		return
 	var min_sz: Vector2 = vb.get_combined_minimum_size()
 	var h := maxf(min_sz.y + PAINEL_PADDING * 2.0, PAINEL_ALTURA_MIN)
-	offset_top = -h * 0.5
-	offset_bottom = h * 0.5
+	var w := maxf(min_sz.x + PAINEL_PADDING * 2.0, 268.0)
+	offset_left = -(w + PAINEL_MARGEM)
+	offset_top = -(h + PAINEL_MARGEM)
+	offset_right = -PAINEL_MARGEM
+	offset_bottom = -PAINEL_MARGEM
 
 func _get_stage() -> Node:
 	if _stage == null:
 		_stage = get_tree().get_first_node_in_group("notebook_stage")
 	return _stage
-
-func _fit() -> void:
-	var mat := material as ShaderMaterial
-	if mat == null:
-		return
-	mat.set_shader_parameter("panelSize", size)
-	if border_px > 0.0:
-		mat.set_shader_parameter("borderPx", border_px)
-	if blur_radius > 0.0:
-		mat.set_shader_parameter("blurRadius", blur_radius)
-	if bg_alpha > 0.0:
-		mat.set_shader_parameter("bgAlpha", bg_alpha)
-	mat.set_shader_parameter("cornerRadius", corner_radius)
-	mat.set_shader_parameter("accentWidth", accent_width)
-	mat.set_shader_parameter("accentColor", accent_color)
-	mat.set_shader_parameter("borderColor", border_color)
 
 func _set_tela(text_bb: String) -> void:
 	if _cquestion == null:
@@ -167,35 +150,14 @@ func _on_option(i: int) -> void:
 func _criar_botao_acao(texto: String, callback: Callable) -> Button:
 	var b := Button.new()
 	b.text = texto
-	b.custom_minimum_size = Vector2(0, 40)
+	b.custom_minimum_size = Vector2(240, 50)
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	b.visible = false
-	b.add_theme_font_size_override("font_size", 14)
-	b.add_theme_stylebox_override("normal", _caixa_acento(Color(1.0, 0.72, 0.2, 0.95)))
-	b.add_theme_stylebox_override("hover", _caixa_acento(Color(1.0, 0.82, 0.35, 1.0)))
-	b.add_theme_stylebox_override("pressed", _caixa_acento(Color(0.9, 0.6, 0.12, 1.0)))
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	b.add_theme_stylebox_override("disabled", _caixa_acento(Color(0.35, 0.32, 0.25, 0.7)))
-	b.add_theme_color_override("font_color", Color(0.08, 0.06, 0.02))
-	b.add_theme_color_override("font_hover_color", Color(0.05, 0.04, 0.01))
-	b.add_theme_color_override("font_pressed_color", Color(0.05, 0.04, 0.01))
-	b.add_theme_color_override("font_disabled_color", Color(0.6, 0.58, 0.52, 0.8))
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	b.pressed.connect(callback)
 	_box.add_child(b)
 	return b
-
-func _caixa_acento(bg: Color) -> StyleBoxFlat:
-	var box := StyleBoxFlat.new()
-	box.bg_color = bg
-	box.border_color = Color(1, 1, 0.85, 0.55)
-	box.set_border_width_all(1)
-	box.set_corner_radius_all(10)
-	box.set_content_margin_all(8)
-	box.shadow_color = Color(1, 0.72, 0.2, 0.35)
-	box.shadow_size = 8
-	box.shadow_offset = Vector2(0, 2)
-	return box
 
 func _finish() -> void:
 	AudioManager.play("chime")

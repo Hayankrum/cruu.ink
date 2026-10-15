@@ -13,11 +13,11 @@
   "objetivo": {
     "npcs_necessarios": 5,
     "precisa_falar_com_carro": true,
-    "texto_aberto": "[color=#ff8ef0][b]O FUTURO DO LABOR[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]{feitas}/{total}[/b][/color]",
-    "texto_aberto_completo": "[color=#ff8ef0][b]O FUTURO DO LABOR[/b][/color]\n[color=#8b9bb8]Entrevistas[/color]  [color=#8fe0a0][b]completo[/b][/color]",
-    "texto_carro_pendente": "[color=#8b9bb8]Fale com[/color]  [color=#4cc2ff][b]o motorista[/b][/color]",
-    "texto_carro_ok": "[color=#8b9bb8]Motorista[/color]  [color=#8fe0a0][b]ouvido[/b][/color]",
-    "texto_concluido": "[color=#ff8ef0][b]Investigação concluída![/b][/color]\n[color=#9fb4d4]Abra o notebook.[/color]"
+    "texto_aberto": "[color=#15181d][b]O FUTURO DO LABOR[/b][/color]",
+    "texto_aberto_completo": "[color=#15181d][b]O FUTURO DO LABOR[/b][/color]",
+    "texto_carro_pendente": "[color=#6b7280]Fale com o motorista[/color]",
+    "texto_carro_ok": "[color=#6b7280]Motorista ouvido[/color]",
+    "texto_concluido": "[color=#15181d][b]Investigação concluída![/b][/color]\n[color=#6b7280]Abra o notebook.[/color]"
   },
   "quiz": {
     "nota_aprovacao": 0.5,

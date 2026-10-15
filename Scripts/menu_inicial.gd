@@ -129,24 +129,22 @@ func _foi_rolagem() -> bool:
 	return _scroll_gesto
 
 func _estilizar_login() -> void:
-	btn_entrar.add_theme_stylebox_override("normal", _accent_box(Color(1.0, 0.72, 0.2, 0.95)))
-	btn_entrar.add_theme_stylebox_override("hover", _accent_box(Color(1.0, 0.82, 0.35, 1.0)))
-	btn_entrar.add_theme_stylebox_override("pressed", _accent_box(Color(0.9, 0.6, 0.12, 1.0)))
+	btn_entrar.add_theme_stylebox_override("normal", _caixa_branca(Color(1, 1, 1, 1), Color(0.8, 0.82, 0.86, 1)))
+	btn_entrar.add_theme_stylebox_override("hover", _caixa_branca(Color(0.95, 0.96, 0.97, 1), Color(0.62, 0.65, 0.7, 1)))
+	btn_entrar.add_theme_stylebox_override("pressed", _caixa_branca(Color(0.87, 0.89, 0.92, 1), Color(0.5, 0.53, 0.58, 1), 4))
 	btn_entrar.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	btn_entrar.add_theme_color_override("font_color", Color(0.08, 0.06, 0.02))
-	btn_entrar.add_theme_color_override("font_hover_color", Color(0.05, 0.04, 0.01))
-	btn_entrar.add_theme_color_override("font_pressed_color", Color(0.05, 0.04, 0.01))
+	btn_entrar.add_theme_color_override("font_color", Color(0.09, 0.1, 0.12, 1))
+	btn_entrar.add_theme_color_override("font_hover_color", Color(0.02, 0.03, 0.04, 1))
+	btn_entrar.add_theme_color_override("font_pressed_color", Color(0.25, 0.27, 0.31, 1))
+	btn_entrar.add_theme_color_override("font_focus_color", Color(0.09, 0.1, 0.12, 1))
 
-func _accent_box(bg: Color) -> StyleBoxFlat:
+func _caixa_branca(bg: Color, borda: Color, margem := 10) -> StyleBoxFlat:
 	var box := StyleBoxFlat.new()
 	box.bg_color = bg
-	box.border_color = Color(1, 1, 0.85, 0.55)
+	box.border_color = borda
 	box.set_border_width_all(1)
 	box.set_corner_radius_all(10)
-	box.set_content_margin_all(10)
-	box.shadow_color = Color(1, 0.72, 0.2, 0.35)
-	box.shadow_size = 8
-	box.shadow_offset = Vector2(0, 2)
+	box.set_content_margin_all(margem)
 	return box
 
 func _trocar_painel(painel: Control) -> void:
@@ -326,13 +324,13 @@ func _criar_botao_narrativa(n: Dictionary) -> Button:
 	var nota := PontosStore.nota_de(_perfil_atual, id)
 	var concluida := nota >= 0
 	var sub_texto := ""
-	var sub_cor := Color(0.62, 0.7, 0.82)
+	var sub_cor := Color(0.42, 0.45, 0.5)
 	if concluida:
 		sub_texto = "CONCLUÍDA ✓"
 		var total := NarrativaManager.total_perguntas(id)
 		if total > 0:
 			sub_texto += "   %d/%d acertos" % [nota, total]
-		sub_cor = Color(0.56, 0.88, 0.65)
+		sub_cor = Color(0.13, 0.55, 0.28)
 	else:
 		var intro: Variant = n.get("intro")
 		if intro is Dictionary:
@@ -351,7 +349,7 @@ func _criar_botao_narrativa(n: Dictionary) -> Button:
 
 	if concluida:
 		btn.disabled = true
-		titulo.add_theme_color_override("font_disabled_color", Color(0.78, 0.82, 0.9, 0.75))
+		titulo.add_theme_color_override("font_disabled_color", Color(0.6, 0.62, 0.66, 1))
 		if subtitulo != null:
 			subtitulo.add_theme_color_override("font_disabled_color", sub_cor)
 	return btn
@@ -395,12 +393,12 @@ func _preencher_placar() -> void:
 	ordem.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		return int(a.get("pontos", 0)) > int(b.get("pontos", 0)))
 	var narrativas := NarrativaManager.lista()
-	var linhas := ["[center][font_size=22][color=#ffc83d]PLACAR LOCAL[/color][/font_size][/center]\n"]
+	var linhas := ["[center][font_size=22][b]PLACAR LOCAL[/b][/font_size][/center]\n"]
 	for i in range(ordem.size()):
 		var p: Dictionary = ordem[i]
-		var medalha: String = ["[color=#ffd75e]1º[/color]", "[color=#c0c8d8]2º[/color]", "[color=#d4a06a]3º[/color]"][i] if i < 3 else "%dº" % (i + 1)
+		var medalha: String = ["[b]1º[/b]", "[b]2º[/b]", "[b]3º[/b]"][i] if i < 3 else "%dº" % (i + 1)
 		var nome := str(p.get("nome", "Perfil"))
-		linhas.append("[b]%s  %s[/b]  —  [color=#ffc83d]%d[/color] pontos" % [medalha, nome, int(p.get("pontos", 0))])
+		linhas.append("%s  %s  —  [b]%d[/b] pontos" % [medalha, nome, int(p.get("pontos", 0))])
 		var feitas: Dictionary = {}
 		if p.get("feitas") is Dictionary:
 			feitas = p["feitas"] as Dictionary
@@ -408,10 +406,10 @@ func _preencher_placar() -> void:
 		for n: Dictionary in narrativas:
 			var nid := str(n.get("id", ""))
 			vistos[nid] = true
-			linhas.append("     [color=#9fb4d4]%s[/color]   %s" % [str(n.get("titulo", nid)), _nota_placar(feitas.get(nid, -1), NarrativaManager.total_perguntas(nid))])
+			linhas.append("     [color=#6b7280]%s[/color]   %s" % [str(n.get("titulo", nid)), _nota_placar(feitas.get(nid, -1), NarrativaManager.total_perguntas(nid))])
 		for k: Variant in feitas:
 			if not vistos.has(k):
-				linhas.append("     [color=#9fb4d4]%s[/color]   %s" % [str(k), _nota_placar(feitas[k], 0)])
+				linhas.append("     [color=#6b7280]%s[/color]   %s" % [str(k), _nota_placar(feitas[k], 0)])
 		linhas.append("")
 	txt_placa.text = "\n".join(linhas)
 
@@ -419,10 +417,10 @@ func _preencher_placar() -> void:
 func _nota_placar(nota_v: Variant, total: int) -> String:
 	var nota := int(nota_v)
 	if nota < 0:
-		return "[color=#7f8ba0]não jogada[/color]"
+		return "[color=#9ca3af]não jogada[/color]"
 	if total > 0:
-		return "[color=#8fe0a0][b]%d/%d[/b][/color]" % [nota, total]
-	return "[color=#8fe0a0][b]%d[/b][/color]" % nota
+		return "[color=#15803d][b]%d/%d[/b][/color]" % [nota, total]
+	return "[color=#15803d][b]%d[/b][/color]" % nota
 
 func _mostrar_erro(msg: String) -> void:
 	erro_label.text = msg

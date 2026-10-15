@@ -63,7 +63,9 @@ func _process(delta: float) -> bool:
 			var vp := cam.get_viewport().get_visible_rect().size
 			var sz: Vector2 = dlg.size
 			print("   head=", sp, " balão=", dlg.position, " size=", sz, " vp=", vp)
-			_check(absf(sz.y - 320.0) < 1.0, "balão encolhido para 320 de altura")
+			var altura_esperada := clampf(26.0 + 24.0 + 6.0 + _peds._dialog_text.get_content_height(), 100.0, 320.0)
+			_check(absf(sz.y - altura_esperada) < 1.0, "balão com altura do conteúdo (%.0f)" % sz.y)
+			_check(sz.y < 320.0, "balão encolheu (menos que o teto de 320)")
 			_check(sp.y > 0.0 and sp.y < vp.y, "cabeça projetada dentro da tela")
 			_check(dlg.position.x >= 11.0, "balão colado na borda esquerda")
 			_check(dlg.position.y >= 11.0, "balão colado na borda superior")
@@ -83,10 +85,13 @@ func _process(delta: float) -> bool:
 			# botão de avançar mora no btn1 do bloco de escolhas
 			var b1: Button = _peds._dialog_buttons[0]
 			_check(_peds._dialog_vbox.visible, "bloco de botões visível durante a fala")
+			_check(_peds._dialog_vbox.get_parent() == dlg.get_parent(), "bloco de botões fora da caixa (irmã dela)")
+			var vb: Control = _peds._dialog_vbox
+			_check(vb.position.x + vb.size.x > vp.x * 0.5 and vb.position.y + vb.size.y > vp.y * 0.5, "bloco de botões no canto inferior direito da tela")
 			_check(b1.visible and b1.text == "Avançar ▶", "btn1 vira Avançar")
 			_check(not _peds._dialog_buttons[1].visible, "btn2 escondido durante a fala")
 			_check(_peds._btn_avancar == null or not _peds._btn_avancar.visible, "▼ solto escondido")
-			_check(_peds._dialog_vbox.alignment == VBoxContainer.ALIGNMENT_END, "Avançar encostado no rodapé")
+			_check(_peds._dialog_vbox.alignment == VBoxContainer.ALIGNMENT_END, "Avançar colado no canto inferior direito")
 			if _peds._dialog_typing:
 				b1.pressed.emit()
 				_check(not _peds._dialog_typing and _peds._dialog_text.visible_ratio >= 1.0, "Avançar conclui a digitação")
@@ -96,7 +101,7 @@ func _process(delta: float) -> bool:
 				toques += 1
 			_check(_peds._dialog_phase == "perguntas", "btn1 Avançar leva até as perguntas")
 			_check(b1.text != "Avançar ▶" and b1.visible, "btn1 virou pergunta de verdade")
-			_check(_peds._dialog_vbox.alignment == VBoxContainer.ALIGNMENT_BEGIN, "perguntas voltam pro topo")
+			_check(_peds._dialog_vbox.alignment == VBoxContainer.ALIGNMENT_END, "perguntas continuam no canto inferior direito")
 			_fase = 2
 			_t = 0.0
 		2:
@@ -130,7 +135,8 @@ func _process(delta: float) -> bool:
 				var vpc := camc.get_viewport().get_visible_rect().size
 				var szc: Vector2 = dlgc.size
 				print("   carro head=", spc, " balão=", dlgc.position, " size=", szc)
-				_check(absf(szc.y - 320.0) < 1.0, "balão do carro encolhido para 320")
+				var altura_esperada_c := clampf(26.0 + 24.0 + 6.0 + _peds._dialog_text.get_content_height(), 100.0, 320.0)
+				_check(absf(szc.y - altura_esperada_c) < 1.0, "balão do carro com altura do conteúdo (%.0f)" % szc.y)
 				_check(_peds._dialog_vbox.visible and _peds._dialog_buttons[0].text == "Avançar ▶", "btn1 Avançar no diálogo do carro")
 				_check(dlgc.position.y + szc.y <= spc.y + 1.0 or spc.y - szc.y - 14.0 < 12.0, "balão do carro não cobre o carro")
 				_check(dlgc.position.y >= 11.0 and dlgc.position.y + szc.y <= vpc.y - 11.0, "balão do carro dentro da tela")

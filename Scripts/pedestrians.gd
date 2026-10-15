@@ -115,9 +115,14 @@ var _press_dragged := false
 ## Balão de diálogo ancorado acima da cabeça de quem fala.
 const BALAO_GAP := 14.0
 const BALAO_MARGEM := 12.0
-## Altura do balão quando ancorado (o da cena é 350 — não cabe acima da
-## cabeça numa janela de 720px de altura).
-const BALAO_ALTURA := 320.0
+## Altura máxima do balão ancorado; a real acompanha o texto (encolhe pra
+## fala curta, cresce quando quebra linhas).
+const BALAO_ALTURA_MAX := 320.0
+const BALAO_ALTURA_MIN := 100.0
+## Margens internas do MarginContainer + separação do VBox da cena.
+const BALAO_PADDING := 12.0 + 14.0
+const BALAO_SEPARACAO := 6.0
+const BALAO_NOME_ALTURA := 24.0
 ## Câmera mira um pouco ACIMA da cabeça: sobra espaço pro balão.
 const BALAO_AIMOFS := 0.06
 const RABO_LARGURA := 22.0
@@ -558,7 +563,7 @@ func _bind_hud() -> void:
 		Vector2(RABO_LARGURA, 0.0),
 		Vector2(RABO_LARGURA * 0.5, RABO_ALTURA),
 	])
-	_balao_rabo.color = Color(0.04, 0.05, 0.08, 0.92)
+	_balao_rabo.color = Color(1, 1, 1, 0.96)
 	_balao_rabo.visible = false
 	_dialog.add_child(_balao_rabo)
 	_dialog_name = _dialog.get_node_or_null("MarginContainer/VBoxContainer/autor") as Label
@@ -569,7 +574,8 @@ func _bind_hud() -> void:
 	_btn_avancar = _dialog.get_node_or_null("MarginContainer/VBoxContainer/dialogo/avançar_dialogo") as Button
 	if _btn_avancar != null:
 		_btn_avancar.pressed.connect(_avancar_dialogo)
-	_dialog_vbox = _dialog.get_node_or_null("vbox_btn") as VBoxContainer
+	# Os botões moram fora da caixa, fixos no canto inferior direito da tela.
+	_dialog_vbox = _dialog.get_parent().get_node_or_null("vbox_btn") as VBoxContainer
 	if _dialog_vbox == null:
 		push_warning("Pedestrians: vbox_btn (VBoxContainer) nao encontrado na cena")
 		return
@@ -712,7 +718,7 @@ func _set_opcoes(opcoes: Array) -> void:
 			btn.visible = true
 		else:
 			btn.visible = false
-	_dialog_vbox.alignment = VBoxContainer.ALIGNMENT_BEGIN
+	_dialog_vbox.alignment = VBoxContainer.ALIGNMENT_END
 	_dialog_vbox.visible = true
 	_dialog_phase = "perguntas"
 	if _btn_avancar != null:
@@ -785,7 +791,7 @@ func _dialog_mostrar_mensagens(fila: Array, phase: String = "") -> void:
 	_dialog_mostrar_proxima()
 
 ## Enquanto há fala pra ler, o primeiro botão de escolha vira "Avançar"
-## (encostado no rodapé do balão); o ▼ solto fica escondido.
+## (colado no canto inferior direito da tela); o ▼ solto fica escondido.
 func _mostrar_botao_avancar() -> void:
 	if _dialog_vbox == null:
 		return
@@ -816,13 +822,14 @@ func _dialog_mostrar_proxima() -> void:
 	var texto := str(msg.get("texto", ""))
 	match str(msg.get("autor", "")):
 		"Voce":
-			texto = "[color=#4cc2ff]%s[/color]" % _escape_bbcode(texto)
+			texto = "[color=#5b6472]%s[/color]" % _escape_bbcode(texto)
 		_:
 			if not str(msg.get("autor", "")).is_empty():
-				texto = "[color=#ffd766]%s[/color]" % _escape_bbcode(texto)
+				texto = "[color=#15181d]%s[/color]" % _escape_bbcode(texto)
 	_dialog_text.append_text(texto)
 	_dialog_text.visible_ratio = 0.0
 	_dialog_typing = true
+	_ajustar_altura_balao()
 
 func _avancar_dialogo() -> void:
 	if _dialog_ped.is_empty() or _dialog_text == null:
@@ -884,15 +891,28 @@ func open_car_dialog(holder: Node3D, car_name: String) -> void:
 		_camera_rig.focus_at_front(aim, fwd, car_dialog_zoom_dist, car_dialog_zoom_pitch)
 
 ## Guarda posição/tamanho originais do balão (canto da tela) na primeira
-## abertura e encolhe ele pra caber acima da cabeça.
+## abertura e deixa ele na altura mínima — a altura real acompanha o texto.
 func _preparar_balao() -> void:
 	if not _balao_salvo:
 		_balao_pos = _dialog.position
 		_balao_tamanho = _dialog.size
 		_balao_salvo = true
-	_dialog.size = Vector2(_dialog.size.x, BALAO_ALTURA)
+	_dialog.size = Vector2(_dialog.size.x, BALAO_ALTURA_MIN)
 	if _balao_rabo != null:
 		_balao_rabo.visible = false
+
+## Ajusta a altura da caixa ao conteúdo: encolhe pra fala curta e cresce
+## quando o texto quebra linhas (teto em BALAO_ALTURA_MAX).
+func _ajustar_altura_balao() -> void:
+	if _dialog == null or _dialog_text == null:
+		return
+	var texto_h := _dialog_text.get_content_height()
+	if texto_h <= 0.0:
+		texto_h = 22.0
+	var alvo := clampf(BALAO_PADDING + BALAO_NOME_ALTURA + BALAO_SEPARACAO + texto_h,
+			BALAO_ALTURA_MIN, BALAO_ALTURA_MAX)
+	if absf(_dialog.size.y - alvo) > 0.5:
+		_dialog.size = Vector2(_dialog.size.x, alvo)
 
 ## Projeta a cabeça de quem fala na tela e põe o balão acima dela,
 ## preso às bordas do viewport (se não couber em cima, cai pra baixo).
@@ -908,6 +928,7 @@ func _atualizar_balao() -> void:
 			_balao_rabo.visible = false
 		return
 	_dialog.visible = true
+	_ajustar_altura_balao()
 	var sp := cam.unproject_position(_balao_alvo)
 	var vp := cam.get_viewport().get_visible_rect().size
 	var sz := _dialog.size

@@ -10,9 +10,9 @@ func _ready() -> void:
 	_game_ui = get_parent()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	text = "≡"
-	add_theme_font_size_override("font_size", 22)
-	add_theme_color_override("font_color", Color(0.93, 0.95, 1, 0.9))
-	add_theme_color_override("font_hover_color", Color(1.0, 0.84, 0.37))
+	add_theme_font_size_override("font_size", 18)
+	add_theme_color_override("font_color", Color(0.09, 0.1, 0.12, 0.95))
+	add_theme_color_override("font_hover_color", Color(0.0, 0.0, 0.0, 1.0))
 	add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 
 func _open() -> void:
@@ -34,7 +34,7 @@ func _make_overlay() -> Control:
 	root.mouse_filter = Control.MOUSE_FILTER_STOP
 
 	var bg := ColorRect.new()
-	bg.color = Color(0.02, 0.03, 0.05, 0.78)
+	bg.color = Color(0.88, 0.9, 0.93, 0.6)
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(bg)
@@ -47,19 +47,8 @@ func _make_overlay() -> Control:
 
 	var card := PanelContainer.new()
 	card.name = "Card"
-	card.custom_minimum_size = Vector2(280, 0)
-	var mat := ShaderMaterial.new()
-	mat.shader = load("res://Scripts/frosted_glass.gdshader")
-	mat.set_shader_parameter("blurRadius", 24.0)
-	mat.set_shader_parameter("borderPx", 1.5)
-	mat.set_shader_parameter("bgAlpha", 0.92)
-	mat.set_shader_parameter("tint", Color(0.04, 0.05, 0.08, 0.94))
-	mat.set_shader_parameter("borderColor", Color(1, 1, 1, 0.14))
-	mat.set_shader_parameter("cornerRadius", 14.0)
-	mat.set_shader_parameter("accentWidth", 3.0)
-	mat.set_shader_parameter("accentColor", Color(1.0, 0.78, 0.25, 1.0))
-	mat.set_shader_parameter("panelSize", Vector2(280, 340))
-	card.material = mat
+	card.custom_minimum_size = Vector2(260, 0)
+	card.add_theme_stylebox_override("panel", _make_box(Color(1, 1, 1, 1), Color(0.84, 0.86, 0.9, 1), 12, 0))
 	center.add_child(card)
 
 	var margin := MarginContainer.new()
@@ -78,18 +67,15 @@ func _make_overlay() -> Control:
 
 	var title := Label.new()
 	title.text = "PAUSADO"
-	title.add_theme_font_size_override("font_size", 26)
-	title.add_theme_color_override("font_color", Color(1.0, 0.84, 0.37))
-	title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.5))
-	title.add_theme_constant_override("shadow_offset_x", 2)
-	title.add_theme_constant_override("shadow_offset_y", 2)
+	title.add_theme_font_size_override("font_size", 22)
+	title.add_theme_color_override("font_color", Color(0.09, 0.1, 0.12, 1))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vbox.add_child(title)
 
 	var rule := ColorRect.new()
 	rule.custom_minimum_size = Vector2(0, 1)
-	rule.color = Color(1, 1, 1, 0.1)
+	rule.color = Color(0.88, 0.89, 0.92, 1)
 	rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vbox.add_child(rule)
 
@@ -106,9 +92,6 @@ func _make_overlay() -> Control:
 	quit.pressed.connect(func() -> void: get_tree().quit())
 	vbox.add_child(quit)
 
-	card.resized.connect(func() -> void:
-		mat.set_shader_parameter("panelSize", card.size))
-
 	return root
 
 func _make_button(label: String, _accent := false) -> Button:
@@ -116,23 +99,27 @@ func _make_button(label: String, _accent := false) -> Button:
 	btn.text = label
 	btn.focus_mode = Control.FOCUS_ALL
 	btn.custom_minimum_size = Vector2(0, 40)
-	btn.add_theme_font_size_override("font_size", 15)
-	btn.add_theme_color_override("font_color", Color(0.93, 0.95, 1))
-	btn.add_theme_color_override("font_hover_color", Color(1.0, 0.92, 0.7))
-	btn.add_theme_color_override("font_pressed_color", Color(1.0, 0.88, 0.6))
-	btn.add_theme_stylebox_override("normal", _make_box(Color(0.07, 0.09, 0.14, 0.78), Color(1, 1, 1, 0.12)))
-	btn.add_theme_stylebox_override("hover", _make_box(Color(0.12, 0.16, 0.24, 0.92), Color(1.0, 0.84, 0.37, 0.7)))
-	btn.add_theme_stylebox_override("pressed", _make_box(Color(0.05, 0.07, 0.11, 0.95), Color(1.0, 0.84, 0.37, 0.85)))
+	btn.add_theme_font_size_override("font_size", 14)
+	btn.add_theme_color_override("font_color", Color(0.09, 0.1, 0.12, 1))
+	btn.add_theme_color_override("font_hover_color", Color(0.02, 0.03, 0.04, 1))
+	btn.add_theme_color_override("font_pressed_color", Color(0.25, 0.27, 0.31, 1))
+	btn.add_theme_color_override("font_focus_color", Color(0.09, 0.1, 0.12, 1))
+	btn.add_theme_stylebox_override("normal", _make_box(Color(1, 1, 1, 1), Color(0.8, 0.82, 0.86, 1)))
+	btn.add_theme_stylebox_override("hover", _make_box(Color(0.95, 0.96, 0.97, 1), Color(0.62, 0.65, 0.7, 1)))
+	btn.add_theme_stylebox_override("pressed", _make_box(Color(0.87, 0.89, 0.92, 1), Color(0.5, 0.53, 0.58, 1)))
 	btn.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	return btn
 
-func _make_box(bg: Color, border: Color) -> StyleBoxFlat:
+func _make_box(bg: Color, border: Color, raio := 10, margem := 10) -> StyleBoxFlat:
 	var box := StyleBoxFlat.new()
 	box.bg_color = bg
 	box.border_color = border
 	box.set_border_width_all(1)
-	box.set_corner_radius_all(10)
-	box.set_content_margin_all(10)
+	box.set_corner_radius_all(raio)
+	box.set_content_margin_all(margem)
+	box.shadow_color = Color(0.06, 0.08, 0.12, 0.12)
+	box.shadow_size = 8
+	box.shadow_offset = Vector2(0, 3)
 	return box
 
 func _close() -> void:
