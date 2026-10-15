@@ -88,6 +88,10 @@ func get_intro() -> Dictionary:
 func get_outro() -> Dictionary:
 	return _secao("outro")
 
+## Cartão narrativo mostrado ao clicar em NOTEBOOK (antes da cena do notebook).
+func get_transicao_notebook() -> Dictionary:
+	return _secao("transicao_notebook")
+
 func get_objetivo() -> Dictionary:
 	return _secao("objetivo")
 

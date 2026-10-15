@@ -6,6 +6,7 @@ extends "res://Scripts/glass_panel.gd"
 
 const NOTEBOOK_SCENE := "res://Scenes/CityNotebook.tscn"
 const NOTEBOOK_SCENE_NOITE := "res://Scenes/CityNotebook_noite.tscn"
+const NARRATIVA_SCENE := "res://Scenes/narrativa.tscn"
 
 @export var pedestrians_path: NodePath = NodePath("../../Pedestrians")
 @export_range(1, 12, 1) var npcs_necessarios := 3
@@ -133,4 +134,12 @@ func _ir_para_notebook() -> void:
 	var cena_atual := get_tree().current_scene.scene_file_path if get_tree().current_scene != null else ""
 	# City_noite usa o notebook noturno; o resto mantém o de dia.
 	var destino := NOTEBOOK_SCENE_NOITE if "City_noite" in cena_atual else NOTEBOOK_SCENE
+	# Recicla a tela narrativa (mesma da intro/outro) como cartão de transição.
+	var transicao := NarrativaManager.get_transicao_notebook()
+	if not transicao.is_empty():
+		SceneTransition.titulo_narrativa = str(transicao.get("titulo", ""))
+		SceneTransition.texto_narrativa = str(transicao.get("texto", ""))
+		SceneTransition.proxima_cena = destino
+		SceneTransition.change_scene(NARRATIVA_SCENE)
+		return
 	SceneTransition.change_scene(destino)

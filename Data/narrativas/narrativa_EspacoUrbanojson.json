@@ -10,6 +10,10 @@
     "titulo": "CASO CONCLUÍDO",
     "texto": "Sua análise crítica do processo de urbanização revelou dinâmicas excludentes.\n\nAs cidades tornaram-se megacidades ricas, porém repletas de desigualdade, onde a gentrificação afasta os mais pobres e a mobilidade urbana segue sendo um privilégio."
   },
+  "transicao_notebook": {
+    "titulo": "DEPOIS DAS ENTREVISTAS",
+    "texto": "Depois de um tempo coletando dados entre o centro revitalizado e as periferias, as entrevistas chegam ao fim.\n\nO direito à cidade foi dito de muitas maneiras.\n\nHora de abrir o notebook e organizar tudo."
+  },
   "objetivo": {
     "npcs_necessarios": 5,
     "precisa_falar_com_carro": true,

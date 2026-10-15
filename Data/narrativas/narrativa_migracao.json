@@ -13,6 +13,11 @@
 	"texto": "Você reuniu diferentes histórias de migração.\n\nAlgumas pessoas buscavam emprego. Outras procuravam melhores condições de vida ou novas oportunidades.\n\nUma mudança pode ter mais de um motivo."
   },
 
+  "transicao_notebook": {
+	"titulo": "DEPOIS DAS ENTREVISTAS",
+	"texto": "Depois de um tempo coletando dados com os novos moradores, as entrevistas chegam ao fim.\n\nMuitas histórias, muitos motivos para ter partido.\n\nHora de abrir o notebook e organizar tudo."
+  },
+
   "objetivo": {
 	"npcs_necessarios": 5,
 	"precisa_falar_com_carro": true,

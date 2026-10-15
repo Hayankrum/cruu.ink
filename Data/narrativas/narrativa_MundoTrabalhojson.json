@@ -10,6 +10,10 @@
     "titulo": "CASO CONCLUÍDO",
     "texto": "Você mapeou as dinâmicas da força de trabalho.\n\nNotou que os avanços tecnológicos, como a robotização, exigem alta qualificação, ao passo que as desigualdades salariais, de gênero e de raça persistem fortemente nas relações trabalhistas."
   },
+  "transicao_notebook": {
+    "titulo": "DEPOIS DAS ENTREVISTAS",
+    "texto": "Depois de um tempo coletando dados com a força de trabalho local, as entrevistas chegam ao fim.\n\nAutomação, salários e gênero apareceram em muitas falas.\n\nHora de abrir o notebook e organizar tudo."
+  },
   "objetivo": {
     "npcs_necessarios": 5,
     "precisa_falar_com_carro": true,

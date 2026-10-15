@@ -10,6 +10,10 @@
     "titulo": "CASO CONCLUÍDO",
     "texto": "Você mapeou a evolução industrial do país.\n\nDescobriu que, após as fases de Vargas e JK, passamos por um 'milagre econômico', mas hoje enfrentamos a desindustrialização precoce e a desconcentração espacial da indústria."
   },
+  "transicao_notebook": {
+    "titulo": "DEPOIS DAS ENTREVISTAS",
+    "texto": "Depois de um tempo coletando dados com trabalhadores e pesquisadores, as entrevistas chegam ao fim.\n\nOs galpões e as fábricas contaram parte da história industrial da cidade.\n\nHora de abrir o notebook e organizar tudo."
+  },
   "objetivo": {
     "npcs_necessarios": 5,
     "precisa_falar_com_carro": true,

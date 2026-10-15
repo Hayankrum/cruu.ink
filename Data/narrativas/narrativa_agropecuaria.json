@@ -10,6 +10,10 @@
     "titulo": "CASO CONCLUÍDO",
     "texto": "Você investigou as fronteiras agrícolas.\n\nFicou claro que, enquanto a Revolução Verde e o agronegócio impulsionam as exportações e o PIB, a agricultura familiar e a agroecologia são as verdadeiras guardiãs da soberania alimentar e do meio ambiente."
   },
+  "transicao_notebook": {
+    "titulo": "DEPOIS DAS ENTREVISTAS",
+    "texto": "Depois de um tempo coletando dados com produtores e ativistas, as entrevistas chegam ao fim.\n\nMuitas visões sobre quem alimenta o mundo e quem abastece os mercados.\n\nHora de abrir o notebook e organizar tudo."
+  },
   "objetivo": {
     "npcs_necessarios": 5,
     "precisa_falar_com_carro": true,

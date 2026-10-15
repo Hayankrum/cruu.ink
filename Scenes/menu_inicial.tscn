@@ -208,7 +208,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
 [node name="btn_volta" type="Button" parent="tela_save" unique_id=1410492951]
-custom_minimum_size = Vector2(280, 64)
+custom_minimum_size = Vector2(280, 50)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -216,9 +216,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -140.0
-offset_top = -78.0
+offset_top = -61.0
 offset_right = 140.0
-offset_bottom = -12.0
+offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("4_theme")
@@ -273,7 +273,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="btn_trocar" type="Button" parent="tela_narrativas" unique_id=2022684803]
-custom_minimum_size = Vector2(280, 64)
+custom_minimum_size = Vector2(280, 50)
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -281,9 +281,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -140.0
-offset_top = -78.0
+offset_top = -58.0
 offset_right = 140.0
-offset_bottom = -12.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("4_theme")

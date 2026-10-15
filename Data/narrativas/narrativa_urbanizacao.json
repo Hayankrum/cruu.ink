@@ -13,6 +13,11 @@
 	"texto": "As entrevistas mostraram diferentes lados da transformação urbana.\n\nAlgumas mudanças trouxeram oportunidades. Outras aumentaram custos e dificultaram a permanência de alguns moradores.\n\nPlanejar a cidade também significa pensar em quem consegue viver nela."
   },
 
+  "transicao_notebook": {
+	"titulo": "DEPOIS DAS ENTREVISTAS",
+	"texto": "Depois de um tempo coletando dados com os moradores, as entrevistas chegam ao fim.\n\nAs histórias reunidas mostram diferentes lados da transformação do bairro.\n\nHora de abrir o notebook e organizar tudo."
+  },
+
   "objetivo": {
 	"npcs_necessarios": 5,
 	"precisa_falar_com_carro": true,
