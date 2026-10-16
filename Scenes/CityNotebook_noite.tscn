@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bbd6ee60b821"]
+[gd_scene format=3 uid="uid://duso6kp0m1a14"]
 
 [ext_resource type="MeshLibrary" uid="uid://4swo3gcg6c54" path="res://Scenes/kaykit_city_world.meshlib" id="1_skkws"]
 [ext_resource type="Script" uid="uid://bmc8xo1dmv641" path="res://Scripts/traffic.gd" id="4_traffic"]
