@@ -2,6 +2,7 @@
   "id": "cap12_agropecuaria",
   "titulo": "Raízes do Alimento",
   "imagem": "res://Assets/img/capa1.png",
+  "mapa": "dia",
   "intro": {
     "titulo": "CASO ABERTO",
     "texto": "Metade dos alimentos da nossa feira vem de pequenos produtores, mas as grandes fazendas ao redor produzem commodities para exportação.\n\nQuais são os impactos socioambientais dos diferentes sistemas de produção agrícola?\n\nFale com produtores e ativistas para entender quem alimenta o mundo e quem abastece os mercados."
@@ -49,7 +50,7 @@
         "options": [
           "Eliminou as pragas permanentemente sem gerar poluição.",
           "Consolidou a agricultura orgânica globalmente.",
-          "Causou contaminação do solo e da água devido aos defensivos químicos e aumentou a concentração fundiária.",
+          "Contaminou solo e água com defensivos químicos e aumentou a concentração fundiária.",
           "Protegeu os Sistemas Agrícolas Tradicionais."
         ],
         "correct": 2
@@ -58,7 +59,7 @@
         "text": "Clara é representante do agronegócio. Qual a relação entre a agricultura empresarial e a economia do Brasil?",
         "options": [
           "O Brasil deixou de exportar e foca apenas em soberania alimentar.",
-          "A produção de commodities agrícolas é um pilar econômico fundamental para as exportações brasileiras.",
+          "A produção de commodities agrícolas é um pilar das exportações brasileiras.",
           "A agricultura empresarial não tem participação no PIB do Brasil.",
           "O agronegócio brasileiro planta exclusivamente orgânicos para o mercado interno."
         ],
@@ -69,7 +70,7 @@
         "options": [
           "A proibição do consumo de carnes e produtos de origem animal.",
           "O controle total da agricultura por corporações multinacionais.",
-          "O direito dos povos de definir suas próprias políticas agrícolas, priorizando a produção local e a segurança nutricional.",
+          "O direito dos povos de definir suas próprias políticas agrícolas e alimentares.",
           "A importação de todos os alimentos básicos para baratear o custo."
         ],
         "correct": 2
@@ -79,7 +80,7 @@
         "options": [
           "Utilizando organismos geneticamente modificados de última geração.",
           "Produzindo em grande escala com monoculturas extensivas.",
-          "Equilibrando a produção agrícola com a preservação ambiental e respeitando os saberes das comunidades.",
+          "Equilibrando a produção agrícola com a preservação ambiental e os saberes locais.",
           "Acabando com a necessidade de terras e produzindo alimentos em laboratório."
         ],
         "correct": 2
@@ -87,6 +88,7 @@
     ]
   },
   "dialogos": {
+	"abertura_jogador": "Como você vê a produção no campo hoje?",
     "aberturas": [
       "O campo brasileiro é palco de muitas contradições e sistemas diferentes.",
       "Há quem plante para o mundo e quem plante para nossa mesa."

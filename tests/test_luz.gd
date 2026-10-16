@@ -21,6 +21,19 @@ func _carregar(caminho: String) -> Node:
 	_peds = cena.get_node_or_null("Pedestrians")
 	return cena
 
+## A entrevista abre com o jogador falando (balão escondido); clica em
+## "Avançar" até a fala do NPC, quando o balão volta a aparecer.
+func _avancar_ate_npc() -> void:
+	if _peds == null:
+		return
+	var b1: Button = _peds._dialog_buttons[0]
+	var n := 0
+	while _peds.is_dialog_open() and _peds._falando_jogador and n < 12:
+		b1.pressed.emit()
+		_peds._atualizar_balao()
+		n += 1
+	_peds._atualizar_balao()
+
 func _process(delta: float) -> bool:
 	_t += delta
 	match _fase:
@@ -58,6 +71,7 @@ func _process(delta: float) -> bool:
 				_check(luz.visible, "noturno: luz acesa com diálogo aberto")
 				_check(d > 0.05 and d < 0.9, "noturno: luz fica perto da cabeça")
 				_check(luz.global_position.y > head.y - 0.01, "noturno: luz acima da cabeça")
+			_avancar_ate_npc()
 			_check(_peds._dialog.visible, "noturno: balão visível")
 			_peds.close_dialog()
 			_fase = 3

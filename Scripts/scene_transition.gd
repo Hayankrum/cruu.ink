@@ -6,8 +6,8 @@ extends CanvasLayer
 const CELL := 56.0
 const SLIDE := 0.22
 const SWEEP := 0.5
-const C_AZUL := Color(0.05, 0.1, 0.26)
-const C_AZUL_CLARO := Color(0.12, 0.24, 0.5)
+const C_BRANCO := Color(1.0, 1.0, 1.0)
+const C_BRANCO_SOMBRA := Color(0.88, 0.9, 0.93)
 
 ## Dados da próxima tela de narrativa (preencher antes de change_scene).
 var titulo_narrativa := ""
@@ -57,7 +57,7 @@ func _rebuild() -> void:
 			var tx := float(x) / maxf(float(cols - 1), 1.0)
 			var ty := float(y) / maxf(float(rows - 1), 1.0)
 			var t := tx * 0.75 + ty * 0.25
-			var c := C_AZUL.lerp(C_AZUL_CLARO, t)
+			var c := C_BRANCO.lerp(C_BRANCO_SOMBRA, t)
 			var sq := ColorRect.new()
 			sq.color = c
 			sq.mouse_filter = Control.MOUSE_FILTER_IGNORE

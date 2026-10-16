@@ -22,6 +22,19 @@ func _check(cond: bool, label: String) -> void:
 func _y_em_720(head_y: float, centro_y: float) -> float:
 	return 360.0 + (head_y - centro_y) * (720.0 / 1080.0)
 
+## A entrevista abre com o jogador falando; clica em "Avançar" até a
+## fala do NPC, que é quem o balão representa.
+func _avancar_ate_npc() -> void:
+	if _peds == null:
+		return
+	var b1: Button = _peds._dialog_buttons[0]
+	var n := 0
+	while _peds.is_dialog_open() and _peds._falando_jogador and n < 12:
+		b1.pressed.emit()
+		_peds._atualizar_balao()
+		n += 1
+	_peds._atualizar_balao()
+
 func _initialize() -> void:
 	var s: PackedScene = load("res://Scenes/City.tscn")
 	_cena = s.instantiate()
@@ -51,6 +64,12 @@ func _process(delta: float) -> bool:
 		1:
 			if _t < 2.0:
 				return false
+			# A entrevista agora abre com o jogador (caixa do canto); o balão
+			# só aparece quando chega a vez do NPC.
+			_check(_peds._falando_jogador, "abertura é do jogador (caixa do canto)")
+			_check(_peds._fala_panel != null and _peds._fala_panel.visible, "caixa do jogador visível na abertura")
+			_avancar_ate_npc()
+			_check(not _peds._falando_jogador, "avancou até a fala do NPC")
 			var dlg: Control = _peds._dialog
 			var cam: Camera3D = _peds._camera_rig.camera
 			_check(dlg.visible, "balão visível com diálogo aberto")

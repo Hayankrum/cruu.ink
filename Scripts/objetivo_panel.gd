@@ -9,6 +9,7 @@ const NOTEBOOK_SCENE_NOITE := "res://Scenes/CityNotebook_noite.tscn"
 const NARRATIVA_SCENE := "res://Scenes/narrativa.tscn"
 
 @export var pedestrians_path: NodePath = NodePath("../../Pedestrians")
+@export var traffic_path: NodePath = NodePath("../../Traffic")
 @export_range(1, 12, 1) var npcs_necessarios := 3
 @export var precisa_falar_com_carro := true
 ## true na CityNotebook: abre/fecha overlay local em vez de change_scene.
@@ -91,7 +92,22 @@ func _atualizar() -> void:
 		_btn_im.visible = true
 	elif concluidas > antes:
 		AudioManager.play("blip")
+	_parar_exclamacoes()
 	_ajustar_altura()
+
+
+## Alcançada a cota de cada tipo, os "!" daquele tipo param de aparecer.
+func _parar_exclamacoes() -> void:
+	if _concluido or _entrevistados.size() >= npcs_necessarios:
+		_avisar(pedestrians_path)
+	if _concluido or (_carro_entrevistado and precisa_falar_com_carro):
+		_avisar(traffic_path)
+
+
+func _avisar(caminho: NodePath) -> void:
+	var n := get_node_or_null(caminho)
+	if n != null and n.has_method("encerrar_exclamacoes"):
+		n.call("encerrar_exclamacoes")
 
 
 func _texto_objetivo() -> String:

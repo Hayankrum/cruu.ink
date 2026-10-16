@@ -330,3 +330,53 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 text_overrun_behavior = 3
 autowrap_mode = 3
+
+[node name="Panel_voce" type="Panel" parent="CanvasLayer" unique_id=3110458172]
+custom_minimum_size = Vector2(340, 92)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = -106.0
+offset_right = 354.0
+offset_bottom = -14.0
+grow_horizontal = 1
+grow_vertical = 0
+mouse_filter = 2
+theme = ExtResource("13_hud")
+script = ExtResource("10_glass_panel")
+visible = false
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Panel_voce" unique_id=3110458173]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 8.0
+offset_right = -10.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel_voce/MarginContainer" unique_id=3110458174]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="autor" type="Label" parent="CanvasLayer/Panel_voce/MarginContainer/VBoxContainer" unique_id=3110458175]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.45, 0.5, 1)
+theme_override_font_sizes/font_size = 13
+text = " "
+
+[node name="dialogo" type="RichTextLabel" parent="CanvasLayer/Panel_voce/MarginContainer/VBoxContainer" unique_id=3110458176]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.09, 0.1, 0.12, 1)
+theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/bold_font_size = 15
+bbcode_enabled = true
+text = " "
+scroll_following = true

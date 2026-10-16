@@ -69,6 +69,8 @@ var _dialog_open := false
 var _parker_idx := 0
 var _releasing: Dictionary = {}
 var _release_t := 0.0
+## Motorista já ouvido (objetivo): o "!" do carro parado não aparece mais.
+var _fim_entrevistas := false
 
 func _ready() -> void:
 	var node: Node = get_node_or_null(target_path)
@@ -572,7 +574,9 @@ func _build_icon() -> void:
 	ui.add_child(_icon)
 
 func _update_icon() -> void:
-	if not enable_interaction or _stopper.is_empty() or _dialog_open:
+	if _icon == null:
+		return
+	if _fim_entrevistas or not enable_interaction or _stopper.is_empty() or _dialog_open:
 		_icon.visible = false
 		return
 	var cam: Camera3D = _camera_rig.camera if _camera_rig != null else null
@@ -596,6 +600,14 @@ func _update_icon() -> void:
 	_icon.visible = true
 	_icon.global_position = sp - _icon.size * 0.5
 	_icon.pivot_offset = _icon.size * 0.5
+
+## Chamado pelo painel de objetivo quando o motorista já foi ouvido (ou o
+## caso fechou): nenhum carro parado mais exibe "!"; o carro segue andando.
+func encerrar_exclamacoes() -> void:
+	if _fim_entrevistas:
+		return
+	_fim_entrevistas = true
+	_update_icon()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not enable_interaction:

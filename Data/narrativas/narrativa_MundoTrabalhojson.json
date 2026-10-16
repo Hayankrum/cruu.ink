@@ -2,6 +2,7 @@
   "id": "cap17_mundo_trabalho",
   "titulo": "O Futuro do Labor",
   "imagem": "res://Assets/img/capa1.png",
+  "mapa": "noite",
   "intro": {
     "titulo": "CASO ABERTO",
     "texto": "Alguns postos de trabalho estão sumindo, enquanto outras atividades surgem vinculadas a inteligência artificial e mecanização.\n\nMas os avanços tecnológicos estão beneficiando a todos da mesma forma? Ou estão apenas reforçando velhas desigualdades salariais e de gênero?\n\nInvestigue as mudanças no mundo do trabalho contemporâneo e ouça a força de trabalho local."
@@ -38,7 +39,7 @@
         "text": "Rafael comentou sobre o impacto da Inteligência Artificial e da Robotização. Como esses avanços afetam o mundo do trabalho?",
         "options": [
           "Garantem pleno emprego em todos os setores industriais simultaneamente.",
-          "Causam profundas mudanças laborais, exigindo maior escolarização e substituindo funções rotineiras.",
+          "Causam mudanças no trabalho, exigindo mais escolarização e substituindo funções rotineiras.",
           "Diminuem o nível exigido de qualificação para os novos empregos criados.",
           "São fenômenos restritos apenas ao trabalho agrícola extensivo."
         ],
@@ -48,8 +49,8 @@
         "text": "Carla pesquisa a desigualdade no mercado. Como a discriminação se reflete nas estatísticas salariais brasileiras?",
         "options": [
           "Homens e mulheres recebem o mesmo salário, sem diferenças raciais em nenhuma área.",
-          "Há forte desigualdade salarial permeada por preconceitos, onde mulheres e a população negra frequentemente recebem menos pelas mesmas funções.",
-          "As diferenças salariais baseiam-se unicamente no nível de escolaridade formal e nunca em gênero.",
+          "Desigualdade salarial por preconceito: mulheres e negros recebem menos pelo mesmo trabalho.",
+          "As diferenças salariais baseiam-se apenas na escolaridade, nunca em gênero ou raça.",
           "A tecnologia eliminou completamente as desigualdades de gênero nas empresas modernas."
         ],
         "correct": 1
@@ -57,7 +58,7 @@
       {
         "text": "Marcos sentiu na pele as mudanças. O que aconteceu no setor primário com a força de trabalho devido aos avanços tecnológicos?",
         "options": [
-          "A mecanização no campo reduziu drasticamente os postos de trabalho manuais, aumentando o êxodo rural.",
+          "A mecanização reduziu os postos de trabalho no campo e aumentou o êxodo rural.",
           "A robotização proibiu as máquinas de colheita.",
           "Houve uma migração massiva de programadores de IA para o plantio manual.",
           "Os setores primário, secundário e terciário foram unidos em um só."
@@ -78,7 +79,7 @@
         "text": "O motorista abordou a precarização. Ao analisarmos com viés crítico o mercado contemporâneo, a relação entre escolarização e empregabilidade indica que:",
         "options": [
           "Ter diploma superior blinda o trabalhador de qualquer desigualdade.",
-          "Maior qualificação reduz a chance de substituição tecnológica, mas não imuniza o trabalhador contra a exploração e discriminação estrutural.",
+          "Mais qualificação reduz o risco de substituição, mas não impede exploração e discriminação.",
           "A escola se tornou inútil frente aos robôs industriais de ponta.",
           "Somente quem sabe criar Inteligência Artificial consegue emprego hoje."
         ],
@@ -87,6 +88,7 @@
     ]
   },
   "dialogos": {
+	"abertura_jogador": "Como você vê o mundo do trabalho hoje?",
     "aberturas": [
       "O conceito de trabalho está mudando numa velocidade sem precedentes.",
       "Há muita insegurança no mercado laboral hoje."

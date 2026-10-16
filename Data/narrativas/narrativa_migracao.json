@@ -2,6 +2,7 @@
   "id": "por_que_eles_vieram",
   "titulo": "Por que eles vieram?",
   "imagem": "res://Assets/img/capa2.png",
+  "mapa": "dia",
 
   "intro": {
 	"titulo": "CASO ABERTO",
@@ -108,6 +109,7 @@
   },
 
   "dialogos": {
+	"abertura_jogador": "Por que tantas pessoas vieram morar nesta cidade?",
 	"aberturas": [
 	  "Vamos entender por que tanta gente veio para esta cidade.",
 	  "Cada morador tem uma história diferente.",

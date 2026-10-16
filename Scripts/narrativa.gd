@@ -6,10 +6,10 @@ extends Control
 const VELOCIDADE := 45.0
 const MENU_SCENE := "res://Scenes/menu_inicial.tscn"
 
-@onready var _titulo: Label = $Margem/VBox/Titulo
-@onready var _texto: RichTextLabel = $Margem/VBox/Texto
-@onready var _pular: Label = $Margem/VBox/Pular
-@onready var _btn: Button = $Margem/VBox/Btn
+@onready var _titulo: Label = $Centro/VBox/Titulo
+@onready var _texto: RichTextLabel = $Centro/VBox/Texto
+@onready var _pular: Label = $Centro/VBox/Pular
+@onready var _btn: Button = $Centro/VBox/Btn
 
 var _total := 0
 var _completo := false
@@ -21,6 +21,10 @@ func _ready() -> void:
 	_texto.text = SceneTransition.texto_narrativa
 	if _texto.text.is_empty():
 		_texto.text = "Texto da narrativa."
+	# Esconde o texto já no primeiro frame: sem isso ele aparecia inteiro
+	# até o timer abaixo zerar os caracteres (flash de conteúdo).
+	_texto.visible_characters = 0
+	_pular.visible = false
 	var proxima := SceneTransition.proxima_cena
 	if proxima.is_empty():
 		proxima = MENU_SCENE
@@ -31,7 +35,6 @@ func _ready() -> void:
 	_estilizar_btn()
 	await get_tree().create_timer(0.4).timeout
 	_total = _texto.get_total_character_count()
-	_texto.visible_characters = 0
 	_pular.visible = true
 	if _total <= 0:
 		_completar()
@@ -80,13 +83,13 @@ func _quer_pular(event: InputEvent) -> bool:
 
 func _estilizar_btn() -> void:
 	_btn.add_theme_font_size_override("font_size", 16)
-	_btn.add_theme_stylebox_override("normal", _caixa(Color(1, 1, 1, 0.05), Color(1, 1, 1, 0.22)))
-	_btn.add_theme_stylebox_override("hover", _caixa(Color(1, 1, 1, 0.1), Color(1, 1, 1, 0.4)))
-	_btn.add_theme_stylebox_override("pressed", _caixa(Color(1, 1, 1, 0.03), Color(1, 1, 1, 0.3)))
+	_btn.add_theme_stylebox_override("normal", _caixa(Color(0.09, 0.1, 0.12, 0.05), Color(0.09, 0.1, 0.12, 0.25)))
+	_btn.add_theme_stylebox_override("hover", _caixa(Color(0.09, 0.1, 0.12, 0.09), Color(0.09, 0.1, 0.12, 0.45)))
+	_btn.add_theme_stylebox_override("pressed", _caixa(Color(0.09, 0.1, 0.12, 0.04), Color(0.09, 0.1, 0.12, 0.35)))
 	_btn.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	_btn.add_theme_color_override("font_color", Color(0.93, 0.95, 1, 0.85))
-	_btn.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
-	_btn.add_theme_color_override("font_pressed_color", Color(0.93, 0.95, 1, 0.7))
+	_btn.add_theme_color_override("font_color", Color(0.09, 0.1, 0.12, 0.85))
+	_btn.add_theme_color_override("font_hover_color", Color(0.03, 0.05, 0.1, 1))
+	_btn.add_theme_color_override("font_pressed_color", Color(0.09, 0.1, 0.12, 0.6))
 
 func _caixa(bg: Color, borda: Color) -> StyleBoxFlat:
 	var box := StyleBoxFlat.new()

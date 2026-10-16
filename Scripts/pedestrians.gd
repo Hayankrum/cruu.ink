@@ -84,6 +84,9 @@ var _dialog_perguntas: Array = []
 var _dialog_entrevista: Dictionary = {}
 var _dialog_aberturas: Array = []
 var _dialog_encerramento := ""
+## Pergunta de abertura e despedida do jogador (podem vir do JSON da narrativa).
+var _dialog_abertura_jogador := ""
+var _dialog_despedida := ""
 var _dialog_perguntas_padrao: Array = []
 var _dialog_by_name: Dictionary = {}
 var _dialog_fila: Array = []
@@ -94,6 +97,20 @@ var _dialog_ccps := 45.0
 var _btn_avancar: Button
 var _luz_key: OmniLight3D
 var _luz_key_escuro := false
+## Fala do jogador ("Voce"): caixa própria fixa no canto inferior esquerdo;
+## o balão que segue a cabeça fica só com a fala do NPC.
+const AUTOR_JOGADOR := "Voce"
+## Primeira fala do jogador: ele puxa assunto antes do NPC responder.
+## O ideal é vir do JSON da narrativa ("dialogos.abertura_jogador"),
+## como uma pergunta sobre o tema — aí a abertura do NPC lê como resposta.
+const SAUDACAO_PADRAO := "Olá! Tudo bem? Posso perguntar alguma coisa?"
+## Última fala do jogador (agradece) antes do NPC dar o recado final.
+const DESPEDIDA_PADRAO := "Valeu pelas respostas!"
+var _fala_panel: Panel
+var _fala_name: Label
+var _fala_text: RichTextLabel
+var _fala_typing := false
+var _falando_jogador := false
 ## Falas de quem está ocupado/com pressa (recusa a entrevista).
 const REJEICOES_PADRAO := [
 	"Desculpa, tô com pressa!",
@@ -104,6 +121,8 @@ const REJEICOES_PADRAO := [
 var _rejeicoes: Array = REJEICOES_PADRAO.duplicate()
 var _dialog_ocupado := false
 var _ui_entrevistas: CanvasLayer
+## Cota de entrevistas do objetivo atingida: os "!" param de aparecer.
+var _fim_entrevistas := false
 ## O btn1 do bloco de perguntas vira este rótulo quando só há fala pra ler.
 const AVANCAR_TEXTO := "Avançar ▶"
 
@@ -160,6 +179,8 @@ func _ready() -> void:
 func _load_dialogs() -> void:
 	_dialog_aberturas = []
 	_dialog_encerramento = ""
+	_dialog_abertura_jogador = ""
+	_dialog_despedida = ""
 	_dialog_perguntas_padrao = []
 	_dialog_by_name = {}
 	var data: Variant = NarrativaManager.get_dialogos()
@@ -184,6 +205,10 @@ func _load_dialogs() -> void:
 		_dialog_aberturas = d["aberturas"]
 	if d.has("encerramento") and d["encerramento"] is String:
 		_dialog_encerramento = d["encerramento"]
+	if d.has("abertura_jogador") and d["abertura_jogador"] is String:
+		_dialog_abertura_jogador = d["abertura_jogador"]
+	if d.has("despedida_jogador") and d["despedida_jogador"] is String:
+		_dialog_despedida = d["despedida_jogador"]
 	if d.has("perguntas_padrao") and d["perguntas_padrao"] is Array:
 		_dialog_perguntas_padrao = d["perguntas_padrao"]
 	if d.has("personagens") and d["personagens"] is Dictionary:
@@ -199,6 +224,10 @@ func _entrevista_for(ped: Dictionary) -> Dictionary:
 	var nome := str(dados.get("nome", ped_name))
 	var abertura := str(dados.get("abertura", _pick_from(_dialog_aberturas, "Ola! O que deseja saber?")))
 	var encerramento := str(dados.get("encerramento", _dialog_encerramento))
+	var saudacao := str(dados.get("abertura_jogador",
+		_dialog_abertura_jogador if not _dialog_abertura_jogador.is_empty() else SAUDACAO_PADRAO))
+	var despedida := str(dados.get("despedida_jogador",
+		_dialog_despedida if not _dialog_despedida.is_empty() else DESPEDIDA_PADRAO))
 	var perguntas: Array = []
 	if dados.has("perguntas") and dados["perguntas"] is Array:
 		for q: Variant in dados["perguntas"]:
@@ -206,7 +235,14 @@ func _entrevista_for(ped: Dictionary) -> Dictionary:
 				perguntas.append(q)
 	if perguntas.is_empty():
 		perguntas = _dialog_perguntas_padrao.duplicate()
-	return {"nome": nome, "abertura": abertura, "encerramento": encerramento, "perguntas": perguntas}
+	return {
+		"nome": nome,
+		"abertura": abertura,
+		"saudacao": saudacao,
+		"despedida": despedida,
+		"encerramento": encerramento,
+		"perguntas": perguntas,
+	}
 
 func _pick_from(list: Array, fallback: String) -> String:
 	if list.is_empty():
@@ -522,6 +558,15 @@ func _process(delta: float) -> void:
 		if _dialog_text.visible_ratio >= 1.0:
 			_dialog_text.visible_ratio = 1.0
 			_dialog_typing = false
+	if _fala_typing and _fala_text != null:
+		var ftotal := float(_fala_text.get_total_character_count())
+		if ftotal > 0.0:
+			_fala_text.visible_ratio += _dialog_ccps * delta / ftotal
+		else:
+			_fala_text.visible_ratio = 1.0
+		if _fala_text.visible_ratio >= 1.0:
+			_fala_text.visible_ratio = 1.0
+			_fala_typing = false
 	if not _dialog_ped.is_empty():
 		_atualizar_balao()
 	_atualizar_luz()
@@ -557,6 +602,7 @@ func _bind_hud() -> void:
 	# só os botões (▼ e perguntas) capturam o clique.
 	_dialog.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ignorar_clique(_dialog)
+	_bind_fala_jogador()
 	_balao_rabo = Polygon2D.new()
 	_balao_rabo.polygon = PackedVector2Array([
 		Vector2(0.0, 0.0),
@@ -592,6 +638,67 @@ func _bind_hud() -> void:
 	_criar_ui_entrevistas()
 	_criar_luz_key()
 
+## Caixa da fala do jogador, fixa no canto inferior esquerdo da tela.
+## Usa o painel da cena (Panel_voce) se existir; se não, espelha o balão
+## do NPC e move pra lá — assim a separação vale pra qualquer cena.
+func _bind_fala_jogador() -> void:
+	var pai := _dialog.get_parent()
+	_fala_panel = pai.get_node_or_null("Panel_voce") as Panel
+	if _fala_panel != null and _texto_da_caixa(_fala_panel) == null:
+		# Painel da cena incompleto (sem a caixa de texto): sai do caminho
+		# e deixa a versão de código assumir o lugar dele.
+		push_warning("Pedestrians: Panel_voce incompleto na cena; caixa do jogador refazida em codigo")
+		_fala_panel.name = "Panel_voce_incompleta"
+		_fala_panel.visible = false
+		_fala_panel = null
+	if _fala_panel == null:
+		_fala_panel = _dialog.duplicate() as Panel
+		_fala_panel.name = "Panel_voce"
+		_espelhar_no_canto(_fala_panel)
+		pai.add_child(_fala_panel)
+	_fala_panel.visible = false
+	_fala_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ignorar_clique(_fala_panel)
+	_fala_name = _fala_panel.get_node_or_null("MarginContainer/VBoxContainer/autor") as Label
+	_fala_text = _texto_da_caixa(_fala_panel)
+	if _fala_text != null:
+		_fala_text.bbcode_enabled = true
+		_fala_text.scroll_following = true
+		_fala_text.clear()
+	if _fala_name != null:
+		_fala_name.text = ""
+
+## RichTextLabel da caixa do jogador, ou null se o painel estiver incompleto.
+func _texto_da_caixa(painel: Panel) -> RichTextLabel:
+	if painel == null:
+		return null
+	return painel.get_node_or_null("MarginContainer/VBoxContainer/dialogo") as RichTextLabel
+
+## Mesma caixa do NPC, espelhada pro canto inferior esquerdo (altura fixa:
+## a pergunta do jogador é uma linha só).
+func _espelhar_no_canto(panel: Panel) -> void:
+	panel.anchor_left = 0.0
+	panel.anchor_right = 0.0
+	panel.anchor_top = 1.0
+	panel.anchor_bottom = 1.0
+	panel.custom_minimum_size = Vector2(340, 92)
+	panel.offset_left = 14.0
+	panel.offset_top = -106.0
+	panel.offset_right = 354.0
+	panel.offset_bottom = -14.0
+	panel.grow_horizontal = Control.GROW_DIRECTION_END
+	panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	var caixa := panel.get_node_or_null("MarginContainer/VBoxContainer") as VBoxContainer
+	if caixa != null:
+		caixa.add_theme_constant_override("separation", 4)
+		var autor := caixa.get_node_or_null("autor") as Label
+		if autor != null:
+			autor.add_theme_font_size_override("font_size", 13)
+		var texto := caixa.get_node_or_null("dialogo") as RichTextLabel
+		if texto != null:
+			texto.add_theme_font_size_override("normal_font_size", 15)
+			texto.add_theme_font_size_override("bold_font_size", 15)
+
 ## Camada onde ficam os "!" de quem está disponível pra entrevista.
 func _criar_ui_entrevistas() -> void:
 	_ui_entrevistas = CanvasLayer.new()
@@ -621,11 +728,13 @@ func _icon_de(ped: Dictionary) -> Label:
 	return lb
 
 ## Só quem está disponível (sem entrevista feita) mostra o "!"; some tudo
-## enquanto o balão está aberto.
+## enquanto o balão está aberto — e some de vez quando a cota do objetivo
+## é atingida (encerrar_exclamacoes).
 func _update_icons() -> void:
 	if _ui_entrevistas == null:
 		return
-	var mostrar := enable_interaction and _camera_rig != null and _camera_rig.camera != null and _dialog_ped.is_empty()
+	var mostrar := not _fim_entrevistas and enable_interaction \
+		and _camera_rig != null and _camera_rig.camera != null and _dialog_ped.is_empty()
 	for ped: Dictionary in _peds:
 		var lb := _icon_de(ped)
 		if not mostrar or not bool(ped.get("disponivel", false)):
@@ -648,6 +757,14 @@ func _update_icons() -> void:
 		lb.visible = true
 		lb.global_position = sp - lb.size * 0.5
 		lb.pivot_offset = lb.size * 0.5
+
+## Chamado pelo painel de objetivo quando a cota de pedestres é batida:
+## nenhum NPC mais exibe "!"; os que já estão disponíveis só somem do mapa.
+func encerrar_exclamacoes() -> void:
+	if _fim_entrevistas:
+		return
+	_fim_entrevistas = true
+	_update_icons()
 
 ## Cria a luz só quando o ambiente é escuro (noite). No dia ela nem existe.
 func _criar_luz_key() -> void:
@@ -752,12 +869,17 @@ func _abrir_perguntas() -> void:
 func _mostrar_perguntas() -> void:
 	if _dialog_text == null:
 		return
+	# Chegou a vez de escolher: o balão volta pra cena com a última fala
+	# do NPC (mesmo que a anterior tenha sido a pergunta do jogador).
+	_falando_jogador = false
 	if _dialog_perguntas.is_empty():
+		# Fim da entrevista: o jogador agradece (caixa do canto) e o NPC
+		# solta o recado final (balão) antes do diálogo fechar.
+		var fila: Array = [{"autor": AUTOR_JOGADOR, "texto": str(_dialog_entrevista.get("despedida", DESPEDIDA_PADRAO))}]
 		var npc := str(_dialog_entrevista.get("encerramento", ""))
-		if npc.is_empty():
-			close_dialog()
-			return
-		_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Entrevistado")), "texto": npc}], "encerramento")
+		if not npc.is_empty():
+			fila.append({"autor": str(_dialog_entrevista.get("nome", "Entrevistado")), "texto": npc})
+		_dialog_mostrar_mensagens(fila, "encerramento")
 		return
 	var n := mini(_dialog_perguntas.size(), _dialog_buttons.size())
 	var opcoes: Array = []
@@ -775,7 +897,7 @@ func _fazer_pergunta(op: Dictionary) -> void:
 		_dialog_perguntas.remove_at(idx)
 	var pergunta := str(q.get("pergunta", "..."))
 	var resposta := str(q.get("resposta", ""))
-	var fila: Array = [{"autor": "Voce", "texto": pergunta}]
+	var fila: Array = [{"autor": AUTOR_JOGADOR, "texto": pergunta}]
 	if not resposta.is_empty():
 		var native := str(_dialog_entrevista.get("nome", "Entrevistado"))
 		fila.append({"autor": native, "texto": resposta})
@@ -816,16 +938,32 @@ func _dialog_mostrar_proxima() -> void:
 				close_dialog()
 		return
 	var msg: Dictionary = _dialog_fila.pop_front()
-	if _dialog_name != null:
-		_dialog_name.text = str(msg.get("autor", ""))
-	_dialog_text.clear()
+	var autor := str(msg.get("autor", ""))
 	var texto := str(msg.get("texto", ""))
-	match str(msg.get("autor", "")):
-		"Voce":
-			texto = "[color=#5b6472]%s[/color]" % _escape_bbcode(texto)
-		_:
-			if not str(msg.get("autor", "")).is_empty():
-				texto = "[color=#15181d]%s[/color]" % _escape_bbcode(texto)
+	if autor == AUTOR_JOGADOR and _fala_text != null:
+		# Fala do jogador: sai do balão do NPC e vai pra caixa fixa no
+		# canto inferior esquerdo; o balão fica em silêncio nesse meio-tempo
+		# (mantém a última fala do NPC lá dentro pra reabrir em seguida).
+		_falando_jogador = true
+		if _fala_name != null:
+			_fala_name.text = autor
+		_fala_text.clear()
+		_fala_text.append_text("[color=#5b6472]%s[/color]" % _escape_bbcode(texto))
+		_fala_text.visible_ratio = 0.0
+		_fala_typing = true
+		_fala_panel.visible = true
+		_dialog.visible = false
+		if _balao_rabo != null:
+			_balao_rabo.visible = false
+		return
+	_falando_jogador = false
+	if _dialog_name != null:
+		_dialog_name.text = autor
+	_dialog_text.clear()
+	if autor == AUTOR_JOGADOR:
+		texto = "[color=#5b6472]%s[/color]" % _escape_bbcode(texto)
+	elif not autor.is_empty():
+		texto = "[color=#15181d]%s[/color]" % _escape_bbcode(texto)
 	_dialog_text.append_text(texto)
 	_dialog_text.visible_ratio = 0.0
 	_dialog_typing = true
@@ -838,12 +976,28 @@ func _avancar_dialogo() -> void:
 		_dialog_typing = false
 		_dialog_text.visible_ratio = 1.0
 		return
+	if _fala_typing and _fala_text != null:
+		_fala_typing = false
+		_fala_text.visible_ratio = 1.0
+		return
 	_dialog_mostrar_proxima()
+
+## Zera a caixa da fala do jogador (abertura e fechamento do diálogo).
+func _limpar_fala_jogador() -> void:
+	_falando_jogador = false
+	_fala_typing = false
+	if _fala_text != null:
+		_fala_text.clear()
+	if _fala_name != null:
+		_fala_name.text = ""
+	if _fala_panel != null:
+		_fala_panel.visible = false
 
 func open_dialog(ped: Dictionary) -> void:
 	if not _dialog_ped.is_empty() or _dialog == null:
 		return
 	_dialog_ped = ped
+	_limpar_fala_jogador()
 	_dialog_ocupado = not bool(ped.get("disponivel", false))
 	_dialog_entrevista = _entrevista_for(ped)
 	_dialog_perguntas = (_dialog_entrevista.get("perguntas", []) as Array).duplicate()
@@ -853,23 +1007,35 @@ func open_dialog(ped: Dictionary) -> void:
 	_dialog.visible = true
 	AudioManager.play("open")
 	if _dialog_ocupado:
-		# Ocupado/com pressa: só solta uma recusa e encerra (não vale entrevista).
+		# Ocupado/com pressa: o jogador puxa assunto e leva uma recusa
+		# (não vale entrevista).
 		var recusa := _pick_from(_rejeicoes, str(REJEICOES_PADRAO[0]))
-		_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Cidadao")), "texto": recusa}], "ocupado")
+		_dialog_mostrar_mensagens(_fila_com_npc(recusa, "Cidadao"), "ocupado")
 	else:
-		var abertura := str(_dialog_entrevista.get("abertura", ""))
-		_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Cidadao")), "texto": abertura}], "apresentacao")
+		_dialog_mostrar_mensagens(_fila_com_npc(str(_dialog_entrevista.get("abertura", "")), "Cidadao"), "apresentacao")
 	_atualizar_balao()
 	if _camera_rig != null:
 		var aim: Vector3 = _balao_alvo + Vector3(0.0, BALAO_AIMOFS, 0.0)
 		var r := _drive(ped, float(ped["s"]))
 		_camera_rig.focus_at_front(aim, r["dir"], dialog_zoom_dist, dialog_zoom_pitch)
 
+## O jogador sempre começa: a primeira fala é dele (caixa do canto) e a
+## resposta do NPC vem no balão. A saudação pode vir do JSON da narrativa
+## ("dialogos.abertura_jogador") ou do personagem; a fala do NPC é o texto
+## passado (abertura da entrevista ou recusa de quem está ocupado).
+func _fila_com_npc(texto_npc: String, fallback: String) -> Array:
+	var saudacao := str(_dialog_entrevista.get("saudacao", SAUDACAO_PADRAO))
+	var fila: Array = [{"autor": AUTOR_JOGADOR, "texto": saudacao}]
+	if not texto_npc.is_empty():
+		fila.append({"autor": str(_dialog_entrevista.get("nome", fallback)), "texto": texto_npc})
+	return fila
+
 func open_car_dialog(holder: Node3D, car_name: String) -> void:
 	if not _dialog_ped.is_empty() or _dialog == null:
 		return
 	_dialog_ped = {"name": car_name, "holder": holder}
 	_dialog_car = true
+	_limpar_fala_jogador()
 	_dialog_ocupado = false
 	_dialog_entrevista = _entrevista_for({"name": car_name})
 	_dialog_perguntas = (_dialog_entrevista.get("perguntas", []) as Array).duplicate()
@@ -878,8 +1044,7 @@ func open_car_dialog(holder: Node3D, car_name: String) -> void:
 	_preparar_balao()
 	_dialog.visible = true
 	AudioManager.play("open")
-	var abertura := str(_dialog_entrevista.get("abertura", ""))
-	_dialog_mostrar_mensagens([{"autor": str(_dialog_entrevista.get("nome", "Motorista")), "texto": abertura}], "apresentacao")
+	_dialog_mostrar_mensagens(_fila_com_npc(str(_dialog_entrevista.get("abertura", "")), "Motorista"), "apresentacao")
 	_atualizar_balao()
 	if _camera_rig != null:
 		var aim: Vector3 = _balao_alvo + Vector3(0.0, BALAO_AIMOFS, 0.0)
@@ -918,6 +1083,13 @@ func _ajustar_altura_balao() -> void:
 ## preso às bordas do viewport (se não couber em cima, cai pra baixo).
 func _atualizar_balao() -> void:
 	if _dialog == null or _camera_rig == null or _dialog_ped.is_empty():
+		return
+	# Enquanto o jogador fala, o balão fica escondido (a fala dele está
+	# na caixa do canto inferior esquerdo).
+	if _falando_jogador:
+		_dialog.visible = false
+		if _balao_rabo != null:
+			_balao_rabo.visible = false
 		return
 	var cam := _camera_rig.camera
 	if cam == null:
@@ -972,6 +1144,7 @@ func close_dialog() -> void:
 	_dialog_fila = []
 	_dialog_phase = ""
 	_dialog_typing = false
+	_limpar_fala_jogador()
 	if _dialog != null:
 		_dialog.visible = false
 		if _balao_salvo:

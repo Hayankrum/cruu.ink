@@ -2,6 +2,7 @@
   "id": "cap18_espaco_urbano",
   "titulo": "Metrópole de Contrastes",
   "imagem": "res://Assets/img/capa1.png",
+  "mapa": "noite",
   "intro": {
     "titulo": "CASO ABERTO",
     "texto": "O espaço urbano contemporâneo é feito de prédios luxuosos convivendo lado a lado com moradias precárias e trânsito caótico.\n\nComo processos de segregação e gentrificação afetam a vida das pessoas nas cidades globais?\n\nAnde pelo centro revitalizado e pelas periferias para ouvir o que os cidadãos têm a dizer sobre o direito à cidade."
@@ -47,10 +48,10 @@
       {
         "text": "Beatriz explicou a diferença entre megacidades e cidades globais. Qual alternativa apresenta a distinção correta?",
         "options": [
-          "Megacidades têm população gigantesca (mais de 10 milhões); cidades globais destacam-se pela influência política e econômica no mundo, independente do tamanho.",
-          "Cidades globais são exclusivas de países em desenvolvimento, enquanto as megacidades ficam apenas na Europa.",
+          "Megacidades passam de 10 milhões de habitantes; cidades globais têm influência política e econômica.",
+          "Cidades globais só existem em países em desenvolvimento, e megacidades só na Europa.",
           "As duas classificações representam exatamente a mesma coisa na rede urbana moderna.",
-          "Megacidade é a capital financeira, e cidade global é apenas uma conurbação com alta taxa de pobreza."
+          "Megacidade é a capital financeira e cidade global é apenas uma conurbação pobre."
         ],
         "correct": 0
       },
@@ -67,7 +68,7 @@
       {
         "text": "O motorista criticou muito a falta de mobilidade urbana. De acordo com os estudos urbanos contemporâneos, como esse problema afeta as metrópoles?",
         "options": [
-          "Inviabiliza a chegada das pessoas de moradias inadequadas periféricas ao seu local de trabalho, agravando desigualdades.",
+          "Impede que moradores da periferia cheguem ao trabalho, agravando as desigualdades.",
           "Cria gentrificação automática, pois todos compram carros elétricos.",
           "Afeta unicamente os moradores do centro histórico.",
           "Reduz o fluxo campo-cidade sem gerar atrasos de transporte interno."
@@ -79,14 +80,15 @@
         "options": [
           "Desincentivar toda rede de tecnologia em prol do modo agrário.",
           "Limitar rigidamente a hierarquia urbana para evitar a conurbação de megacidades.",
-          "Usar tecnologias de informação e comunicação integradas para melhorar a infraestrutura, eficiência e qualidade dos serviços urbanos.",
-          "Acelerar o processo de gentrificação para expulsar pessoas em moradias precárias e colocar robôs."
+          "Usar tecnologias de informação para melhorar a infraestrutura e os serviços urbanos.",
+          "Acelerar a gentrificação para expulsar moradores de moradias precárias e instalar robôs."
         ],
         "correct": 2
       }
     ]
   },
   "dialogos": {
+	"abertura_jogador": "O que a transformação desta metrópole fez com a sua vida?",
     "aberturas": [
       "A urbanização desordenada deixou marcas visíveis nos nossos bairros.",
       "Há um abismo entre o centro financeiro e as franjas da nossa cidade."

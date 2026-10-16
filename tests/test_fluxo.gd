@@ -76,6 +76,7 @@ func _process(delta: float) -> bool:
 			_check(_peds.is_dialog_open(), "disponível abre diálogo")
 			_check(not _peds._dialog_ocupado, "disponível não é recusa")
 			_check(_peds._dialog_phase == "apresentacao", "disponível começa a entrevista")
+			_check(_peds._falando_jogador, "abertura é do jogador (ele pergunta primeiro)")
 			_peds.close_dialog()
 			_check(not bool(_alvo_ok.get("disponivel", true)), "entrevistado vira ocupado")
 			_check(_emits.size() == 1, "entrevista contou no objetivo")
@@ -97,6 +98,7 @@ func _process(delta: float) -> bool:
 			_check(_peds.is_dialog_open(), "ocupado abre diálogo")
 			_check(_peds._dialog_ocupado, "ocupado é recusa")
 			_check(_peds._dialog_phase == "ocupado", "ocupado entra na fase de recusa")
+			_check(_peds._falando_jogador, "recusa também vem depois do jogador perguntar")
 			var b1: Button = _peds._dialog_buttons[0]
 			_check(b1.visible and b1.text == "Avançar ▶", "recusa usa o Avançar")
 			var toques := 0
@@ -106,6 +108,20 @@ func _process(delta: float) -> bool:
 			_check(not _peds.is_dialog_open(), "recusa fecha sozinha")
 			_check(_emits.size() == 1, "recusa NÃO contou como entrevista")
 			_check(not bool(_alvo_ocupado.get("disponivel", true)), "ocupado continua ocupado")
+			_fase = 5
+			_t = 0.0
+		5:
+			if _t < 0.2:
+				return false
+			_peds.encerrar_exclamacoes()
+			_peds._update_icons()
+			var algum_icon := false
+			for ped: Dictionary in _peds._peds:
+				var lb: Label = ped.get("icon")
+				if lb != null and lb.visible:
+					alguem_icon = true
+			_check(not algum_icon, "cota batida: nenhum ! continua visível")
+			_check(_peds._fim_entrevistas, "flag de fim de entrevistas ligada")
 			_fase = 9
 			_t = 0.0
 		9:

@@ -2,6 +2,7 @@
   "id": "uma_cidade_para_quem",
   "titulo": "Uma cidade para quem?",
   "imagem": "res://Assets/img/capa1.png",
+  "mapa": "dia",
 
   "intro": {
 	"titulo": "CASO ABERTO",
@@ -119,6 +120,7 @@
   },
 
   "dialogos": {
+	"abertura_jogador": "Como você vê as mudanças destes últimos anos no bairro?",
 	"aberturas": [
 	  "Esse bairro mudou muito nos últimos anos.",
 	  "Nem todo mundo vê essas mudanças da mesma forma.",

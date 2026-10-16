@@ -98,6 +98,11 @@ func get_objetivo() -> Dictionary:
 func get_quiz() -> Dictionary:
 	return _secao("quiz")
 
+## Mapa da narrativa atual: "noite" usa City_noite.tscn, o resto usa City.tscn.
+func get_mapa() -> String:
+	var m := str(atual().get("mapa", "dia")).strip_edges().to_lower()
+	return "noite" if m == "noite" else "dia"
+
 func get_dialogos() -> Dictionary:
 	return _secao("dialogos")
 

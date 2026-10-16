@@ -1,6 +1,7 @@
 extends Control
 
 const CITY_SCENE := "res://Scenes/City.tscn"
+const CITY_SCENE_NOITE := "res://Scenes/City_noite.tscn"
 const NARRATIVA_SCENE := "res://Scenes/narrativa.tscn"
 const PERFIS_PATH := "user://perfis.json"
 const SESSAO_PATH := "user://sessao.json"
@@ -371,7 +372,7 @@ func _iniciar_jogo() -> void:
 	var intro := NarrativaManager.get_intro()
 	SceneTransition.titulo_narrativa = str(intro.get("titulo", ""))
 	SceneTransition.texto_narrativa = str(intro.get("texto", ""))
-	SceneTransition.proxima_cena = CITY_SCENE
+	SceneTransition.proxima_cena = CITY_SCENE_NOITE if NarrativaManager.get_mapa() == "noite" else CITY_SCENE
 	SceneTransition.change_scene(NARRATIVA_SCENE)
 
 func _alternar_detalhe() -> void:
